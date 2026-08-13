@@ -14,9 +14,11 @@ List every SEC filing that sec-api ingested on one day.
 
 This tool reports the ingestion pipeline, not EDGAR itself. One row is one
 filing that sec-api pulled in on the day you asked for. Each row holds the
-accession number, the form type, and the time EDGAR published the filing.
+accession number, the form type, and the time EDGAR accepted the filing. The
+list carries one row per accession number. A filing with several reporting
+entities still gets one row.
 
-Coverage starts on 2025-12-02. Earlier dates return an error. A request for
+Coverage starts on 2025-12-01. Earlier dates return an error. A request for
 2025-12-15 returned 2,818 rows in 265,912 bytes.
 
 The day is the ingestion day, not the filing day. 169 of those 2,818 rows carry
@@ -43,14 +45,14 @@ a `filedAt` of 2025-12-12, a Friday. The pipeline picked them up on the Monday.
 
 | Parameter | Type   | Required | Constraints                              | Notes                                                    |
 | --------- | ------ | -------- | ---------------------------------------- | -------------------------------------------------------- |
-| `date`    | string | Yes      | `YYYY-MM-DD`. 2025-12-02 or later.       | One day per call. `2025-12-15`.                          |
+| `date`    | string | Yes      | `YYYY-MM-DD`. 2025-12-01 or later.       | One day per call. `2025-12-15`.                          |
 
 The schema declares `date` as a plain string. The server applies the format
 rule and the coverage rule. There are no other parameters, and there is no
 Lucene query here.
 
 Ask for today's date and you get the live log for the day so far. It grows
-until the market day ends.
+through the day, as the pipeline indexes each new filing.
 
 ## Output
 
@@ -58,22 +60,29 @@ The envelope is `{lastUpdatedAt, total, data[]}`. It is the only envelope in the
 server that carries `lastUpdatedAt`. `total` is an object, `{value, relation}`,
 not a number.
 
+### Envelope
+
+| Field            | Type   | Meaning                                                          |
+| ---------------- | ------ | ---------------------------------------------------------------- |
+| `lastUpdatedAt`  | string | When the log last changed. It is the indexing time of the newest filing processed for that date. ISO 8601. Use it to judge freshness. |
+| `total.value`    | number | Number of filings indexed on that date. The count treats one accession number as one filing. |
+| `total.relation` | string | `eq` for this tool. The count is exact.                           |
+| `data[]`         | array  | The filings indexed that date, one item per accession number. A filing that names several reporting entities gives one item. |
+
+### Filing
+
 | Field                | Type   | Meaning                                                                 |
 | -------------------- | ------ | ----------------------------------------------------------------------- |
-| `lastUpdatedAt`      | string | When the pipeline ingested the newest filing in this log. ISO 8601 with an offset. Use it to judge freshness. |
-| `total.value`        | number | Number of rows in `data[]`. The server counts the array, so the number is exact. |
-| `total.relation`     | string | `eq` for this tool.                                                     |
-| `data[].accessionNo` | string | Accession number, in the dashed form `0001213900-25-121864`.            |
-| `data[].formType`    | string | Form as EDGAR labels it, for example `4`, `8-K`, `424B2`, `SCHEDULE 13G`. |
-| `data[].filedAt`     | string | When EDGAR published the filing. ISO 8601 with an offset.               |
+| `data[].accessionNo` | string | Accession number of the filing, in the dashed form `0001213900-25-121864`. |
+| `data[].formType`    | string | Form as EDGAR labels it, for example `4`, `8-K`, `424B2`, `SCHEDULE 13G`, `LETTER`. |
+| `data[].filedAt`     | string | The `Accepted` value of the filing. It is when EDGAR accepted the submission. ISO 8601. |
 
 Rows come back newest ingestion first. They are **not** sorted by `filedAt`. Two
 neighbouring rows in this response read 21:55:06 and then 21:55:07. Sort the array
 yourself if you need filing order.
 
-The timestamps carry a `-05:00` offset and run to 21:56 in the 2025-12-15 log.
-The day boundary follows Eastern time. The registry description calls it a UTC
-calendar day. Trust the data.
+Some rows carry a much older `filedAt`. The SEC publishes comment letters weeks
+or months after it accepts them. They enter the log on the publication day.
 
 **This tool has no pagination.** One call returns the whole day. A busy weekday
 runs to about 2,800 rows and 260 KB. Budget the context before you call it,
@@ -109,15 +118,14 @@ Six of 2,818 rows are shown. That day's mix was 741 Form 4 filings, 301 424B2,
 
 ## Limits and errors
 
-- A date before 2025-12-02 returns
+- A date before 2025-12-01 returns
   `Data for the requested date is only available from December 1, 2025 onwards.`
-  The message names December 1, but the server compares with a strict "later
-  than", so 2025-12-01 fails too.
 - A date in any other shape returns
   `Invalid date provided. Use YYYY-MM-DD format.`
 - A date with no log file returns `Log file not found for the specified date.`
 - The log lists filings, not documents. To open one, take `accessionNo` to
   [`filing-search`](./filing-search.md).
+- Use the log for a daily check. It is not built for historical backfills.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related
@@ -126,5 +134,4 @@ Six of 2,818 rows are shown. That day's mix was 741 Form 4 filings, 301 424B2,
 - [`api-key-usage`](./api-key-usage.md). The other tool that takes a `date`.
 - [Response format](../response-format.md). This tool owns the only
   `lastUpdatedAt` envelope.
-- sec-api.io publishes no REST page for this endpoint. The route is
-  `GET /edgar-index/ingestion-log/{date}`.
+- [sec-api.io EDGAR Index APIs docs](https://sec-api.io/docs/edgar-index-apis)

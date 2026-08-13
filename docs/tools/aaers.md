@@ -16,9 +16,10 @@ accounting fraud, audit failures and financial reporting misconduct.
 `aaers` searches the AAER series. An AAER is an enforcement document the SEC
 also publishes under an `AAER-xxxx` number because it concerns accounting or
 auditing. One row is one AAER document. Each row carries the `respondents`, a
-`summary`, the `tags`, the `violatedSections` and any `penaltyAmounts`. A
-request for `aaerNo:*` returned `total.value: 3326`, so the index held 3,326
-AAERs on 2026-08-13.
+`summary`, the `tags`, the `violatedSections` and any `penaltyAmounts`.
+Coverage starts in 1997 and runs to the present. New AAERs arrive as the SEC
+publishes them. A request for `aaerNo:*` returned `total.value: 3326`, so the
+index held 3,326 AAERs on 2026-08-13.
 
 Field shapes differ from the sibling tools. The date field is `dateTime`, not
 `releasedAt`. Documents are in `urls[]`, not `resources[]`. There is no `title`
@@ -47,15 +48,19 @@ field. Use `respondentsText` and `summary` instead.
 | Parameter | Type    | Required | Constraints                                             | Notes                                                |
 | --------- | ------- | -------- | ------------------------------------------------------- | ---------------------------------------------------- |
 | `query`   | string  | yes      | Lucene syntax, max 1,000 characters, must contain a `:` | Example: `aaerNo:*`.                                 |
-| `from`    | integer | no       | minimum 0                                               | Offset of the first row. Default 0.                  |
+| `from`    | integer | no       | 0 to 10,000                                             | Offset of the first row. Default 0.                  |
 | `size`    | integer | no       | 1 to 50                                                 | Rows per call. Default 50. Over 50 returns an error. |
 | `sort`    | array   | no       | Elasticsearch sort array                                | Default `[{"dateTime": {"order": "desc"}}]`.         |
 
 
 Query fields: `aaerNo`, `dateTime`, `releaseNo`, `respondents.name`,
-`respondentsText`, `tags` and `violatedSections`. Every other name in the Output
-table below is a response field. The sec-api REST docs treat those as searchable
-too. A date range looks like `dateTime:[2020-01-01 TO 2024-12-31]`.
+`respondents.type`, `entities.name`, `entities.cik`, `entities.ticker`,
+`entities.role`, `tags`, `complaints`, `violatedSections`,
+`hasAgreedToSettlement`, `hasAgreedToPayPenalty`,
+`penaltyAmounts.penaltyAmount`, `penaltyAmounts.imposedOn`,
+`parallelActionsTakenBy`, `otherAgenciesInvolved.country` and `urls.type`.
+Other names in the Output table below are response fields. A date range looks
+like `dateTime:[2020-01-01 TO 2024-12-31]`.
 
 ## Output
 
@@ -63,27 +68,72 @@ The envelope has two keys. `total` is an object, `{value, relation}`, not a
 number. `data` is the array of rows. This is the `{total, data[]}` family in
 [response format](../response-format.md).
 
-| Field                                                          | Type    | Meaning                                                                                       |
-| -------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------- |
-| `total.value`                                                  | number  | Number of matching AAERs.                                                                     |
-| `total.relation`                                               | string  | `eq` means exact. `gte` means at least that many.                                             |
-| `data[].id`                                                    | string  | Internal record hash.                                                                         |
-| `data[].aaerNo`                                                | string  | AAER number, for example `AAER-4597`.                                                         |
-| `data[].dateTime`                                              | string  | Release timestamp, ISO 8601 with an offset. The date field for this tool.                     |
-| `data[].releaseNo[]`                                           | array   | Related release numbers, for example `33-11432` and `34-105966`.                              |
-| `data[].respondents[]`                                         | array   | Respondents. Each has `name` and `type`. This response has no `role` here.                    |
-| `data[].respondentsText`                                       | string  | The respondent line as printed, including notes such as `(Order Granting Extension of Time)`. |
-| `data[].urls[]`                                                | array   | Documents. Each has `type` and `url`. The main document has the type `primary`.               |
-| `data[].summary`                                               | string  | One-paragraph summary of the release.                                                         |
-| `data[].tags[]`                                                | array   | Short subject labels, for example `settlement`, `officer and director bar`.                   |
-| `data[].entities[]`                                            | array   | All parties, with a `role` such as `respondent` or `entity audited`.                          |
-| `data[].complaints[]`                                          | array   | One sentence per allegation. Empty for procedural orders.                                     |
-| `data[].violatedSections[]`                                    | array   | Statutes and rules cited. Empty for procedural orders.                                        |
-| `data[].requestedRelief[]`                                     | array   | Relief sought or imposed, such as `permanent officer and director bar`.                       |
-| `data[].hasAgreedToSettlement`, `data[].hasAgreedToPayPenalty` | boolean | True when the document states a settlement, or a penalty payment.                             |
-| `data[].penaltyAmounts[]`                                      | array   | Each has `penaltyAmount` (a numeric string), `penaltyAmountText` and `imposedOn`.             |
-| `data[].parallelActionsTakenBy[]`                              | array   | Other bodies that acted in parallel.                                                          |
-| `data[].otherAgenciesInvolved[]`                               | array   | Each has `name` and `country`.                                                                |
+The tables below list every field the response can hold.
+
+### Envelope
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `total.value` | number | Number of AAERs that match the query. |
+| `total.relation` | string | `eq` means exact. `gte` means at least that many. |
+| `data[]` | object[] | One object per AAER. |
+
+### Release
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].id` | string | Unique system-internal identifier of the AAER. |
+| `data[].aaerNo` | string | AAER release number, for example `AAER-4597`. |
+| `data[].dateTime` | string | Release date and time of the AAER, format `yyyy-MM-ddTHH:mm:ssXXX`. The date field for this tool. |
+| `data[].releaseNo[]` | string[] | Other release numbers tied to the AAER, such as litigation release numbers. For example `33-11432` and `34-105966`. |
+| `data[].summary` | string | Brief summary of the AAER. |
+| `data[].tags[]` | string[] | Tags that describe the AAER, for example `settlement` or `officer and director bar`. |
+
+### Respondents and parties
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].respondents[]` | object[] | The parties the SEC named in the AAER. |
+| `data[].respondents[].name` | string | Name of the respondent. |
+| `data[].respondents[].type` | string | Type of the respondent, such as `individual` or `company`. |
+| `data[].respondentsText` | string | The respondent line as the SEC prints it. It can carry a note such as `(Order Granting Extension of Time)`. |
+| `data[].entities[]` | object[] | Every person and organisation the action names, not only the respondents. |
+| `data[].entities[].name` | string | Name of the entity. |
+| `data[].entities[].type` | string | Type of the entity, such as `company`, `individual` or `other`. |
+| `data[].entities[].role` | string | Role of the entity in the AAER, such as `respondent`, `defendant`, `plaintiff`, `involved party`, `employer` or `entity audited`. |
+| `data[].entities[].cik` | string | Central Index Key of the entity. Set only when the name matches a known public company. |
+| `data[].entities[].ticker` | string | Ticker symbol of the entity. Set only when the name matches a known public company. |
+
+### Charges and penalties
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].complaints[]` | string[] | The SEC complaints tied to the AAER. One sentence each. Empty for procedural orders. |
+| `data[].violatedSections[]` | string[] | The securities laws and rules the parties violated. Empty for procedural orders. |
+| `data[].requestedRelief[]` | string[] | The relief requested, such as `disgorgement`, `cease and desist order` or `permanent officer and director bar`. |
+| `data[].hasAgreedToSettlement` | boolean | True when the respondent has agreed to a settlement. |
+| `data[].hasAgreedToPayPenalty` | boolean | True when the respondent has agreed to pay a penalty. |
+| `data[].penaltyAmounts[]` | object[] | One object per penalty imposed on a respondent. |
+| `data[].penaltyAmounts[].penaltyAmount` | string | Amount of the penalty. Digits only, for example `75000`. |
+| `data[].penaltyAmounts[].penaltyAmountText` | string | The penalty amount as the document states it, for example `$75,000`. |
+| `data[].penaltyAmounts[].imposedOn` | string | The party that must pay the penalty. |
+
+### Documents
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].urls[]` | object[] | Links to the documents of the AAER. |
+| `data[].urls[].type` | string | Class of the document. The main proceeding has the type `primary` and is always present. Other classes are the administrative summary, the SEC complaint, a judgement, an order, a press release, an administrative proceedings release and a litigation release. |
+| `data[].urls[].url` | string | Direct link to the document on sec.gov. |
+
+### Who else acted
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].parallelActionsTakenBy[]` | string[] | Other regulators or organisations that took a parallel action, for example `Tokyo District Court`. |
+| `data[].otherAgenciesInvolved[]` | object[] | Other regulators or organisations that took part in the enforcement action. Filled only when another agency took part. |
+| `data[].otherAgenciesInvolved[].name` | string | Name of the agency, for example `Brazilian Ministerio Publico Federal`. |
+| `data[].otherAgenciesInvolved[].country` | string | Country of the agency. |
 
 Size behaviour. `size` defaults to 50 and cannot exceed 50. Page with `from`.
 This example set `size: 1` and returned 1,110 bytes for one row, so a `size: 50`

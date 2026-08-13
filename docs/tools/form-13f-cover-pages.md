@@ -21,10 +21,9 @@ holdings themselves are not included.
 A request for `cik:1067983` (Berkshire Hathaway) with `size: 1` returns
 `total.value: 60` and the 13F-HR cover page for the period ending
 2026-03-31, in 2,774 bytes. The counts differ between tools. The same query
-returns 60 here and 210 in [`form-13f-holdings`](./form-13f-holdings.md). The
-two indices do not hold the same number of records. The two totals count
-different things. The cover-page total counts filings. The holdings total
-counts positions.
+returns 60 here and 210 in [`form-13f-holdings`](./form-13f-holdings.md). Both
+totals count filings, not positions. The two indices do not hold the same number
+of records.
 
 ## When to use it
 
@@ -53,38 +52,108 @@ counts positions.
 Unlike [`form-13f-holdings`](./form-13f-holdings.md), this tool does not
 rewrite your query.
 
-Query fields: `cik`, `formType`, `periodOfReport`, `filedAt`, `accessionNo`,
-`crdNumber`, `secFileNumber`, `form13FFileNumber`, `isAmendment` and
-`filingManager.name`. All are present in the response body. The example uses
+Query fields: `cik`, `crdNumber`, `periodOfReport`, `filedAt`, `formType`,
+`accessionNo`, `reportType`, `filingManager.name`,
+`filingManager.address.stateOrCountry`, `amendmentInfo.amendmentType`,
+`otherIncludedManagersCount` and `tableValueTotal`. The example uses
 `cik:1067983`.
 
 ## Output
 
-The envelope is `{total, data[]}`. `total` is an object. The count is in
-`total.value`.
-`total.relation` is `"eq"` for an exact count, `"gte"` at 10000 for 10,000 or
-more.
+The envelope is `{total, data[]}`. `total` is an object, not a number. The count
+is in `total.value`.
 
-| Field                                     | Type    | Meaning                                                       |
-| ----------------------------------------- | ------- | -------------------------------------------------------------- |
-| `accessionNo`                             | string  | EDGAR accession number. It joins to `form-13f-holdings`.        |
-| `filedAt`                                 | string  | ISO 8601 with offset.                                           |
-| `formType`                                | string  | `13F-HR` in this response. `isAmendment` marks amendments.      |
-| `cik`                                     | string  | CIK of the filing manager.                                      |
-| `crdNumber`, `secFileNumber`              | string  | Adviser identifiers. **Both are empty strings in this response.** Other filers populate them, for example Bridgewater. Presence varies by filer. |
-| `form13FFileNumber`                       | string  | The 13F file number, for example `028-04545`.                   |
-| `periodOfReport`                          | string  | Quarter end, `YYYY-MM-DD`.                                      |
-| `isAmendment`                             | boolean | `false` for an original report. `amendmentInfo` holds the detail and is an empty object here. |
-| `filingManager`                           | object  | `name`, and `address` with `street`, `city`, `stateOrCountry`, `zipCode`. |
-| `filingManager.address.zipCode`           | number  | A **number**, not a string. `68131`. A ZIP with a leading zero loses it, for example Westport CT arrives as `6880`. |
-| `reportType`                              | string  | `13F HOLDINGS REPORT` in this response.                         |
-| `signature`                               | object  | `name`, `title`, `phone`, `signature`, `city`, `stateOrCountry`, `signatureDate`. |
-| `signature.signatureDate`                 | string  | Format `MM-DD-YYYY`, for example `05-15-2026`. Every other date on this record is ISO. |
-| `tableEntryTotal`                         | number  | Number of position lines in the information table. `90` in this response. |
-| `tableValueTotal`                         | number  | Total reported value in US dollars. `263095703570` in this response. |
-| `tableEntryTotalAsReported`, `tableValueTotalAsReported` | number | The values exactly as filed. They match in this response. |
-| `otherIncludedManagersCount`              | number  | Count of managers covered by this report. `14` in this response. |
-| `otherIncludedManagers[]`                 | array   | `sequenceNumber`, `name`, `cik`, `crdNumber`, `secFileNumber`, `form13FFileNumber`. |
+### Envelope
+
+| Field            | Type   | Meaning                                                        |
+| ---------------- | ------ | -------------------------------------------------------------- |
+| `total.value`    | number | Number of cover pages that match the query.                    |
+| `total.relation` | string | `eq` for an exact count. `gte` at 10000 for 10,000 or more.    |
+| `data[]`         | array  | The cover pages. One item is one 13F filing.                   |
+
+### Filing
+
+| Field                             | Type    | Meaning                                                                                            |
+| --------------------------------- | ------- | ---------------------------------------------------------------------------------------------------- |
+| `data[].id`                       | string  | Unique identifier of the cover page record.                                                        |
+| `data[].accessionNo`              | string  | Accession number of the 13F filing. It joins to `form-13f-holdings`.                               |
+| `data[].filedAt`                  | string  | Time the manager submitted the filing, ISO 8601 with offset.                                       |
+| `data[].formType`                 | string  | Form type of the filing, `13F-HR` in this response.                                                |
+| `data[].periodOfReport`           | string  | End of the quarter the filing covers, `YYYY-MM-DD`.                                                |
+| `data[].reportType`               | string  | `13F HOLDINGS REPORT`, `13F NOTICE` or `13F COMBINATION REPORT`. A notice carries no position list. |
+| `data[].isAmendment`              | boolean | `true` when the filing amends an earlier report.                                                   |
+| `data[].provideInfoForInstruction5` | boolean | The manager gives the extra information that Instruction 5 of the form asks for.                 |
+
+### Filing manager
+
+| Field                                     | Type   | Meaning                                                                                            |
+| ----------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------- |
+| `data[].cik`                              | string | CIK of the filing manager.                                                                         |
+| `data[].crdNumber`                        | string | CRD number of the filing manager. It joins to `form-adv-firms`. **An empty string in this response.** Other filers populate it, for example Bridgewater. |
+| `data[].secFileNumber`                    | string | SEC file number of the filing manager. **An empty string in this response.** Presence varies by filer. |
+| `data[].form13FFileNumber`                | string | The 13F file number, for example `028-04545`.                                                      |
+| `data[].filingManager.name`               | string | Name of the manager.                                                                               |
+| `data[].filingManager.address.street`     | string | Street of the manager address.                                                                     |
+| `data[].filingManager.address.city`       | string | City of the manager address.                                                                       |
+| `data[].filingManager.address.stateOrCountry` | string | State or country of the manager address, for example `NE`.                                     |
+| `data[].filingManager.address.zipCode`    | number | ZIP code of the manager address. A **number**, not a string. `68131`. A ZIP with a leading zero loses it, for example Westport CT arrives as `6880`. |
+
+### Amendment
+
+`amendmentInfo` is present only when `isAmendment` is `true`. The key is absent
+from this response.
+
+| Field                              | Type   | Meaning                                              |
+| ---------------------------------- | ------ | ------------------------------------------------------ |
+| `data[].amendmentInfo`             | object | Detail of the amendment.                             |
+| `data[].amendmentInfo.amendmentNo` | number | Number of the amendment.                             |
+| `data[].amendmentInfo.amendmentType` | string | `RESTATEMENT` replaces the earlier report. `NEW HOLDINGS` adds positions to it. |
+
+### Totals
+
+| Field                              | Type   | Meaning                                                        |
+| ---------------------------------- | ------ | -------------------------------------------------------------- |
+| `data[].tableEntryTotal`           | number | Number of position lines in the information table. `90` in this response. |
+| `data[].tableValueTotal`           | number | Total value of the holdings in US dollars. `263095703570` in this response. |
+| `data[].tableEntryTotalAsReported` | number | The entry count exactly as the manager filed it.               |
+| `data[].tableValueTotalAsReported` | number | The total value exactly as the manager filed it.               |
+| `data[].otherIncludedManagersCount` | number | Number of other managers this report covers. `14` in this response. |
+
+The two `AsReported` fields match the plain fields in this response. They differ
+when the filed value needs a correction, such as a value reported in thousands.
+
+### Other managers
+
+`otherIncludedManagers[]` names the managers this report covers.
+`otherManagersReportingForThisManager[]` names the managers that report this
+manager's holdings in their own filing. The second array is empty in this
+response.
+
+| Field                                                        | Type   | Meaning                                                        |
+| ------------------------------------------------------------ | ------ | -------------------------------------------------------------- |
+| `data[].otherIncludedManagers[].sequenceNumber`              | number | Position of the manager in the list. The holdings reference it. |
+| `data[].otherIncludedManagers[].name`                        | string | Name of the manager.                                           |
+| `data[].otherIncludedManagers[].cik`                         | string | CIK of the manager.                                            |
+| `data[].otherIncludedManagers[].crdNumber`                   | string | CRD number of the manager.                                     |
+| `data[].otherIncludedManagers[].secFileNumber`               | string | SEC file number of the manager.                                |
+| `data[].otherIncludedManagers[].form13FFileNumber`           | string | 13F file number of the manager, for example `28-2226`.         |
+| `data[].otherManagersReportingForThisManager[].name`         | string | Name of the reporting manager.                                 |
+| `data[].otherManagersReportingForThisManager[].cik`          | string | CIK of the reporting manager.                                  |
+| `data[].otherManagersReportingForThisManager[].crdNumber`    | string | CRD number of the reporting manager.                           |
+| `data[].otherManagersReportingForThisManager[].secFileNumber` | string | SEC file number of the reporting manager.                     |
+| `data[].otherManagersReportingForThisManager[].form13FFileNumber` | string | 13F file number of the reporting manager.                 |
+
+### Signature
+
+| Field                             | Type   | Meaning                                                        |
+| --------------------------------- | ------ | -------------------------------------------------------------- |
+| `data[].signature.name`           | string | Name of the person who signed the form.                        |
+| `data[].signature.title`          | string | Title of that person, for example `Senior Vice President`.     |
+| `data[].signature.phone`          | string | Contact phone number for the filing.                           |
+| `data[].signature.signature`      | string | The signature text as typed on the form.                       |
+| `data[].signature.city`           | string | City where the person signed.                                  |
+| `data[].signature.stateOrCountry` | string | State or country where the person signed.                      |
+| `data[].signature.signatureDate`  | string | Date of the signature, `MM-DD-YYYY`, for example `05-15-2026`. Every other date on this record is ISO. |
 
 `otherIncludedManagers[].sequenceNumber` matches the `otherManager` string on
 each holding in [`form-13f-holdings`](./form-13f-holdings.md).
@@ -143,6 +212,9 @@ Trimmed. The full response lists 13 more sub-managers, each with empty `cik`,
 - `tableValueTotal` is what the manager reported. It is not audited.
 - Empty strings are common on this record. `crdNumber`, `secFileNumber` and
   sub-manager `cik` are optional.
+- The index covers 13F-HR filings since 1998, and 13F-E filings from 1994 to
+  1998.
+- One query returns at most 10,000 cover pages. Narrow the query to reach more.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

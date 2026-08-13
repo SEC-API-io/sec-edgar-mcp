@@ -17,8 +17,8 @@ Form X-17A-5 is the FOCUS report. Every SEC-registered broker-dealer and
 security-based swap dealer files it under Rule 17a-5. One row is one X-17A-5
 submission on EDGAR. The row carries the facing-page data: filer entity,
 reporting period, registrant name and address, independent accountant,
-material-weakness flag, and signed oath. Coverage starts in January 2016. The
-earliest record seen has `filedAt` `2016-01-28`.
+material-weakness flag, and signed oath. Coverage starts in January 2016 and
+runs to now. It includes firms that no longer trade.
 
 The row holds **no financial figures**. There is no net capital computation, no
 balance sheet, and no income statement. The registry description says the tool
@@ -50,12 +50,22 @@ statements sit in the filing documents. Read them with
 | `size`    | integer | no       | 1 to 50            | Default 50. Above 50 the server returns HTTP 400.          |
 | `sort`    | array   | no       | Elasticsearch sort | Default `[{"filedAt": {"order": "desc"}}]`.                |
 
-These query fields returned rows on 2026-08-13: `entities.cik`,
-`entities.fileNo`, `formType`, `filedAt`, `periodOfReport`,
+Query fields: `accessionNo`, `formType`, `filedAt`, `periodOfReport`,
+`entities.cik`, `entities.fileNo`, `entities.irsNo`,
+`entities.stateOfIncorporation`, `entities.fiscalYearEnd`,
 `registrantIdentification.brokerDealerName`,
+`registrantIdentification.businessAddress.stateOrCountry`,
 `accountantIdentification.accountantName`,
-`submissionInformation.materialWeakness`, and
-`submissionInformation.typeOfRegistrant.typeOfBDRegistrant`.
+`accountantIdentification.accountantType`,
+`submissionInformation.materialWeakness`,
+`submissionInformation.amendmentDescription`,
+`submissionInformation.typeOfRegistrant.typeOfBDRegistrant`,
+`submissionInformation.typeOfRegistrant.typeOfSDRegistrant`,
+`submissionInformation.subTypeOfRegistrant`,
+`submissionInformation.subTypeOfBDRegistrant`,
+`submissionInformation.subTypeOfSDRegistrant`,
+`oathSignature.signPersonName`, `oathSignature.oathTitle`, and
+`oathSignature.confirmNotarizedFlag`.
 
 Working examples: `entities.cik:42352`, `entities.fileNo:"008-15869"`,
 `formType:"X-17A-5/A"`, `filedAt:[2020-03-01 TO 2020-03-31]`,
@@ -68,31 +78,108 @@ when a query returns nothing.
 The envelope is `{total, data[]}`. `total` has `value` and `relation`. `data`
 holds one object per filing.
 
-| Field                                       | Type   | Meaning                                                     |
-| ------------------------------------------- | ------ | ----------------------------------------------------------- |
-| `accessionNo`                               | string | EDGAR accession number of the submission.                   |
-| `formType`                                  | string | `X-17A-5`, or `X-17A-5/A` for an amendment.                 |
-| `filedAt`                                   | string | Acceptance timestamp with a UTC offset. `effectivenessDate` is the EDGAR effective date, and is missing on older records. |
-| `periodOfReport`                            | string | `YYYY-MM-DD`, the end of the reported period.               |
-| `entities[]`                                | array  | Filer blocks. The same CIK can appear twice in one filing.  |
-| `entities[].cik`                            | string | CIK as filed, with no zero padding, e.g. `42352`.           |
-| `entities[].companyName`                    | string | Legal name with the EDGAR role suffix `(Filer)`.            |
-| `entities[].fileNo`                         | string | SEC file number. Each block also has `irsNo`, `stateOfIncorporation`, `fiscalYearEnd`, `act`, `filmNo`, `type`. |
-| `submissionInformation.periodBegin`         | string | Period start, format `MM-DD-YYYY`. `periodEnd` closes it.   |
-| `submissionInformation.materialWeakness`    | string | `Y` or `N`. `amendmentDescription` says what an `X-17A-5/A` changed. |
-| `submissionInformation.typeOfRegistrant`    | object | `typeOfBDRegistrant` and `typeOfSDRegistrant`.              |
-| `registrantIdentification.brokerDealerName` | string | Legal name of the registrant. `businessAddress`, `contactPersonName`, and `contactPersonPhoneNumber` sit beside it. |
-| `accountantIdentification.accountantName`   | string | Audit firm, e.g. `PricewaterhouseCoopers LLP`. `accountantType` is `Certified Public Accountant` or the non-resident variant. |
-| `oathSignature`                             | object | `signPersonName`, `signature`, `oathTitle`, `signDate`, `confirmNotarizedFlag`, `explanation`. |
+### Envelope
 
-The sec-api.io reference also lists `entities[].sic`, `entities[].tickers`, and
-the `submissionInformation.subTypeOf*` fields. They do not appear on every
-record. Treat them as optional.
+| Field            | Type   | Meaning                                                        |
+| ---------------- | ------ | -------------------------------------------------------------- |
+| `total.value`    | number | Number of X-17A-5 filings that match the query. It stops at `10000`. |
+| `total.relation` | string | `eq` means the count is exact. `gte` means at least that many.  |
+| `data[]`         | array  | The matching filings. One item per submission.                  |
+
+### Filing
+
+| Field                            | Type   | Meaning                                                            |
+| -------------------------------- | ------ | ------------------------------------------------------------------ |
+| `data[].id`                      | string | System-internal identifier of the filing record.                    |
+| `data[].accessionNo`             | string | EDGAR accession number of the FOCUS report submission.              |
+| `data[].formType`                | string | `X-17A-5` for the original filing, `X-17A-5/A` for an amendment.    |
+| `data[].filedAt`                 | string | Time when EDGAR accepted the filing.                                |
+| `data[].effectivenessDate`       | string | `YYYY-MM-DD`, the date the filing became effective on EDGAR. It is missing on older records. |
+| `data[].periodOfReport`          | string | `YYYY-MM-DD`, the end of the reported period.                       |
+| `data[].entities[]`              | array  | Entities named in the filing, usually the broker-dealer or swap dealer registrant. The same CIK can appear twice in one filing. |
+| `data[].submissionInformation`   | object | Period, registrant class, amendment text and material-weakness flag. |
+| `data[].registrantIdentification`| object | Name, address and contact person of the registrant.                 |
+| `data[].accountantIdentification`| object | The independent public accountant whose report goes with the filing. |
+| `data[].oathSignature`           | object | Oath an officer signs to attest that the report is true and correct. |
+
+### `data[].entities[]`
+
+| Field                             | Type   | Meaning                                                           |
+| --------------------------------- | ------ | ----------------------------------------------------------------- |
+| `entities[].companyName`          | string | Legal name of the entity as registered with the SEC, with the EDGAR role suffix `(Filer)`. |
+| `entities[].cik`                  | string | Central Index Key of the entity. It comes back with no zero padding, e.g. `42352`. |
+| `entities[].irsNo`                | string | IRS employer identification number (EIN) of the entity.            |
+| `entities[].stateOfIncorporation` | string | Two-letter state or country code where the entity is incorporated. |
+| `entities[].fiscalYearEnd`        | string | Fiscal year end as `MMDD`, e.g. `1231` for 31 December.            |
+| `entities[].type`                 | string | Filing type recorded for the entity on this submission.            |
+| `entities[].act`                  | string | Act the entity files under. `34` is the Securities Exchange Act of 1934. |
+| `entities[].fileNo`               | string | SEC file number. It tracks the registrant across filings.          |
+| `entities[].filmNo`               | string | Film number the SEC assigned to this submission.                   |
+| `entities[].sic`                  | string | Standard Industrial Classification code of the entity, e.g. `6162` for mortgage bankers. |
+| `entities[].tickers`              | string | Ticker of the entity. It is usually empty, because most broker-dealers are not publicly traded. |
+
+### `data[].submissionInformation`
+
+| Field                                                       | Type   | Meaning                                            |
+| ----------------------------------------------------------- | ------ | -------------------------------------------------- |
+| `submissionInformation.periodBegin`                         | string | Start of the reported period, format `MM-DD-YYYY`.  |
+| `submissionInformation.periodEnd`                           | string | End of the reported period, format `MM-DD-YYYY`.    |
+| `submissionInformation.materialWeakness`                    | string | `Y` or `N`. It says whether the accountant found a material weakness. |
+| `submissionInformation.amendmentDescription`                | string | Free text that says what an `X-17A-5/A` changed against the earlier submission. |
+| `submissionInformation.subTypeOfRegistrant`                 | string | Sub-class of the registrant when the filing does not split it by dealer type, e.g. `OTC derivatives dealer`. |
+| `submissionInformation.subTypeOfBDRegistrant`               | string | Sub-class of the broker-dealer registrant, e.g. `OTC derivatives dealer`. |
+| `submissionInformation.subTypeOfSDRegistrant`               | string | Sub-class of the security-based swap dealer registrant, e.g. `Filing pursuant to a Commission substituted compliance order`. |
+| `submissionInformation.typeOfRegistrant`                    | object | Class of the registrant, split between broker-dealer and swap dealer. |
+| `submissionInformation.typeOfRegistrant.typeOfBDRegistrant` | string | Broker-dealer registrant type. It holds `Broker-dealer`. |
+| `submissionInformation.typeOfRegistrant.typeOfSDRegistrant` | string | Swap dealer registrant type. It holds `Security-based swap dealer`. |
+
+### `data[].registrantIdentification`
+
+| Field                                                | Type   | Meaning                                                    |
+| ---------------------------------------------------- | ------ | ---------------------------------------------------------- |
+| `registrantIdentification.brokerDealerName`          | string | Legal name of the broker-dealer that filed the FOCUS report. |
+| `registrantIdentification.businessAddress`           | object | Primary business address of the registrant.                 |
+| `registrantIdentification.businessAddress.street1`   | string | First line of the registrant street address.                |
+| `registrantIdentification.businessAddress.street2`   | string | Second line of the street address, such as a floor or suite. |
+| `registrantIdentification.businessAddress.city`      | string | City of the business address.                               |
+| `registrantIdentification.businessAddress.stateOrCountry` | string | Two-letter state or country code of the business address. |
+| `registrantIdentification.businessAddress.zipCode`   | string | Postal code of the business address.                        |
+| `registrantIdentification.contactPersonName`         | string | Person at the registrant who answers questions about the report. |
+| `registrantIdentification.contactPersonPhoneNumber`  | string | Phone number of that contact person.                        |
+
+### `data[].accountantIdentification`
+
+| Field                                                    | Type   | Meaning                                                |
+| -------------------------------------------------------- | ------ | ------------------------------------------------------ |
+| `accountantIdentification.accountantName`                | string | Independent public accountant or audit firm, e.g. `PricewaterhouseCoopers LLP`. |
+| `accountantIdentification.accountantType`                | string | `Certified Public Accountant`, or `Certified Public Accountant not resident in United States or any of its possessions`. |
+| `accountantIdentification.accountantAddress`             | object | Mailing address of the accountant.                      |
+| `accountantIdentification.accountantAddress.street1`     | string | First line of the accountant street address.            |
+| `accountantIdentification.accountantAddress.street2`     | string | Second line of the street address, such as a floor or suite. |
+| `accountantIdentification.accountantAddress.city`        | string | City of the accountant office.                          |
+| `accountantIdentification.accountantAddress.stateOrCountry` | string | Two-letter state or country code of the accountant office. |
+| `accountantIdentification.accountantAddress.zipCode`     | string | Postal code of the accountant office.                   |
+
+### `data[].oathSignature`
+
+| Field                                | Type   | Meaning                                                        |
+| ------------------------------------ | ------ | -------------------------------------------------------------- |
+| `oathSignature.signPersonName`       | string | Officer who signed the oath.                                    |
+| `oathSignature.signature`            | string | Typed signature string on the oath. It usually repeats `signPersonName`. |
+| `oathSignature.entityName`           | string | Entity the oath is given for.                                   |
+| `oathSignature.oathTitle`            | string | Title of the officer who executed the oath, e.g. `Chief Financial Officer`. |
+| `oathSignature.signDate`             | string | Date the officer signed the oath, format `MM-DD-YYYY`.          |
+| `oathSignature.confirmNotarizedFlag` | string | `Y` or `N`. It says whether a notary witnessed the oath.        |
+| `oathSignature.explanation`          | string | Free text beside the oath. It often names an exception, or reads `None`. |
+
+A field with no value in the filing is absent from the object. `sic`,
+`tickers`, `amendmentDescription`, `explanation` and the three `subType` fields
+drop out most often.
 
 `size` defaults to 50 and caps at 50. Page with `from`. `total.value` stops at
 `10000` with `relation: "gte"`, so a broad query reports "10,000 or more", not a
 true count. A `from` plus `size` above 10,000 returns `total: 0` and an empty
-array, with no error. The dataset holds about 16,500 filings.
+array, with no error. The dataset holds more than 16,500 filings.
 
 ## Example
 

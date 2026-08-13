@@ -22,7 +22,7 @@ Coverage starts 2008-09-17. The rows carry the full XML of the notice, mapped to
 JSON, so nothing is summarised or rewritten.
 
 **Read the envelope carefully. This tool returns `offerings[]`, not `data[]`.**
-It is one of only two tools in the server that use that key.
+It is the only tool in the server that uses that key.
 
 ## When to use it
 
@@ -52,20 +52,34 @@ It is one of only two tools in the server that use that key.
 
 Query fields:
 
+Every property of the notice is searchable. These are the ones used most.
+
 | Field                                                    | Example                                    |
 | -------------------------------------------------------- | ------------------------------------------ |
 | `primaryIssuer.cik`                                       | `primaryIssuer.cik:0002149897`             |
 | `primaryIssuer.entityName`                                | `primaryIssuer.entityName:"Fusion VC"`     |
 | `primaryIssuer.entityType`                                | `primaryIssuer.entityType:"Limited Partnership"` |
 | `primaryIssuer.issuerAddress.stateOrCountry`              | `...stateOrCountry:CA`                     |
+| `primaryIssuer.yearOfInc.value`                           | `primaryIssuer.yearOfInc.value:2026`       |
 | `submissionType`                                          | `submissionType:"D/A"`                     |
+| `accessionNo`                                             | `accessionNo:"0002149897-26-000001"`       |
 | `filedAt`                                                 | `filedAt:[2024-01-01 TO 2024-12-31]`       |
 | `offeringData.offeringSalesAmounts.totalOfferingAmount`   | `...totalOfferingAmount:[1000000 TO *]`    |
 | `offeringData.offeringSalesAmounts.totalAmountSold`       | `...totalAmountSold:[100000000 TO *]`      |
+| `offeringData.offeringSalesAmounts.totalRemaining`        | `...totalRemaining:[1 TO *]`               |
+| `offeringData.minimumInvestmentAccepted`                  | `...minimumInvestmentAccepted:[25000 TO *]` |
 | `offeringData.industryGroup.industryGroupType`            | `...industryGroupType:"Pooled Investment Fund"` |
+| `offeringData.industryGroup.investmentFundInfo.investmentFundType` | `...investmentFundType:"Venture Capital Fund"` |
+| `offeringData.issuerSize.revenueRange`                    | `...revenueRange:"Decline to Disclose"`    |
+| `offeringData.issuerSize.aggregateNetAssetValueRange`     | `...aggregateNetAssetValueRange:*`         |
 | `offeringData.investors.hasNonAccreditedInvestors`        | `...hasNonAccreditedInvestors:true`        |
+| `offeringData.investors.numberNonAccreditedInvestors`     | `...numberNonAccreditedInvestors:[1 TO *]` |
 | `offeringData.federalExemptionsExclusions.item`           | `...item:"06b"`                            |
 | `offeringData.typeOfFiling.dateOfFirstSale.value`         | `...value:[2026-01-01 TO 2026-12-31]`      |
+| `offeringData.typesOfSecuritiesOffered.isEquityType`      | `...isEquityType:true`                     |
+| `offeringData.businessCombinationTransaction.isBusinessCombinationTransaction` | `...isBusinessCombinationTransaction:true` |
+| `offeringData.salesCommissionsFindersFees.salesCommissions.dollarAmount` | `...dollarAmount:[1 TO *]`   |
+| `offeringData.salesCompensationList.recipient.associatedBDName`   | `...associatedBDName:*`            |
 | `relatedPersonsList.relatedPersonInfo.relatedPersonName.lastName` | `...lastName:Musk`                 |
 
 Two traps in this list:
@@ -82,38 +96,160 @@ The envelope is `{total, offerings[]}`. `total` is `{value, relation}`. A
 `relation` of `gte` with `value` `10000` means "10,000 or more", not exactly
 10,000.
 
-| Field                                            | Type   | Meaning                                        |
-| ------------------------------------------------ | ------ | ---------------------------------------------- |
-| `id`                                              | string | Internal document ID                           |
-| `accessionNo`                                     | string | EDGAR accession number                         |
-| `filedAt`                                         | string | Filing timestamp with offset                   |
-| `submissionType`                                  | string | `D` for a new notice, `D/A` for an amendment   |
-| `testOrLive`                                      | string | `LIVE` for a real filing                       |
-| `schemaVersion`                                   | string | Form D XML schema version, for example `X0708` |
-| `primaryIssuer.cik`                               | string | Issuer CIK, zero-padded to 10 digits           |
-| `primaryIssuer.entityName`                        | string | Issuer name                                    |
-| `primaryIssuer.entityType`                        | string | Legal form, for example `Limited Liability Company` |
-| `primaryIssuer.jurisdictionOfInc`                 | string | State or country of incorporation              |
-| `primaryIssuer.issuerAddress`                     | object | `street1`, `street2`, `city`, `stateOrCountry`, `zipCode` |
-| `primaryIssuer.yearOfInc`                         | object | `withinFiveYears`, `value`                     |
-| `relatedPersonsList.relatedPersonInfo[]`          | array  | Each has `relatedPersonName`, `relatedPersonAddress`, `relatedPersonRelationshipList.relationship[]` |
-| `offeringData.industryGroup`                      | object | `industryGroupType`, plus `investmentFundInfo` for funds |
-| `offeringData.issuerSize.revenueRange`            | string | Self-reported revenue band                     |
-| `offeringData.federalExemptionsExclusions.item[]` | array  | Rule codes claimed, for example `06b`, `3C`    |
-| `offeringData.typeOfFiling`                       | object | `newOrAmendment.isAmendment`, `dateOfFirstSale.value` |
-| `offeringData.offeringSalesAmounts`               | object | `totalOfferingAmount`, `totalAmountSold`, `totalRemaining` |
-| `offeringData.investors`                          | object | `hasNonAccreditedInvestors`, `totalNumberAlreadyInvested` |
-| `offeringData.minimumInvestmentAccepted`          | number | Minimum cheque size in dollars                 |
-| `offeringData.salesCommissionsFindersFees`        | object | `salesCommissions.dollarAmount`, `findersFees.dollarAmount` |
-| `offeringData.signatureBlock.signature[]`         | array  | `nameOfSigner`, `signatureTitle`, `signatureDate` |
+A field is absent when the filer leaves that item of the form blank.
 
-Further fields:
-`offeringData.typeOfFiling.newOrAmendment.previousAccessionNumber`,
-`offeringData.useOfProceeds.grossProceedsUsed.isEstimate` and
-`offeringData.useOfProceeds.clarificationOfResponse`. Those three are absent
-from the example response.
+### Envelope
 
-Paging is real but shallow. `from` plus `size` must stay at or below 10,000.
+| Field            | Type   | Meaning                                                     |
+| ---------------- | ------ | ----------------------------------------------------------- |
+| `total.value`    | number | Count of notices that match the query. Counting stops at 10,000. |
+| `total.relation` | string | `eq` if `value` is exact, `gte` if the real count is at or above `value` |
+| `offerings[]`    | array  | One element per Form D or Form D/A notice                   |
+
+### Row fields
+
+| Field            | Type   | Meaning                                                     |
+| ---------------- | ------ | ----------------------------------------------------------- |
+| `id`             | string | Internal document ID                                        |
+| `accessionNo`    | string | EDGAR accession number of the notice                        |
+| `filedAt`        | string | Date EDGAR published the notice, with offset                |
+| `submissionType` | string | `D` for a new notice, `D/A` for an amendment                |
+| `testOrLive`     | string | Marks a real filing or a filer test. `LIVE` is a real filing. |
+| `schemaVersion`  | string | Version of the Form D XML schema, for example `X0708`       |
+
+### `primaryIssuer`
+
+The company or fund that raises the money.
+
+| Field                                                    | Type    | Meaning                                                     |
+| -------------------------------------------------------- | ------- | ----------------------------------------------------------- |
+| `primaryIssuer.cik`                                       | string  | Issuer CIK, zero-padded to 10 digits                        |
+| `primaryIssuer.entityName`                                | string  | Legal name of the issuer                                    |
+| `primaryIssuer.issuerAddress.street1`                     | string  | Street line 1                                               |
+| `primaryIssuer.issuerAddress.street2`                     | string  | Street line 2, for example a suite number                   |
+| `primaryIssuer.issuerAddress.city`                        | string  | City                                                        |
+| `primaryIssuer.issuerAddress.stateOrCountry`              | string  | State or country code, for example `DE`, or `X0` for the UK |
+| `primaryIssuer.issuerAddress.stateOrCountryDescription`   | string  | Full name of that state or country                          |
+| `primaryIssuer.issuerAddress.zipCode`                     | string  | Postal code                                                 |
+| `primaryIssuer.issuerPhoneNumber`                         | string  | Phone number of the issuer                                  |
+| `primaryIssuer.jurisdictionOfInc`                         | string  | Jurisdiction of incorporation, for example `DELAWARE`       |
+| `primaryIssuer.entityType`                                | string  | `Corporation`, `Limited Partnership`, `Limited Liability Company`, `General Partnership`, `Business Trust` or `Other` |
+| `primaryIssuer.entityTypeOtherDesc`                       | string  | The legal form in words when `entityType` is `Other`        |
+| `primaryIssuer.yearOfInc.value`                           | string  | Year the issuer was incorporated                            |
+| `primaryIssuer.yearOfInc.withinFiveYears`                 | boolean | True if the issuer was formed in the last five years        |
+| `primaryIssuer.yearOfInc.overFiveYears`                   | boolean | True if the issuer was formed more than five years ago      |
+| `primaryIssuer.yearOfInc.yetToBeFormed`                   | boolean | True if the issuer is not yet formed                        |
+| `primaryIssuer.issuerPreviousNameList[]`                  | array   | Former names of the issuer                                  |
+| `primaryIssuer.issuerPreviousNameList[].value`            | string  | One former name. `None` when the issuer never changed name. |
+| `primaryIssuer.issuerPreviousNameList[].previousName[]`   | array   | The same former names as plain strings. Some rows use this shape in place of `value`. |
+| `primaryIssuer.edgarPreviousNameList[]`                   | array   | Former names of the issuer on EDGAR                         |
+| `primaryIssuer.edgarPreviousNameList[].value`             | string  | One former EDGAR name. `None` when there is none.           |
+
+### `relatedPersonsList`
+
+The people and firms behind the issuer.
+
+| Field                                                                              | Type    | Meaning                                                     |
+| ---------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------- |
+| `relatedPersonsList.over100PersonsFlag`                                             | boolean | True if the issuer has more than 100 related persons        |
+| `relatedPersonsList.relatedPersonInfo[]`                                            | array   | One element per related person                              |
+| `relatedPersonsList.relatedPersonInfo[].relatedPersonName.firstName`                | string  | First name. A related firm puts part of its name here.      |
+| `relatedPersonsList.relatedPersonInfo[].relatedPersonName.middleName`               | string  | Middle name of the person                                   |
+| `relatedPersonsList.relatedPersonInfo[].relatedPersonName.lastName`                 | string  | Last name of the person, or the name of a related firm      |
+| `relatedPersonsList.relatedPersonInfo[].relatedPersonAddress.street1`               | string  | Street line 1                                               |
+| `relatedPersonsList.relatedPersonInfo[].relatedPersonAddress.street2`               | string  | Street line 2, for example a suite number                   |
+| `relatedPersonsList.relatedPersonInfo[].relatedPersonAddress.city`                  | string  | City                                                        |
+| `relatedPersonsList.relatedPersonInfo[].relatedPersonAddress.stateOrCountry`        | string  | State or country code                                       |
+| `relatedPersonsList.relatedPersonInfo[].relatedPersonAddress.stateOrCountryDescription` | string | Full name of that state or country                        |
+| `relatedPersonsList.relatedPersonInfo[].relatedPersonAddress.zipCode`               | string  | Postal code                                                 |
+| `relatedPersonsList.relatedPersonInfo[].relatedPersonRelationshipList.relationship[]` | array | One or more of `Executive Officer`, `Director`, `Promoter`  |
+| `relatedPersonsList.relatedPersonInfo[].relationshipClarification`                  | string  | Free text on the relationship, for example `Manager of the Issuer` |
+
+### `offeringData`: the offering
+
+| Field                                                              | Type    | Meaning                                                     |
+| ------------------------------------------------------------------ | ------- | ----------------------------------------------------------- |
+| `offeringData.industryGroup.industryGroupType`                      | string  | Industry of the issuer, for example `Pooled Investment Fund`, `Technology`, `Real Estate`, `Energy` |
+| `offeringData.industryGroup.investmentFundInfo.investmentFundType`  | string  | For a pooled investment fund: `Hedge Fund`, `Private Equity Fund`, `Venture Capital Fund` or `Other Investment Fund` |
+| `offeringData.industryGroup.investmentFundInfo.is40Act`             | boolean | True if the fund is registered as an investment company under the Investment Company Act of 1940 |
+| `offeringData.issuerSize.revenueRange`                              | string  | Revenue band of the issuer, from `No Revenues` to `Over $100,000,000`, or `Decline to Disclose` |
+| `offeringData.issuerSize.aggregateNetAssetValueRange`               | string  | Net asset value band. A fund reports this in place of revenue. |
+| `offeringData.federalExemptionsExclusions.item[]`                   | array   | Codes of the exemptions and exclusions claimed under the Securities Act, for example `06b`, `06c`, `3C`, `3C.1` |
+| `offeringData.typeOfFiling.newOrAmendment.isAmendment`              | boolean | True if this notice amends an earlier notice                |
+| `offeringData.typeOfFiling.newOrAmendment.previousAccessionNumber`  | string  | Accession number of the notice that this one amends         |
+| `offeringData.typeOfFiling.dateOfFirstSale.value`                   | string  | Date of the first sale of securities in the offering        |
+| `offeringData.typeOfFiling.dateOfFirstSale.yetToOccur`              | boolean | True if the first sale has not happened yet                 |
+| `offeringData.durationOfOffering.moreThanOneYear`                   | boolean | True if the offering is planned to last more than one year  |
+| `offeringData.typesOfSecuritiesOffered.isEquityType`                | boolean | Equity is offered                                           |
+| `offeringData.typesOfSecuritiesOffered.isDebtType`                  | boolean | Debt is offered                                             |
+| `offeringData.typesOfSecuritiesOffered.isOptionToAcquireType`       | boolean | An option, warrant or other right to acquire a security is offered |
+| `offeringData.typesOfSecuritiesOffered.isSecurityToBeAcquiredType`  | boolean | The security that such a right buys is offered              |
+| `offeringData.typesOfSecuritiesOffered.isPooledInvestmentFundType`  | boolean | Interests in a pooled investment fund are offered           |
+| `offeringData.typesOfSecuritiesOffered.isTenantInCommonType`        | boolean | Tenant-in-common securities are offered                     |
+| `offeringData.typesOfSecuritiesOffered.isMineralPropertyType`       | boolean | Mineral property securities are offered                     |
+| `offeringData.typesOfSecuritiesOffered.isOtherType`                 | boolean | A security outside the listed types is offered              |
+| `offeringData.typesOfSecuritiesOffered.descriptionOfOtherType`      | string  | The security named when `isOtherType` is true               |
+| `offeringData.businessCombinationTransaction.isBusinessCombinationTransaction` | boolean | True if the offering goes with a merger, acquisition or exchange offer |
+| `offeringData.businessCombinationTransaction.clarificationOfResponse` | string | Free text on that transaction                              |
+
+### `offeringData`: amounts and investors
+
+| Field                                                                   | Type    | Meaning                                                     |
+| ----------------------------------------------------------------------- | ------- | ----------------------------------------------------------- |
+| `offeringData.minimumInvestmentAccepted`                                 | number  | Smallest investment in dollars the issuer takes from an outside investor |
+| `offeringData.offeringSalesAmounts.totalOfferingAmount`                  | number  | Dollar size of the whole offering. `-1` means indefinite.   |
+| `offeringData.offeringSalesAmounts.totalAmountSold`                      | number  | Dollars sold so far                                         |
+| `offeringData.offeringSalesAmounts.totalRemaining`                       | number  | Dollars still on offer. `-1` means indefinite.              |
+| `offeringData.offeringSalesAmounts.clarificationOfResponse`              | string  | Free text on these amounts                                  |
+| `offeringData.investors.hasNonAccreditedInvestors`                       | boolean | True if the issuer sold, or may sell, to non-accredited investors |
+| `offeringData.investors.numberNonAccreditedInvestors`                    | number  | Count of non-accredited investors that already invested     |
+| `offeringData.investors.totalNumberAlreadyInvested`                      | number  | Count of all investors that already invested                |
+| `offeringData.salesCommissionsFindersFees.salesCommissions.dollarAmount` | number  | Sales commissions paid, in dollars                          |
+| `offeringData.salesCommissionsFindersFees.salesCommissions.isEstimate`   | boolean | True if that commission figure is an estimate               |
+| `offeringData.salesCommissionsFindersFees.findersFees.dollarAmount`      | number  | Finders' fees paid, in dollars                              |
+| `offeringData.salesCommissionsFindersFees.findersFees.isEstimate`        | boolean | True if that fee figure is an estimate                      |
+| `offeringData.salesCommissionsFindersFees.clarificationOfResponse`       | string  | Free text on the commissions and fees                       |
+| `offeringData.useOfProceeds.grossProceedsUsed.dollarAmount`              | number  | Gross proceeds that go to executive officers, directors and promoters |
+| `offeringData.useOfProceeds.grossProceedsUsed.isEstimate`                | boolean | True if that amount is an estimate                          |
+| `offeringData.useOfProceeds.clarificationOfResponse`                     | string  | Free text on the use of proceeds                            |
+
+### `offeringData.salesCompensationList`
+
+The brokers and finders paid to sell the offering. The object is empty when the
+issuer paid nobody.
+
+| Field                                                                                 | Type    | Meaning                                                     |
+| ------------------------------------------------------------------------------------- | ------- | ----------------------------------------------------------- |
+| `offeringData.salesCompensationList.over100RecipientFlag`                              | boolean | True if more than 100 recipients take compensation          |
+| `offeringData.salesCompensationList.recipient[]`                                       | array   | One element per paid recipient                              |
+| `offeringData.salesCompensationList.recipient[].recipientName`                         | string  | Name of the recipient                                       |
+| `offeringData.salesCompensationList.recipient[].recipientCRDNumber`                    | string  | CRD number of the recipient                                 |
+| `offeringData.salesCompensationList.recipient[].associatedBDName`                      | string  | Broker-dealer the recipient works with                      |
+| `offeringData.salesCompensationList.recipient[].associatedBDCRDNumber`                 | string  | CRD number of that broker-dealer                            |
+| `offeringData.salesCompensationList.recipient[].recipientAddress.street1`              | string  | Street line 1                                               |
+| `offeringData.salesCompensationList.recipient[].recipientAddress.city`                 | string  | City                                                        |
+| `offeringData.salesCompensationList.recipient[].recipientAddress.stateOrCountry`       | string  | State or country code                                       |
+| `offeringData.salesCompensationList.recipient[].recipientAddress.zipCode`              | string  | Postal code                                                 |
+| `offeringData.salesCompensationList.recipient[].statesOfSolicitationList[]`            | array   | States where the recipient solicits investors               |
+| `offeringData.salesCompensationList.recipient[].statesOfSolicitationList[].state`      | string  | State code                                                  |
+| `offeringData.salesCompensationList.recipient[].statesOfSolicitationList[].description` | string | Full name of that state                                     |
+| `offeringData.salesCompensationList.recipient[].statesOfSolicitationList[].value`      | string  | The state entry as filed                                    |
+| `offeringData.salesCompensationList.recipient[].foreignSolicitation`                   | boolean | True if the recipient solicits outside the United States    |
+
+### `offeringData.signatureBlock`
+
+| Field                                                    | Type    | Meaning                                                     |
+| -------------------------------------------------------- | ------- | ----------------------------------------------------------- |
+| `offeringData.signatureBlock.authorizedRepresentative`    | boolean | True if the signer signs as an authorized representative of the issuer |
+| `offeringData.signatureBlock.signature[]`                 | array   | One element per signature                                   |
+| `offeringData.signatureBlock.signature[].issuerName`      | string  | Issuer name over the signature                              |
+| `offeringData.signatureBlock.signature[].signatureName`   | string  | The signature text, for example `/s/ Kirk Carson`           |
+| `offeringData.signatureBlock.signature[].nameOfSigner`    | string  | Printed name of the person who signed                       |
+| `offeringData.signatureBlock.signature[].signatureTitle`  | string  | Title that person holds at the issuer                       |
+| `offeringData.signatureBlock.signature[].signatureDate`   | string  | Date of the signature                                       |
+
+`from` plus `size` must stay at or below 10,000. That is the deepest you can
+page.
 
 ## Example
 

@@ -19,7 +19,7 @@ in the array is one trade name, with the list of states and territories where
 the adviser uses it.
 
 The tool reads the **latest** Form ADV on file for that CRD number. There is no
-history and no as-of date.
+history and no as-of date. The data updates once a day.
 
 This is the tool that resolves a brand name to a legal entity. Morgan Stanley
 Smith Barney LLC, CRD 149777, files under seven names, including
@@ -54,12 +54,13 @@ A one-character CRD is rejected. The tool takes no query and no paging.
 The tool returns a **bare JSON array**. There is no `total` and no wrapper
 object. An adviser that uses only its legal name returns `[]`.
 
-| Field           | Type   | Meaning                                                                 |
-| --------------- | ------ | ----------------------------------------------------------------------- |
-| `name`          | string | The other business name, upper case as filed.                            |
-| `jurisdictions` | array  | Two-letter codes for the states and territories where the name is used. `GU`, `PR` and `VI` appear alongside the 50 states. |
+| Field             | Type   | Meaning                                                               |
+| ----------------- | ------ | --------------------------------------------------------------------- |
+| `name`            | string | The business name the adviser uses in the listed jurisdictions.        |
+| `jurisdictions`   | array  | The jurisdictions in which the adviser uses that business name.        |
+| `jurisdictions[]` | string | One jurisdiction. Most values are two-letter codes. `DC`, `GU`, `PR` and `VI` appear alongside the 50 states. A value can also carry an `Other:` prefix, for example `Other: WY`. |
 
-Only these two fields are returned. There is no start date and no status.
+Each object carries only these two keys. There is no start date and no status.
 
 **There is no pagination.** Every name arrives in one call. The response is
 small. Seven names with full state lists came to about 2 KB.
@@ -93,7 +94,7 @@ CRD 149777 uses seven other names. The first three:
 
 Four names were removed and each `jurisdictions` list was cut to its first ten
 entries. The values shown are unchanged. The full lists run to 54 entries. Six
-of the seven names cover every state plus `GU`, `PR` and `VI`. `GRAYSTONE
+of the seven names cover every state plus `DC`, `GU`, `PR` and `VI`. `GRAYSTONE
 CONSULTING` omits `GU` and `PR`.
 
 ## Limits and errors

@@ -61,6 +61,7 @@ Query fields:
 | Field                                     | Example                                        |
 | ----------------------------------------- | ---------------------------------------------- |
 | `cik`                                      | `cik:1730773`                                  |
+| `accessionNo`                              | `accessionNo:"0001493152-26-037452"`           |
 | `companyName`                              | `companyName:"Blue Star Foods"`                |
 | `ticker`                                   | `ticker:BSFC`                                  |
 | `fileNo`                                   | `fileNo:"024-12712"`                           |
@@ -68,10 +69,19 @@ Query fields:
 | `filedAt`                                  | `filedAt:[2024-01-01 TO 2024-12-31]`           |
 | `summaryInfo.indicateTier1Tier2Offering`   | `...indicateTier1Tier2Offering:Tier2`          |
 | `summaryInfo.financialStatementAuditStatus`| `...financialStatementAuditStatus:Audited`     |
+| `summaryInfo.securitiesOfferedTypes`       | `...securitiesOfferedTypes:Equity*`            |
+| `summaryInfo.offerDelayedContinuousFlag`   | `...offerDelayedContinuousFlag:true`           |
 | `summaryInfo.totalAggregateOffering`       | `...totalAggregateOffering:[10000000 TO *]`    |
+| `summaryInfo.auditorServiceProviderName`   | `...auditorServiceProviderName:"GreenGrowth*"` |
+| `summaryInfo.legalServiceProviderName`     | `...legalServiceProviderName:"Capital*"`       |
+| `summaryInfo.brokerDealerCrdNumber`        | `...brokerDealerCrdNumber:*`                   |
 | `issuerInfo.stateOrCountry`                | `issuerInfo.stateOrCountry:CA`                 |
 | `issuerInfo.nameAuditor`                   | `issuerInfo.nameAuditor:"GreenGrowth CPAs"`    |
+| `issuerInfo.totalAssets`                   | `issuerInfo.totalAssets:[1000000 TO *]`        |
 | `employeesInfo.jurisdictionOrganization`   | `...jurisdictionOrganization:DE`               |
+| `employeesInfo.yearIncorporation`          | `...yearIncorporation:2017`                    |
+| `employeesInfo.sicCode`                    | `...sicCode:3510`                              |
+| `juridictionSecuritiesOffered.issueJuridicationSecuritiesOffering` | `...issueJuridicationSecuritiesOffering:NV` |
 
 `formType` matches the exact string. `formType:"1-A"` does not include `1-A/A`.
 
@@ -80,54 +90,202 @@ Query fields:
 The envelope is `{total, data[]}`. `total` is `{value, relation}`. A `relation`
 of `gte` with `value` `10000` means "10,000 or more".
 
-| Field                                       | Type   | Meaning                                          |
-| ------------------------------------------- | ------ | ------------------------------------------------ |
-| `id`                                         | string | Internal document ID                             |
-| `accessionNo`                                | string | EDGAR accession number                           |
-| `fileNo`                                     | string | SEC file number, for example `024-12712`         |
-| `formType`                                   | string | `1-A`, `1-A/A`, `1-A POS`, `1-A-W`               |
-| `filedAt`                                    | string | Filing timestamp with offset                     |
-| `cik`                                        | string | Issuer CIK, no leading zeros                     |
-| `ticker`                                     | string | Usually empty. Most Reg A issuers are unlisted.  |
-| `companyName`                                | string | Issuer name                                      |
-| `employeesInfo[]`                            | array  | `issuerName`, `jurisdictionOrganization`, `yearIncorporation`, `cik`, `sicCode`, `irsNum`, `fullTimeEmployees`, `partTimeEmployees` |
-| `issuerInfo`                                 | object | Address, phone, `industryGroup`, `nameAuditor`, and the cover-page financials |
-| `commonEquity[]`                             | array  | `commonEquityClassName`, `outstandingCommonEquity`, `commonCusipEquity`, `publiclyTradedCommonEquity` |
-| `preferredEquity[]`                          | array  | Same four keys with `preferred` prefixes         |
-| `debtSecurities[]`                           | array  | `debtSecuritiesClassName`, `outstandingDebtSecurities`, `cusipDebtSecurities`, `publiclyTradedDebtSecurities` |
-| `issuerEligibility.certifyIfTrue`            | bool   | Issuer certifies it is eligible for Reg A        |
-| `applicationRule262.certifyIfNotDisqualified`| bool   | Issuer certifies it is not a bad actor           |
-| `summaryInfo`                                | object | Offering terms and fees, see below               |
-| `juridictionSecuritiesOffered`               | object | `jurisdictionsOfSecOfferedNone`, `issueJuridicationSecuritiesOffering[]` state codes |
-| `securitiesIssued[]`                         | array  | `securitiesIssuerName`, `securitiesIssuerTitle`, `securitiesIssuedTotalAmount`, `securitiesPrincipalHolderAmount`, `securitiesIssuedAggregateAmount` |
-| `unregisteredSecuritiesAct.securitiesActExcemption` | string | The exemption claimed for past unregistered sales |
+| Field            | Type    | Meaning                                                 |
+| ---------------- | ------- | ------------------------------------------------------- |
+| `total.value`    | integer | Count of 1-A filings that match the query. It stops at 10,000. |
+| `total.relation` | string  | `eq` marks an exact count. `gte` marks the 10,000 ceiling. |
+| `data[]`         | array   | The matched filings. One element is one filing.         |
 
-`issuerInfo` carries the cover-page financials as plain numbers:
-`cashEquivalents`, `investmentSecurities`, `accountsReceivable`,
-`propertyPlantEquipment`, `totalAssets`, `accountsPayable`, `longTermDebt`,
-`totalLiabilities`, `totalStockholderEquity`, `totalLiabilitiesAndEquity`,
-`totalRevenues`, `costAndExpensesApplToRevenues`, `depreciationAndAmortization`,
-`netIncome`, `earningsPerShareBasic`, `earningsPerShareDiluted`.
+Every field below sits inside one `data[]` row. A row carries only the fields
+the filer completed.
 
-`summaryInfo` carries `indicateTier1Tier2Offering` (`Tier1` or `Tier2`),
-`financialStatementAuditStatus` (`Audited` or `Unaudited`),
-`securitiesOfferedTypes[]`, `securitiesOffered`, `outstandingSecurities`,
-`pricePerSecurity`, `issuerAggregateOffering`, `securityHolderAggegate`,
-`qualificationOfferingAggregate`, `concurrentOfferingAggregate`,
-`totalAggregateOffering`, six boolean flags (`offerDelayedContinuousFlag`,
-`offeringYearFlag`, `offeringAfterQualifFlag`, `offeringBestEffortsFlag`,
-`solicitationProposedOfferingFlag`, `resaleSecuritiesAffiliatesFlag`), and three
-service-provider pairs: `auditorServiceProviderName` with `auditorFees`,
-`legalServiceProviderName` with `legalFees`, `blueSkyServiceProviderName` with
-`blueSkyFees`. `estimatedNetAmount` and `clarificationResponses` also appear.
+### Filing metadata
+
+| Field            | Type   | Meaning                                                     |
+| ---------------- | ------ | ----------------------------------------------------------- |
+| `id`             | string | Internal ID of the filing record                            |
+| `accessionNo`    | string | EDGAR accession number of the filing                        |
+| `fileNo`         | string | SEC file number. Every filing of the same offering process shares it, for example `024-12712`. |
+| `formType`       | string | `1-A`, `1-A/A`, `1-A POS` or `1-A-W`                        |
+| `filedAt`        | string | Moment EDGAR accepted the filing                            |
+| `periodOfReport` | string | Period the submission covers, `YYYY-MM-DD`                  |
+| `cik`            | string | CIK of the issuer, no leading zeros                         |
+| `ticker`         | string | Stock ticker of the issuer at filing time. Usually empty. Most Reg A issuers are unlisted. |
+| `companyName`    | string | Legal name of the issuer as given in the filing             |
+
+### `employeesInfo[]`: issuer identity and headcount
+
+| Field                                      | Type    | Meaning                                       |
+| ------------------------------------------ | ------- | --------------------------------------------- |
+| `employeesInfo[].issuerName`               | string  | Name of the issuer as stated in its charter   |
+| `employeesInfo[].jurisdictionOrganization` | string  | Jurisdiction that the issuer is organized or incorporated under |
+| `employeesInfo[].yearIncorporation`        | string  | Year of incorporation                         |
+| `employeesInfo[].cik`                      | string  | CIK of the issuer, padded to 10 digits        |
+| `employeesInfo[].sicCode`                  | integer | SIC code of the main business of the issuer   |
+| `employeesInfo[].irsNum`                   | string  | IRS Employer Identification Number            |
+| `employeesInfo[].fullTimeEmployees`        | integer | Count of full-time employees the issuer reports |
+| `employeesInfo[].partTimeEmployees`        | integer | Count of part-time employees the issuer reports |
+
+### `issuerInfo`: address and contact
+
+| Field                                | Type   | Meaning                                             |
+| ------------------------------------ | ------ | --------------------------------------------------- |
+| `issuerInfo.street1`                 | string | First street line of the principal executive offices |
+| `issuerInfo.street2`                 | string | Second street line of the principal executive offices |
+| `issuerInfo.city`                    | string | City of the principal office                        |
+| `issuerInfo.stateOrCountry`          | string | State or country of the principal office            |
+| `issuerInfo.zipCode`                 | string | Postal code of the principal office                 |
+| `issuerInfo.phoneNumber`             | string | Telephone number of the principal office            |
+| `issuerInfo.connectionName`          | string | Primary contact for correspondence about the filing |
+| `issuerInfo.connectionStreet1`       | string | First street line of the contact                    |
+| `issuerInfo.connectionStreet2`       | string | Second street line of the contact                   |
+| `issuerInfo.connectionCity`          | string | City of the contact                                 |
+| `issuerInfo.connectionStateOrCountry`| string | State or country of the contact                     |
+| `issuerInfo.connectionZipCode`       | string | Postal code of the contact                          |
+| `issuerInfo.connectionPhoneNumber`   | string | Telephone number of the contact                     |
+| `issuerInfo.commentsEmailAddress`    | string | Email address for comments or questions about the filing |
+| `issuerInfo.industryGroup`           | string | Industry group of the issuer: `Banking`, `Insurance` or `Other` |
+
+### `issuerInfo`: cover-page financials
+
+Plain numbers, not strings. The issuer reports them on the cover page of the
+offering statement.
+
+| Field                                       | Type   | Meaning                                    |
+| ------------------------------------------- | ------ | ------------------------------------------ |
+| `issuerInfo.cashEquivalents`                | number | Cash and cash equivalents on the balance sheet |
+| `issuerInfo.investmentSecurities`           | number | Value of the investment securities the issuer holds |
+| `issuerInfo.totalInvestments`               | number | Total value of all investments the issuer reports |
+| `issuerInfo.accountsReceivable`             | number | Total accounts receivable                  |
+| `issuerInfo.loans`                          | number | Value of the loans the issuer reports      |
+| `issuerInfo.propertyPlantEquipment`         | number | Property, plant and equipment on the balance sheet |
+| `issuerInfo.propertyAndEquipment`           | number | Property and equipment, combined value     |
+| `issuerInfo.totalAssets`                    | number | Total assets                               |
+| `issuerInfo.accountsPayable`                | number | Total accounts payable                     |
+| `issuerInfo.policyLiabilitiesAndAccruals`   | number | Total policy liabilities and accruals      |
+| `issuerInfo.deposits`                       | number | Deposits on the balance sheet              |
+| `issuerInfo.longTermDebt`                   | number | Total long-term debt                       |
+| `issuerInfo.totalLiabilities`               | number | Total liabilities                          |
+| `issuerInfo.totalStockholderEquity`         | number | Total stockholder equity. It goes negative when liabilities exceed assets. |
+| `issuerInfo.totalLiabilitiesAndEquity`      | number | Liabilities plus stockholder equity        |
+| `issuerInfo.totalRevenues`                  | number | Total revenues of the period               |
+| `issuerInfo.totalInterestIncome`            | number | Total interest income                      |
+| `issuerInfo.costAndExpensesApplToRevenues`  | number | Costs and expenses that apply to revenues  |
+| `issuerInfo.totalInterestExpenses`          | number | Total interest expense                     |
+| `issuerInfo.depreciationAndAmortization`    | number | Depreciation and amortization expense      |
+| `issuerInfo.netIncome`                      | number | Net income of the period                   |
+| `issuerInfo.earningsPerShareBasic`          | number | Basic earnings per share                   |
+| `issuerInfo.earningsPerShareDiluted`        | number | Diluted earnings per share                 |
+| `issuerInfo.nameAuditor`                    | string | Auditor of the financial statements        |
+
+### `commonEquity[]`, `preferredEquity[]` and `debtSecurities[]`
+
+One element per class of securities the issuer has outstanding.
+
+| Field                                           | Type    | Meaning                            |
+| ----------------------------------------------- | ------- | ---------------------------------- |
+| `commonEquity[].commonEquityClassName`          | string  | Name of the common equity class    |
+| `commonEquity[].outstandingCommonEquity`        | integer | Shares of that class outstanding   |
+| `commonEquity[].commonCusipEquity`              | string  | CUSIP of the class. `000000000` when the class has none. |
+| `commonEquity[].publiclyTradedCommonEquity`     | string  | Where the class trades, for example `OTCID`. `N/A` when it does not trade. |
+| `preferredEquity[].preferredEquityClassName`    | string  | Name of the preferred equity class |
+| `preferredEquity[].outstandingPreferredEquity`  | integer | Shares of that class outstanding   |
+| `preferredEquity[].preferredCusipEquity`        | string  | CUSIP of the class. `000000000` when the class has none. |
+| `preferredEquity[].publiclyTradedPreferredEquity` | string | Where the class trades. `N/A` when it does not trade. |
+| `debtSecurities[].debtSecuritiesClassName`      | string  | Name of the debt securities class  |
+| `debtSecurities[].outstandingDebtSecurities`    | integer | Amount of that class outstanding   |
+| `debtSecurities[].cusipDebtSecurities`          | string  | CUSIP of the class. `000000000` when the class has none. |
+| `debtSecurities[].publiclyTradedDebtSecurities` | string  | Where the class trades. `N/A` when it does not trade. |
+
+### `issuerEligibility` and `applicationRule262`
+
+| Field                                       | Type    | Meaning                                   |
+| ------------------------------------------- | ------- | ----------------------------------------- |
+| `issuerEligibility.certifyIfTrue`           | boolean | The issuer certifies that it meets the SEC eligibility rules |
+| `applicationRule262.certifyIfNotDisqualified` | boolean | The issuer certifies that SEC Rule 262 does not disqualify it |
+| `applicationRule262.certifyIfBadActor`      | boolean | Marks a bad actor disqualification under the SEC rules |
+
+### `summaryInfo`: offering terms
+
+| Field                                        | Type    | Meaning                                  |
+| -------------------------------------------- | ------- | ---------------------------------------- |
+| `summaryInfo.indicateTier1Tier2Offering`     | string  | Tier of the offering: `Tier1` or `Tier2` |
+| `summaryInfo.financialStatementAuditStatus`  | string  | `Audited` or `Unaudited` financial statements |
+| `summaryInfo.securitiesOfferedTypes[]`       | array   | Types of securities in the offering: `Equity (common or preferred stock)`, `Debt`, `Option, warrant or other right to acquire another security`, `Security to be acquired upon exercise of option, warrant or other right`, `Tenant-in-common securities`, `Other(describe)` |
+| `summaryInfo.securitiesOfferedOtherDesc`     | string  | Description of the securities when the type is `Other(describe)` |
+| `summaryInfo.offerDelayedContinuousFlag`     | boolean | The offering is delayed or continuous    |
+| `summaryInfo.offeringYearFlag`               | boolean | The offering is tied to a set offering year |
+| `summaryInfo.offeringAfterQualifFlag`        | boolean | The offering starts after qualification  |
+| `summaryInfo.offeringBestEffortsFlag`        | boolean | The offering runs on a best-efforts basis |
+| `summaryInfo.solicitationProposedOfferingFlag` | boolean | The offering uses solicitation         |
+| `summaryInfo.resaleSecuritiesAffiliatesFlag` | boolean | The offering includes securities that affiliates resell |
+| `summaryInfo.securitiesOffered`              | number  | Count of securities in the offering      |
+| `summaryInfo.outstandingSecurities`          | number  | Count of securities outstanding          |
+| `summaryInfo.pricePerSecurity`               | number  | Offering price of one security           |
+| `summaryInfo.issuerAggregateOffering`        | number  | Aggregate value of the securities the issuer offers |
+| `summaryInfo.securityHolderAggegate`         | number  | Aggregate value of the securities that existing holders offer |
+| `summaryInfo.qualificationOfferingAggregate` | number  | Aggregate amount of the securities offered in the qualification process |
+| `summaryInfo.concurrentOfferingAggregate`    | number  | Aggregate amount of any concurrent offering |
+| `summaryInfo.totalAggregateOffering`         | number  | Total aggregate value of the offering    |
+| `summaryInfo.brokerDealerCrdNumber`          | string  | CRD number of the broker-dealer in the offering |
+| `summaryInfo.estimatedNetAmount`             | number  | Estimated net proceeds to the issuer after the deductions |
+| `summaryInfo.clarificationResponses`         | string  | Free text the filer adds about the offering answers |
+
+### `summaryInfo`: service providers and fees
+
+Seven roles, each a name and a fee. A row carries only the pairs the filer
+filled in.
+
+| Field                                                | Type   | Meaning                          |
+| ---------------------------------------------------- | ------ | -------------------------------- |
+| `summaryInfo.underwritersServiceProviderName`        | string | Underwriter of the offering      |
+| `summaryInfo.underwritersFees`                       | number | Fee of the underwriter           |
+| `summaryInfo.salesCommissionsServiceProviderName`    | string | Provider of the sales commission services |
+| `summaryInfo.salesCommissionsServiceProviderFees`    | number | Fee for the sales commission services |
+| `summaryInfo.findersFeesServiceProviderName`         | string | Provider of the finder services  |
+| `summaryInfo.finderFeesFee`                          | number | Fee for the finder services      |
+| `summaryInfo.auditorServiceProviderName`             | string | Provider of the audit services   |
+| `summaryInfo.auditorFees`                            | number | Fee for the audit services       |
+| `summaryInfo.legalServiceProviderName`               | string | Provider of the legal services   |
+| `summaryInfo.legalFees`                              | number | Fee for the legal services       |
+| `summaryInfo.promotersServiceProviderName`           | string | Provider of the promotion services |
+| `summaryInfo.promotersFees`                          | number | Fee for the promotion services   |
+| `summaryInfo.blueSkyServiceProviderName`             | string | Provider of the Blue Sky compliance services |
+| `summaryInfo.blueSkyFees`                            | number | Fee for the Blue Sky compliance services |
+
+### `juridictionSecuritiesOffered`
+
+| Field                                                            | Type    | Meaning        |
+| ---------------------------------------------------------------- | ------- | -------------- |
+| `juridictionSecuritiesOffered.jurisdictionsOfSecOfferedNone`     | boolean | The filer names no jurisdiction for the offering |
+| `juridictionSecuritiesOffered.jurisdictionsOfSecOfferedSame`     | boolean | The same jurisdictions apply across the offering |
+| `juridictionSecuritiesOffered.issueJuridicationSecuritiesOffering[]` | array | Jurisdictions of the issuance, as state or country codes |
+| `juridictionSecuritiesOffered.dealersJuridicationSecuritiesOffering[]` | array | Jurisdictions of the dealers, as state or country codes |
+
+### `securitiesIssued[]` and the unregistered-sales blocks
+
+The securities the issuer sold in the last year without registration.
+
+| Field                                                | Type    | Meaning                         |
+| ---------------------------------------------------- | ------- | ------------------------------- |
+| `securitiesIssued[].securitiesIssuerName`            | string  | Issuer of the securities sold   |
+| `securitiesIssued[].securitiesIssuerTitle`           | string  | Title of the securities sold    |
+| `securitiesIssued[].securitiesIssuedTotalAmount`     | number  | Total amount of the securities sold |
+| `securitiesIssued[].securitiesPrincipalHolderAmount` | number  | Amount of those securities that the principal holder keeps |
+| `securitiesIssued[].securitiesIssuedAggregateAmount` | string  | Aggregate consideration for the sale, as free text |
+| `securitiesIssued[].aggregateConsiderationBasis`     | string  | Basis of the calculation of that aggregate consideration |
+| `unregisteredSecurities.ifUnregsiteredNone`          | boolean | The issuer sold no unregistered securities |
+| `unregisteredSecuritiesAct.securitiesActExcemption`  | string  | Securities Act exemption the issuer claims for the sale |
 
 Copy the spellings exactly. Several are misspelled in the API and will not match
 a corrected guess: `juridictionSecuritiesOffered`,
-`issueJuridicationSecuritiesOffering`, `securityHolderAggegate`,
-`securitiesActExcemption`. Some rows also carry an `unregisteredSecurities` key,
-distinct from `unregisteredSecuritiesAct`.
+`issueJuridicationSecuritiesOffering`, `dealersJuridicationSecuritiesOffering`,
+`securityHolderAggegate`, `securitiesActExcemption`, `ifUnregsiteredNone`. Note
+that `unregisteredSecurities` and `unregisteredSecuritiesAct` are two separate
+keys.
 
-Paging is real but shallow. `from` plus `size` must stay at or below 10,000.
+`from` plus `size` must stay at or below 10,000. That is the deepest you can
+page.
 
 ## Example
 
@@ -183,6 +341,8 @@ Response, trimmed for length:
   no error. An empty result there does not mean there is no more data.
 - The 1-A index reports `total.value` 10000 with `relation: "gte"` on broad
   queries. That is a counting ceiling, not a real count.
+- A `1-A-W` withdrawal returns only the first seven metadata fields. EDGAR
+  holds no structured data for it.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

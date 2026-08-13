@@ -14,9 +14,11 @@ Release.
 ## What it does
 
 `aaer-file` returns one document that belongs to one AAER. The document is the
-order, the opinion or the complaint. The server looks the file up by AAER number
-and file name and streams it back. It is a fetch tool, not a search tool. Find
-the AAER first with [`aaers`](./aaers.md).
+proceeding, the administrative summary, the complaint, the judgement, the order
+or the press release. The server looks the file up by AAER number and file name
+and streams it back. It is a fetch tool, not a search tool. Find the AAER first
+with [`aaers`](./aaers.md). The database holds every published AAER from 1997 to
+now.
 
 You build `fileTypeAndName` from the `urls` entry in the `aaers` result. No
 single field holds it. Join the lower-cased `urls[].type` and the last segment of
@@ -76,8 +78,9 @@ MCP carries the bytes in one text block. A PDF decoded as UTF-8 is unreadable,
 so ask for the `.txt` form unless you need the raw file. See
 [response format](../response-format.md).
 
-There is **no** envelope, no `total` and no `data[]`. There is also **no
-pagination**. The whole file arrives in one response. The example PDF was
+The response body is the file. It holds **no** JSON fields, so this page has no
+field table. There is **no** envelope, no `total` and no `data[]`. There is also
+**no pagination**. The whole file arrives in one response. The example PDF was
 159 KB.
 
 ## Example

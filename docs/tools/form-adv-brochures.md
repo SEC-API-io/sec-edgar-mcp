@@ -21,9 +21,9 @@ item is one brochure.
 The tool returns metadata and a link. It does **not** return the brochure text.
 Each `url` points to a PDF on `files.adviserinfo.sec.gov`.
 
-The list is the current one. There is no version history and no as-of date. A
-large wirehouse files many brochures, one per programme. Morgan Stanley Smith
-Barney, CRD 149777, returned 12 on 2026-08-13.
+The list is the current one. There is no version history and no as-of date. The
+data updates once a day. A large wirehouse files many brochures, one per
+programme. Morgan Stanley Smith Barney, CRD 149777, returned 12 on 2026-08-13.
 
 ## When to use it
 
@@ -55,12 +55,13 @@ ignored.
 The envelope is `{brochures[]}`. This shape is unique to this tool. There is no
 `total` and no `data` key. An empty list is `{"brochures":[]}`.
 
-| Field           | Type   | Meaning                                                              |
-| --------------- | ------ | -------------------------------------------------------------------- |
-| `versionId`     | number | Brochure version ID. It is also the `BRCHR_VRSN_ID` in the URL.      |
-| `name`          | string | Brochure title as filed, upper case, for example `SELECT UMA PROGRAM BROCHURE`. |
-| `dateSubmitted` | string | `YYYY-MM-DD`. Normalised from the IAPD `M/D/YYYY` format.            |
-| `url`           | string | Link to the PDF on `files.adviserinfo.sec.gov`.                       |
+| Field                        | Type   | Meaning                                                 |
+| ---------------------------- | ------ | ------------------------------------------------------- |
+| `brochures[]`                | array  | Brochures the firm submitted. One item is one brochure.  |
+| `brochures[].versionId`      | number | Brochure version ID. It is also the `BRCHR_VRSN_ID` in the URL. |
+| `brochures[].name`           | string | Brochure name as filed, upper case, for example `SELECT UMA PROGRAM BROCHURE`. |
+| `brochures[].dateSubmitted`  | string | Date the adviser submitted the brochure. `YYYY-MM-DD`.  |
+| `brochures[].url`            | string | Link to the brochure PDF on `files.adviserinfo.sec.gov`. |
 
 **There is no pagination.** Every current brochure comes back in one call. The
 list is short. Twelve brochures returned about 2 KB.

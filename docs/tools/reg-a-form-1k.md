@@ -15,8 +15,8 @@ Regulation A offering.
 
 A Tier 2 Regulation A issuer files a Form 1-K every year. It reports the fiscal
 year, the securities on issue, and how much of the qualified offering has sold
-to date, with the fees paid to the underwriter, auditor, lawyer and blue-sky
-agent.
+to date, with the fees paid to seven service-provider roles: underwriter, sales
+commissions, finder, auditor, lawyer, promoter and blue-sky agent.
 
 This tool searches only the 1-K family. One row is one filing.
 
@@ -30,7 +30,7 @@ those, 2,875 are `1-K` and 125 are `1-K/A`. Coverage starts 2016-04-27.
 - Which Reg A issuers filed an annual report for fiscal 2025?
 - What did this issuer pay its auditor and its lawyers?
 - Which security series does this issuer have on offer?
-- Did the issuer rely on the Rule 257 reporting relief?
+- Which issuers flag Regulation A Rule 257?
 
 ## When to use a different tool
 
@@ -56,7 +56,10 @@ Query fields:
 | Field                              | Example                                       |
 | ---------------------------------- | --------------------------------------------- |
 | `cik`                               | `cik:1968039`                                 |
+| `accessionNo`                       | `accessionNo:"0001213900-26-088286"`          |
 | `companyName`                       | `companyName:"Arrived STR 2"`                 |
+| `ticker`                            | `ticker:BSFC`                                 |
+| `fileNo`                            | `fileNo:"24R-00881"`                          |
 | `formType`                          | `formType:"1-K/A"`                            |
 | `filedAt`                           | `filedAt:[2025-01-01 TO 2025-12-31]`          |
 | `periodOfReport`                    | `periodOfReport:[2025-01-01 TO 2025-12-31]`   |
@@ -64,6 +67,7 @@ Query fields:
 | `item1.stateOrCountry`              | `item1.stateOrCountry:WA`                     |
 | `item1Info.jurisdictionOrganization`| `item1Info.jurisdictionOrganization:DE`       |
 | `item2.regArule257`                 | `item2.regArule257:true`                      |
+| `summaryInfo.offeringSecuritiesSold`| `summaryInfo.offeringSecuritiesSold:[1000 TO *]` |
 | `summaryInfo.issuerNetProceeds`     | `summaryInfo.issuerNetProceeds:[10000000 TO *]` |
 
 `formType` matches the exact string. `formType:"1-K"` does not include `1-K/A`.
@@ -73,36 +77,84 @@ Query fields:
 The envelope is `{total, data[]}`. `total` is `{value, relation}`. On this index
 `relation` is `eq`, so the count is exact.
 
-| Field            | Type   | Meaning                                              |
-| ---------------- | ------ | ---------------------------------------------------- |
-| `id`             | string | Internal document ID                                 |
-| `accessionNo`    | string | EDGAR accession number                               |
-| `fileNo`         | string | SEC file number, `24R-` prefixed                     |
-| `formType`       | string | `1-K` or `1-K/A`                                     |
-| `filedAt`        | string | Filing timestamp with offset                         |
-| `periodOfReport` | string | Fiscal year end, `YYYY-MM-DD`                        |
-| `cik`            | string | Issuer CIK, no leading zeros                         |
-| `ticker`         | string | Usually empty. Most Reg A issuers are unlisted.      |
-| `companyName`    | string | Issuer name                                          |
-| `item1`          | object | Cover page, see below                                |
-| `item1Info[]`    | array  | `issuerName`, `cik` zero-padded, `jurisdictionOrganization`, `irsNum` |
-| `item2`          | object | `regArule257`, true when the issuer claims the Rule 257 relief |
-| `summaryInfo[]`  | array  | Offering results to date, see below                  |
+One element of `data[]` is one filing.
 
-`item1` holds `formIndication` (for example `Annual Report`), `fiscalYearEnd` in
-`MM-DD-YYYY`, the address fields `street1`, `street2`, `city`, `stateOrCountry`,
-`zipCode`, `phoneNumber`, and `issuedSecuritiesTitle[]`, the list of security
-series on issue. Series issuers list one title per series, so this array can be
-long.
+### Filing
 
-`summaryInfo[]` is one entry per commission file number. It holds
-`commissionFileNumber`, `offeringQualificationDate`,
-`offeringCommenceDate`, `qualifiedSecuritiesSold`, `offeringSecuritiesSold`,
-`pricePerSecurity`, `aggregrateOfferingPrice`,
-`aggregrateOfferingPriceHolders`, the service-provider pairs
-`underwrittenSpName` and `underwriterFees`, `auditorSpName` and `auditorFees`,
-`legalSpName` and `legalFees`, `blueSkySpName` and `blueSkyFees`, plus
-`crdNumberBrokerDealer`, `issuerNetProceeds` and `clarificationResponses`.
+| Field                   | Type   | Meaning                                                                                                       |
+| ----------------------- | ------ | ------------------------------------------------------------------------------------------------------------- |
+| `data[].id`             | string | Internal identifier of the filing record.                                                                     |
+| `data[].accessionNo`    | string | EDGAR accession number of the 1-K.                                                                            |
+| `data[].fileNo`         | string | SEC file number. It ties together every filing of the same process. Reg A annual reports carry a `24R-` prefix. |
+| `data[].formType`       | string | `1-K` or `1-K/A`.                                                                                             |
+| `data[].filedAt`        | string | Time EDGAR accepted the filing.                                                                               |
+| `data[].periodOfReport` | string | Reporting period the filing covers, `YYYY-MM-DD`.                                                             |
+| `data[].cik`            | string | Central Index Key of the reporting entity, no leading zeros.                                                  |
+| `data[].ticker`         | string | Stock ticker, if the issuer trades publicly. Usually empty. Most Reg A issuers are unlisted.                   |
+| `data[].companyName`    | string | Legal name of the issuer as given in the filing.                                                              |
+| `data[].item1`          | object | Cover page of the report.                                                                                     |
+| `data[].item1Info[]`    | array  | Issuer identity. One entry per issuer named on the cover page.                                                |
+| `data[].item2`          | object | Rule 257 certification.                                                                                       |
+| `data[].summaryInfo[]`  | array  | Offering results to date. One entry per commission file number. Optional.                                     |
+
+### Cover page, `item1`
+
+| Field                                 | Type     | Meaning                                                                                                          |
+| ------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------- |
+| `data[].item1.formIndication`         | string   | Report type. `Annual Report` or `Special Financial Report for the fiscal year`.                                   |
+| `data[].item1.fiscalYearEnd`          | string   | End date of the fiscal year the filing covers, `MM-DD-YYYY`.                                                     |
+| `data[].item1.street1`                | string   | Street address of the principal executive offices.                                                               |
+| `data[].item1.street2`                | string   | Second address line of the principal executive offices, such as a suite.                                         |
+| `data[].item1.city`                   | string   | City of the principal executive offices.                                                                         |
+| `data[].item1.stateOrCountry`         | string   | State or country of the issuer address.                                                                          |
+| `data[].item1.zipCode`                | string   | Postal code of the principal executive offices.                                                                  |
+| `data[].item1.phoneNumber`            | string   | Contact phone number of the principal executive offices.                                                         |
+| `data[].item1.issuedSecuritiesTitle[]`| string[] | Titles of the security classes issued under Regulation A. A series issuer lists one title per series, so this array can be long. |
+
+### Issuer identity, `item1Info[]`
+
+| Field                                       | Type   | Meaning                                                       |
+| ------------------------------------------- | ------ | ------------------------------------------------------------- |
+| `data[].item1Info[].issuerName`             | string | Official issuer name as registered with the SEC.              |
+| `data[].item1Info[].cik`                    | string | Central Index Key of the reporting entity, zero-padded to ten digits. |
+| `data[].item1Info[].jurisdictionOrganization`| string | Jurisdiction where the issuer is incorporated or organized.   |
+| `data[].item1Info[].irsNum`                 | string | Internal Revenue Service identification number of the issuer. |
+
+### Rule 257, `item2`
+
+| Field                        | Type    | Meaning                                                        |
+| ---------------------------- | ------- | -------------------------------------------------------------- |
+| `data[].item2.regArule257`   | boolean | Whether the issuer complies with Regulation A Rule 257.        |
+
+### Offering results, `summaryInfo[]`
+
+| Field                                            | Type     | Meaning                                                              |
+| ------------------------------------------------ | -------- | --------------------------------------------------------------------- |
+| `data[].summaryInfo[].commissionFileNumber`       | string   | SEC commission file number of the offering statement.                |
+| `data[].summaryInfo[].offeringQualificationDate`  | string   | Date the SEC qualified the offering statement, `MM-DD-YYYY`.         |
+| `data[].summaryInfo[].offeringCommenceDate`       | string   | Date the offering started, `MM-DD-YYYY`.                             |
+| `data[].summaryInfo[].qualifiedSecuritiesSold`    | number   | Quantity of securities qualified for sale in the offering.           |
+| `data[].summaryInfo[].offeringSecuritiesSold`     | number   | Quantity of securities sold in the offering.                         |
+| `data[].summaryInfo[].pricePerSecurity`           | number   | Unit price of each security offered.                                 |
+| `data[].summaryInfo[].aggregrateOfferingPrice`    | number   | Total sales price of the securities the issuer sold.                 |
+| `data[].summaryInfo[].aggregrateOfferingPriceHolders` | number | Total sales price of the securities sold for selling securityholders. |
+| `data[].summaryInfo[].underwrittenSpName[]`       | string[] | Names of the underwriters in the offering.                           |
+| `data[].summaryInfo[].underwriterFees`            | number   | Fees the underwriters charged.                                       |
+| `data[].summaryInfo[].salesCommissionsSpName[]`   | string[] | Names of the providers paid sales commissions.                       |
+| `data[].summaryInfo[].salesCommissionsFee`        | number   | Amount paid as sales commission.                                     |
+| `data[].summaryInfo[].findersSpName[]`            | string[] | Names of the finders in the offering.                                |
+| `data[].summaryInfo[].findersFees`                | number   | Amount paid for finders' services.                                   |
+| `data[].summaryInfo[].auditorSpName[]`            | string[] | Names of the auditors of the financial statements.                   |
+| `data[].summaryInfo[].auditorFees`                | number   | Amount paid for audit services.                                      |
+| `data[].summaryInfo[].legalSpName[]`              | string[] | Names of the law firms or counsel engaged.                           |
+| `data[].summaryInfo[].legalFees`                  | number   | Amount paid for legal services.                                      |
+| `data[].summaryInfo[].promoterSpName[]`           | string[] | Names of the promoters in the offering.                              |
+| `data[].summaryInfo[].promotersFees`              | number   | Amount paid for promotional services.                                |
+| `data[].summaryInfo[].blueSkySpName[]`            | string[] | Names of the blue-sky providers. Blue sky is the state-level securities compliance work. |
+| `data[].summaryInfo[].blueSkyFees`                | number   | Amount paid for blue-sky compliance.                                 |
+| `data[].summaryInfo[].crdNumberBrokerDealer`      | string   | CRD number of the broker-dealer in the offering.                     |
+| `data[].summaryInfo[].issuerNetProceeds`          | number   | Proceeds the issuer kept after fees and expenses.                    |
+| `data[].summaryInfo[].clarificationResponses`     | string   | Free-text notes the filer added about the offering figures.          |
 
 `summaryInfo[]` is optional. It is absent from the example row below. Guard for
 it.
@@ -110,7 +162,8 @@ it.
 Note the misspelling in the API: `aggregrateOfferingPrice`, with an extra `r`.
 Copy it exactly.
 
-Paging is real but shallow. `from` plus `size` must stay at or below 10,000.
+`from` plus `size` must stay at or below 10,000. That is the deepest you can
+page.
 With only 3,000 rows in the index, that ceiling never bites here.
 
 ## Example

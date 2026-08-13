@@ -1,6 +1,6 @@
 # subsidiaries
 
-Search the subsidiary lists that companies disclose in Exhibit 21 of their 10-K
+Search the subsidiary lists that companies disclose in Exhibit 21 of their SEC
 filings.
 
 |                 |                                                              |
@@ -13,13 +13,17 @@ filings.
 
 ## What it does
 
-Exhibit 21 of a 10-K lists the legal subsidiaries of the filer and the
-jurisdiction each one is incorporated in. This tool searches that data with
-Lucene syntax. One row is one Exhibit 21, so one company for one filing year.
-The whole subsidiary list sits inside that row, in the `subsidiaries[]` array.
-A company therefore returns one row per annual report. Apple returns 26 rows,
-one for each year it has filed the exhibit, and the 2025 row lists 19
+Exhibit 21 lists the legal subsidiaries of the filer and the jurisdiction each
+one is incorporated in. Companies attach it to filings such as the 10-K, 10-Q,
+S-1 and 20-F. This tool searches that data with Lucene syntax. One row is one
+Exhibit 21, so one company for one filing. The whole subsidiary list sits
+inside that row, in the `subsidiaries[]` array. A company therefore returns one
+row per exhibit it has filed. Apple returns 26 rows, and the 2025 row lists 19
 subsidiaries.
+
+The data starts in 2003 and holds more than 100,000 lists. About 7,000 new
+lists arrive each year. It keeps companies that merged, went private or stopped
+filing.
 
 ## When to use it
 
@@ -68,17 +72,27 @@ The envelope is `{total, data[]}`. `total` is `{value, relation}`. A `relation`
 of `eq` means the count is exact. A `relation` of `gte` with value 10000 means
 "10,000 or more", which is the search-window ceiling.
 
-| Field                         | Type     | Meaning                                                     |
-| ----------------------------- | -------- | ----------------------------------------------------------- |
-| `id`                          | string   | Internal record ID.                                         |
-| `accessionNo`                 | string   | Accession number of the 10-K that carried the exhibit.      |
-| `filedAt`                     | string   | Filing date and time, ISO 8601 with offset.                 |
-| `cik`                         | string   | Parent company CIK.                                         |
-| `ticker`                      | string   | Parent company ticker. A single string, not an array.       |
-| `companyName`                 | string   | Parent company name as filed.                               |
-| `subsidiaries[]`              | object[] | The Exhibit 21 list.                                        |
-| `subsidiaries[].name`         | string   | Legal name of the subsidiary.                               |
-| `subsidiaries[].jurisdiction` | string   | Where it is incorporated, for example `Ireland` or `Delaware, U.S.` |
+### Envelope
+
+| Field            | Type   | Meaning                                                          |
+| ---------------- | ------ | ------------------------------------------------------------------ |
+| `total.value`    | number | Number of subsidiary lists that match the query.                 |
+| `total.relation` | string | `eq` for an exact count. `gte` at 10000 for 10,000 or more.      |
+| `data[]`         | array  | The subsidiary lists, up to 50 per response. One item is one Exhibit 21. |
+
+### Exhibit 21
+
+| Field                                 | Type     | Meaning                                             |
+| ------------------------------------- | -------- | ----------------------------------------------------- |
+| `data[].id`                           | string   | Unique identifier of the subsidiary list.           |
+| `data[].accessionNo`                  | string   | Accession number of the EDGAR filing the exhibit is attached to. |
+| `data[].filedAt`                      | string   | Date and time the list was disclosed, ISO 8601 with offset. |
+| `data[].cik`                          | string   | CIK of the parent company.                          |
+| `data[].ticker`                       | string   | Ticker symbol of the parent company. A single string, not an array. |
+| `data[].companyName`                  | string   | Name of the parent company as filed.                |
+| `data[].subsidiaries[]`               | object[] | The subsidiaries of the parent company.             |
+| `data[].subsidiaries[].name`          | string   | Legal name of the subsidiary.                       |
+| `data[].subsidiaries[].jurisdiction`  | string   | Jurisdiction the subsidiary is incorporated in, for example `Ireland` or `Delaware, U.S.` |
 
 Size behaviour: page with `from` and `size`. Rows are heavy, because each row
 carries a full subsidiary list. Ten rows of a broad jurisdiction query returned
@@ -127,14 +141,17 @@ The real row lists 19 subsidiaries. Seven are shown here for length.
   back when `from` is above 10000.
 - `size` above 50 returns
   `sec-api error: Maximum 'size' limit of 50 exceeded. ...`
-- Coverage is Exhibit 21 only. A company that does not file the exhibit, or
-  files it as a picture, has no rows.
+- Coverage is Exhibit 21 only, and it starts in 2003. A company that does not
+  file the exhibit, or files it as a picture, has no rows.
+- The data is machine-extracted from a free-form exhibit. Fewer than 0.1% of
+  the lists carry an error.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related
 
 - [`edgar-entities`](./edgar-entities.md) for the parent's SEC filer profile.
 - [`mapping`](./mapping.md) to turn a company name into the ticker used here.
-- [`filing-search`](./filing-search.md) to find the 10-K that carried the exhibit.
+- [`filing-search`](./filing-search.md) to find the filing that carried the
+  exhibit.
 - Lucene syntax rules: [query language](../query-language.md)
 - REST documentation: [Subsidiary API](https://sec-api.io/docs/subsidiary-api)

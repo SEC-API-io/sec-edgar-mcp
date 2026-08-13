@@ -33,7 +33,7 @@ every file in the submission. It does not search the text inside the documents.
 | You look for filings that mention a phrase | [`full-text-search`](./full-text-search.md)                            | `filing-search` filters on metadata fields only. It never reads the document body.                 |
 | You have the filing and want its content   | [`extractor`](./extractor.md), [`get-edgar-file`](./get-edgar-file.md) | `filing-search` returns URLs, not text. Those tools take `linkToFilingDetails` as input.           |
 | You want the financial statements          | [`xbrl-to-json`](./xbrl-to-json.md)                                    | `filing-search` gives you the XBRL file URLs. It does not parse them.                              |
-| You want the structured items in an 8-K    | [`form-8k`](./form-8k.md)                                              | `form-8k` returns parsed item data. `filing-search` only gives the item list inside `description`. |
+| You want the structured items in an 8-K    | [`form-8k`](./form-8k.md)                                              | `form-8k` returns parsed item data. `filing-search` gives the item codes in `items` and in `description`. |
 | You have a name and need a CIK or ticker   | [`mapping`](./mapping.md)                                              | `mapping` resolves a name to a CIK or ticker. `filing-search` queries those fields.                |
 
 ## Input
@@ -45,10 +45,18 @@ every file in the submission. It does not search the text inside the documents.
 | `size`    | integer | no       | 1 to 50                  | Rows per call. Default 50. Over 50 returns an error. |
 | `sort`    | array   | no       | Elasticsearch sort array | Default `[{"filedAt": {"order": "desc"}}]`.          |
 
-Query fields: `ticker`, `formType`, `cik`, `companyName`, `companyNameLong`,
-`accessionNo`, `filedAt`, `periodOfReport`, `description`, `id`, `entities.cik`,
-`entities.sic`, `entities.stateOfIncorporation`, `entities.fiscalYearEnd`,
-`entities.fileNo`, `documentFormatFiles.type`.
+Query fields: `id`, `accessionNo`, `formType`, `filedAt`, `cik`, `ticker`,
+`companyName`, `companyNameLong`, `description`, `periodOfReport`, `items`,
+`groupMembers`, `linkToFilingDetails`, `linkToTxt`, `linkToHtml`,
+`effectivenessDate`, `effectivenessTime`, `registrationForm`,
+`referenceAccessionNo`, `entities.cik`, `entities.sic`,
+`entities.stateOfIncorporation`, `entities.fiscalYearEnd`, `entities.irsNo`,
+`entities.fileNo`, `entities.filmNo`, `entities.act`, `entities.type`,
+`documentFormatFiles.type`, `documentFormatFiles.description`,
+`documentFormatFiles.documentUrl`, `documentFormatFiles.size`,
+`dataFiles.type`, `dataFiles.sequence`,
+`seriesAndClassesContractsInformation.series`,
+`seriesAndClassesContractsInformation.classesContracts.classContract`.
 
 ## Output
 
@@ -61,28 +69,95 @@ The envelope has three keys.
 [Response format](../response-format.md) groups this tool in the
 `{total, filings[]}` family. The `query` echo is extra.
 
-| Field                                              | Type   | Meaning                                                                                                                       |
-| -------------------------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| `total.value`                                      | number | Number of matching filings.                                                                                                   |
-| `total.relation`                                   | string | `eq` means exact. `gte` means at least that many.                                                                             |
-| `filings[].accessionNo`                            | string | EDGAR accession number, the filing key.                                                                                       |
-| `filings[].formType`                               | string | Form type, such as `10-K`.                                                                                                    |
-| `filings[].filedAt`                                | string | Filing timestamp, ISO 8601 with an offset, for example `2025-10-31T06:01:26-04:00`.                                           |
-| `filings[].periodOfReport`                         | string | Period the filing reports on, `YYYY-MM-DD`.                                                                                   |
-| `filings[].cik`                                    | string | Filer CIK, leading zeros removed.                                                                                             |
-| `filings[].ticker`                                 | string | Ticker of the filer, when one maps.                                                                                           |
-| `filings[].companyName`                            | string | Clean company name.                                                                                                           |
-| `filings[].companyNameLong`                        | string | Name with the EDGAR role, for example `Apple Inc. (Filer)`.                                                                   |
-| `filings[].description`                            | string | Form description. For 8-K filings it lists the items.                                                                         |
-| `filings[].linkToFilingDetails`                    | string | URL of the primary document.                                                                                                  |
-| `filings[].linkToHtml`                             | string | URL of the EDGAR filing index page.                                                                                           |
-| `filings[].linkToTxt`                              | string | URL of the complete submission text file.                                                                                     |
-| `filings[].linkToXbrl`                             | string | XBRL instance URL. It is an empty string in the response, even though XBRL files exist. `dataFiles` holds those entries.      |
-| `filings[].documentFormatFiles[]`                  | array  | Every document in the submission. Each has `sequence`, `size`, `documentUrl`, `description`, `type`.                          |
-| `filings[].dataFiles[]`                            | array  | XBRL and other data files. Same shape as `documentFormatFiles`.                                                               |
-| `filings[].entities[]`                             | array  | One entry per filer. Holds `cik`, `sic`, `stateOfIncorporation`, `fiscalYearEnd`, `fileNo`, `irsNo`, `filmNo`, `act`, `type`. |
-| `filings[].id`                                     | string | Internal record hash.                                                                                                         |
-| `filings[].seriesAndClassesContractsInformation[]` | array  | Fund series and class data. Empty for operating companies.                                                                    |
+### Envelope
+
+| Field            | Type   | Meaning                                                        |
+| ---------------- | ------ | -------------------------------------------------------------- |
+| `total.value`    | number | Number of filings that match the query.                        |
+| `total.relation` | string | `eq` means exact. `gte` means at least that many.              |
+| `query.from`     | number | Offset of the first row the server returned.                   |
+| `query.size`     | number | Number of rows the server returned.                            |
+| `filings[]`      | array  | The filing rows. 50 rows at most.                              |
+
+### Filing
+
+One row is one filing. The last four fields hold nested objects. Their tables
+follow below.
+
+| Field                                              | Type             | Meaning                                                                                                                 |
+| -------------------------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `filings[].id`                                     | string           | System-internal unique ID of the filing object.                                                                         |
+| `filings[].accessionNo`                            | string           | Accession number of the filing. It keys the submission on EDGAR.                                                        |
+| `filings[].formType`                               | string           | EDGAR filing form type, such as `10-K`.                                                                                 |
+| `filings[].filedAt`                                | string           | Date and time EDGAR accepted the filing, ISO 8601 with an offset, for example `2025-10-31T06:01:26-04:00`.              |
+| `filings[].cik`                                    | string           | CIK of the filing issuer, leading zeros removed.                                                                        |
+| `filings[].ticker`                                 | string           | Ticker symbol of the filing company. Empty when no ticker maps.                                                         |
+| `filings[].companyName`                            | string           | Name of the primary filing company or person.                                                                           |
+| `filings[].companyNameLong`                        | string           | Long version of the company name. It includes the filer type, for example `Apple Inc. (Filer)`.                         |
+| `filings[].description`                            | string           | Description of the form. For 8-K filings it lists the items.                                                            |
+| `filings[].periodOfReport`                         | string           | Period of report, `YYYY-MM-DD`. Optional.                                                                               |
+| `filings[].linkToFilingDetails`                    | string           | URL of the actual filing content on sec.gov.                                                                            |
+| `filings[].linkToTxt`                              | string           | URL of the plain text `.txt` version of the filing.                                                                     |
+| `filings[].linkToHtml`                             | string           | URL of the index page of the filing, also called the filing detail page.                                                |
+| `filings[].linkToXbrl`                             | string           | XBRL instance URL. It is an empty string in the response, even though XBRL files exist. `dataFiles` holds those entries. |
+| `filings[].items[]`                                | array of strings | Item strings as reported on form 8-K, 8-K/A, D, D/A, ABS-15G, ABS-15G/A, 1-U and 1-U/A. Optional.                       |
+| `filings[].groupMembers[]`                         | array of strings | Member strings as reported on SC 13G, SC 13G/A, SC 13D and SC 13D/A filings. Optional.                                  |
+| `filings[].effectivenessDate`                      | string           | Effectiveness date, `YYYY-MM-DD`. EFFECT forms only.                                                                    |
+| `filings[].effectivenessTime`                      | string           | Effectiveness time, `HH:mm:ss`. EFFECT forms only.                                                                      |
+| `filings[].registrationForm`                       | string           | Registration form type as reported on EFFECT forms.                                                                     |
+| `filings[].referenceAccessionNo`                   | string           | Reference accession number as reported on EFFECT forms.                                                                 |
+| `filings[].entities[]`                             | array            | The EDGAR header entities of the submission. One item per filer, subject or issuer.                                     |
+| `filings[].documentFormatFiles[]`                  | array            | Every document of the submission.                                                                                       |
+| `filings[].dataFiles[]`                            | array            | The data files of the submission, such as the XBRL files.                                                               |
+| `filings[].seriesAndClassesContractsInformation[]` | array            | Fund series and class data. Empty for operating companies.                                                              |
+
+### Entities
+
+| Field                                       | Type   | Meaning                                                                                            |
+| ------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------- |
+| `filings[].entities[].companyName`          | string | Company name of the entity, with the filer type appended.                                          |
+| `filings[].entities[].cik`                  | string | CIK of the entity.                                                                                 |
+| `filings[].entities[].irsNo`                | string | IRS number of the entity.                                                                          |
+| `filings[].entities[].stateOfIncorporation` | string | State of incorporation of the entity, for example `CA`.                                            |
+| `filings[].entities[].fiscalYearEnd`        | string | Fiscal year end of the entity, `MMDD`. `0927` is 27 September.                                     |
+| `filings[].entities[].sic`                  | string | SIC of the entity. Code plus industry name. HTML entities such as `&amp;` can appear.              |
+| `filings[].entities[].type`                 | string | Type of the filing being filed.                                                                    |
+| `filings[].entities[].act`                  | string | The SEC act pursuant to which the filing was filed, for example `34`.                              |
+| `filings[].entities[].fileNo`               | string | Filer number of the entity.                                                                        |
+| `filings[].entities[].filmNo`               | string | Film number of the entity.                                                                         |
+| `filings[].entities[].undefined`            | string | Not a real field. It holds a leftover fragment of the EDGAR office text, such as `06 Technology)`. Ignore it. |
+
+### Files
+
+`documentFormatFiles[]` lists the readable documents. `dataFiles[]` lists the
+machine-readable files of the same submission. Both carry the same five keys.
+
+| Field                                          | Type   | Meaning                                                        |
+| ---------------------------------------------- | ------ | -------------------------------------------------------------- |
+| `filings[].documentFormatFiles[].sequence`     | string | Sequence number of the file inside the submission.             |
+| `filings[].documentFormatFiles[].description`  | string | Description of the file.                                       |
+| `filings[].documentFormatFiles[].documentUrl`  | string | URL of the file on sec.gov.                                    |
+| `filings[].documentFormatFiles[].type`         | string | Type of the file, for example `EX-4.1`.                        |
+| `filings[].documentFormatFiles[].size`         | string | Size of the file in bytes.                                     |
+| `filings[].dataFiles[].sequence`               | string | Sequence number of the file inside the submission.             |
+| `filings[].dataFiles[].description`            | string | Description of the file, for example `XBRL TAXONOMY EXTENSION SCHEMA DOCUMENT`. |
+| `filings[].dataFiles[].documentUrl`            | string | URL of the file on sec.gov.                                    |
+| `filings[].dataFiles[].type`                   | string | Type of the file, for example `EX-101.SCH`.                    |
+| `filings[].dataFiles[].size`                   | string | Size of the file in bytes.                                     |
+
+### Series and classes
+
+Investment company filings carry this array. It maps the fund series and the
+share classes that the filing covers.
+
+| Field                                                                     | Type   | Meaning                                 |
+| ------------------------------------------------------------------------- | ------ | ----------------------------------------- |
+| `filings[].seriesAndClassesContractsInformation[].series`                 | string | Series ID.                              |
+| `filings[].seriesAndClassesContractsInformation[].name`                   | string | Name of the entity.                     |
+| `filings[].seriesAndClassesContractsInformation[].classesContracts[]`     | array  | List of the classes or contracts.       |
+| `filings[].seriesAndClassesContractsInformation[].classesContracts[].classContract` | string | Class or contract ID.         |
+| `filings[].seriesAndClassesContractsInformation[].classesContracts[].name` | string | Name of the class or contract.         |
+| `filings[].seriesAndClassesContractsInformation[].classesContracts[].ticker` | string | Ticker of the class or contract.      |
 
 Size behaviour. `size` defaults to 50 and cannot exceed 50. `from` pages the
 results and stops at 9999. One Apple 10-K row with its full file lists was 4,202

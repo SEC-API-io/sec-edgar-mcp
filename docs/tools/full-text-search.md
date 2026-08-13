@@ -41,17 +41,19 @@ give a date range.
 
 | Parameter   | Type             | Required | Constraints      | Notes                                                                          |
 | ----------- | ---------------- | -------- | ---------------- | ------------------------------------------------------------------------------ |
-| `query`     | string           | yes      | Search operators | Quotes make an exact phrase. `OR` and wildcards also work.                     |
+| `query`     | string           | yes      | Search operators | Quotes make an exact phrase. A space means AND. `OR`, `NOT` and `*` work too.  |
 | `formTypes` | array of strings | no       | Form names       | Example `["8-K", "10-Q"]`. Filters the form, not the exhibit type.             |
 | `ciks`      | array of strings | no       | CIK numbers      | The server pads each value to 10 digits for you.                               |
 | `startDate` | string           | no       | `YYYY-MM-DD`     | It applies only **with** `endDate`. See the warning below.                     |
 | `endDate`   | string           | no       | `YYYY-MM-DD`     | It applies only **with** `startDate`.                                          |
-| `page`      | integer          | no       | 1 or higher      | 1-based. Page 2 starts at row 101.                                             |
+| `page`      | integer          | no       | 1 to 100         | 1-based. Page 2 starts at row 101.                                             |
 
 `query` is a search expression, not Lucene field syntax. You cannot write
 `ticker:AAPL` here. `ciks` and `formTypes` carry the filters. Quotes around a
-phrase make an exact match, for example `"quantum computing"`. The `OR` and
-wildcard operators also work.
+phrase make an exact match, for example `"quantum computing"`. A space between
+two terms means AND. A capital `OR` between two terms matches either one. A `*`
+at the end of a word stem makes a wildcard. A `-` prefix or the `NOT` keyword
+drops a term from the results.
 
 **The date range needs both dates.** The server applies your range only when
 `startDate` and `endDate` are both set. If either one is missing it overwrites
@@ -66,17 +68,18 @@ not a number. `filings` is the array of document rows.
 
 | Field                       | Type           | Meaning                                                                                                                                       |
 | --------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `total.value`               | number         | Number of matching documents.                                                                                                                 |
+| `total.value`               | number         | Number of documents that match the query. It stops at 10,000.                                                                                 |
 | `total.relation`            | string         | `eq` means exact. `gte` means at least that many.                                                                                             |
-| `filings[].accessionNo`     | string         | Accession number of the filing that holds the document. Repeats across rows.                                                                  |
-| `filings[].cik`             | string         | Filer CIK, leading zeros removed.                                                                                                             |
-| `filings[].companyNameLong` | string         | Filer name, for example `Quantum Computing Inc. (Filer)`. An older form also appears, `Lipocine Inc. (LPCN) (CIK 0001535955)`. |
-| `filings[].ticker`          | string or null | Ticker of the filer. It is `null` when no ticker maps. 7 of the 100 rows were `null`.                                                |
-| `filings[].description`     | string         | Document description as filed, for example `INVESTOR PRESENTATION, DATED MAY 13, 2026`. Free text, not normalized.                            |
-| `filings[].formType`        | string         | Form type of the parent filing, for example `8-K`.                                                                                            |
+| `filings[]`                 | array          | The document rows. 100 rows per page.                                                                                                         |
+| `filings[].accessionNo`     | string         | Accession number of the filing that holds the document, for example `0000065011-21-000020`. It repeats across the rows of one filing.         |
+| `filings[].cik`             | string         | CIK of the filer, leading zeros removed.                                                                                                      |
+| `filings[].companyNameLong` | string         | Full name of the filing company, for example `Quantum Computing Inc. (Filer)`. A second form also appears, `Lipocine Inc. (LPCN) (CIK 0001535955)`. |
+| `filings[].ticker`          | string or null | Ticker symbol of the filer, when one is available. It is `null` when no ticker maps.                                                          |
+| `filings[].description`     | string         | Description of the document, for example `INVESTOR PRESENTATION, DATED MAY 13, 2026`. Free text as filed, not normalized.                     |
+| `filings[].formType`        | string         | EDGAR form type of the parent filing, for example `8-K`.                                                                                      |
 | `filings[].type`            | string         | Document type inside that filing, for example `EX-99.1`. This is the field that separates the exhibit rows.                                   |
-| `filings[].filingUrl`       | string         | Direct URL of the matched document on sec.gov.                                                                                                |
-| `filings[].filedAt`         | string         | Filing date, `YYYY-MM-DD`. Date only. `filing-search` returns a full timestamp instead.                                                       |
+| `filings[].filingUrl`       | string         | URL of the matched filing or attachment on sec.gov.                                                                                           |
+| `filings[].filedAt`         | string         | Filing date, `yyyy-mm-dd`. Date only. `filing-search` returns a full timestamp instead.                                                       |
 
 That is the whole row. There are nine fields and no others. The response carries
 no relevance score, no matched snippet and no highlight.
@@ -134,6 +137,9 @@ matches at 100 rows per page means 5 calls. `page: 2` returns the next 100.
 - A row is a document, not a filing. `total.value` counts documents, so it is
   higher than the number of matching filings. The unique `accessionNo` values
   give the filing count.
+- One query reaches 10,000 rows. That is 100 pages of 100 rows. `total.value`
+  stops at 10,000 and `total.relation` turns to `gte`. Split the query by date
+  range or by CIK to go past the cap.
 - The query string has a 2,000 character ceiling, with the message
   `Query too long. Maximum length: 2000 characters`. This is a tighter limit
   than the 3,500 characters of [`filing-search`](./filing-search.md).

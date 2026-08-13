@@ -14,7 +14,9 @@ companies.
 ## What it does
 
 Public companies publish a summary compensation table in the proxy statement.
-This tool searches the rows of those tables across all issuers.
+This tool searches the rows of those tables across all issuers. The data comes
+from DEF 14A filings from 2005 to today. Records remain after a company
+delists or stops reporting to the SEC.
 
 One element of the array is one person in one fiscal year. A five-year history
 for one executive is five elements. The row holds salary, bonus, stock and
@@ -42,11 +44,13 @@ company total. Director pay appears where the company reports it.
 | Parameter | Type    | Required | Constraints        | Notes                                                     |
 | --------- | ------- | -------- | ------------------ | --------------------------------------------------------- |
 | `query`   | string  | Yes      | Lucene syntax      | 3 to 1,000 characters. `AND`, `OR` and ranges work.       |
-| `from`    | integer | No       | minimum 0          | Offset. Default 0.                                        |
+| `from`    | integer | No       | 0 to 10,000        | Offset. Default 0.                                        |
 | `size`    | integer | No       | 1 to 50            | Default 50. Above 50 the server returns HTTP 400.         |
 | `sort`    | array   | No       | Elasticsearch sort | Default `[{"year": {"order": "desc"}}]`. Newest year first. |
 
-Query fields: `ticker`, `cik`, `name`, `position`, `year`, `total`.
+Query fields: `ticker`, `cik`, `name`, `position`, `year`, `salary`, `bonus`,
+`stockAwards`, `optionAwards`, `nonEquityIncentiveCompensation`,
+`changeInPensionValueAndDeferredEarnings`, `otherCompensation`, `total`.
 
 The company identifier is bare `ticker` here. On [`audit-fees`](./audit-fees.md)
 the same idea is `entities.ticker`. See [query language](../query-language.md).
@@ -65,22 +69,24 @@ Read `response[0]`, not `response.data[0]`. Eight tools behave this way:
 There is no result count anywhere in the response. If you need one, page until
 you get fewer rows than you asked for.
 
-| Field                                     | Type   | Meaning                                                     |
-| ----------------------------------------- | ------ | ----------------------------------------------------------- |
-| `id`                                      | string | Record hash. It identifies one person-year row.             |
-| `cik`                                     | string | Company CIK, no leading zeros.                              |
-| `ticker`                                  | string | Company ticker.                                             |
-| `name`                                    | string | Executive name as filed.                                    |
-| `position`                                | string | Title as filed, for example `Senior Vice President, Chief Financial Officer`. Free text, not normalized. |
-| `year`                                    | number | Fiscal year the pay belongs to.                             |
-| `salary`                                  | number | Base salary in dollars.                                     |
-| `bonus`                                   | number | Cash bonus.                                                 |
-| `stockAwards`                             | number | Grant-date value of stock awards.                           |
-| `optionAwards`                            | number | Grant-date value of option awards.                          |
-| `nonEquityIncentiveCompensation`          | number | Non-equity incentive plan pay.                              |
-| `changeInPensionValueAndDeferredEarnings` | number | Pension value change and deferred earnings.                 |
-| `otherCompensation`                       | number | All other compensation.                                     |
-| `total`                                   | number | Total pay for the year, as the company reported it.         |
+One element of the array is one person in one fiscal year.
+
+| Field                                               | Type   | Meaning                                                     |
+| --------------------------------------------------- | ------ | ----------------------------------------------------------- |
+| `response[].id`                                      | string | Record hash. It identifies one person-year row.             |
+| `response[].cik`                                     | string | Central Index Key of the reporting company, no leading zeros. |
+| `response[].ticker`                                  | string | Stock ticker of the reporting company.                      |
+| `response[].name`                                    | string | Name of the executive or director as filed.                 |
+| `response[].position`                                | string | Position the person held, for example `Senior Vice President, Chief Financial Officer`. Free text, not normalized. |
+| `response[].year`                                    | number | Year of the reporting period the pay belongs to.            |
+| `response[].salary`                                  | number | Salary the person earned for the reporting year, in dollars. |
+| `response[].bonus`                                   | number | Cash bonus. A discretionary award, outside any incentive plan formula. |
+| `response[].stockAwards`                             | number | Stock awards, valued on the grant date.                     |
+| `response[].optionAwards`                            | number | Option awards, valued on the grant date.                    |
+| `response[].nonEquityIncentiveCompensation`          | number | Non-equity incentive plan compensation. A formula-driven award paid in cash. |
+| `response[].changeInPensionValueAndDeferredEarnings` | number | Change in pension value and nonqualified deferred compensation earnings. |
+| `response[].otherCompensation`                       | number | All other compensation. Perquisites, severance and benefits sit here. |
+| `response[].total`                                   | number | Total compensation. The sum of the pay components for the year. |
 
 Careful with `total`. It is a field on every row, not a result count. Zero is a
 real value here, not missing data.
@@ -129,6 +135,8 @@ The full response:
 - A `query` longer than 1,000 characters returns
   `Query too long. Maximum length: 1000 characters`.
 - `size` above 50 returns HTTP 400 with `Maximum 'size' limit of 50 exceeded.`
+- One query reaches 10,000 rows at most, because `from` stops at 10,000. Split a
+  larger search by `year` and page through each slice.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

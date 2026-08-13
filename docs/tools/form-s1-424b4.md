@@ -18,15 +18,14 @@ is one filing. The server reads the prospectus and returns the deal terms as
 fields: price per share, gross proceeds, underwriting discount, underwriters,
 law firms, auditors, named management and headcount.
 
-Coverage starts 2000-01-04. A 50-row sample of the newest filings held these
-form types: `S-1`, `S-1/A`, `424B4`, `F-1`, `F-1/A` and `S-11`. The queries
-`formType:"424B3"` and `formType:"424B5"` both return zero rows, so 424B3 and
-424B5 prospectuses are not in this index.
+Coverage starts 2000-01-04. The index holds the registration statements `S-1`,
+`S-1/A`, `F-1`, `F-1/A`, `S-11` and `S-11/A`, plus the `424B4` prospectus. The
+queries `formType:"424B3"` and `formType:"424B5"` both return zero rows, so
+424B3 and 424B5 prospectuses are not in this index.
 
 The registry description promises "use of proceeds" and a "risk factors
-summary". No such field exists in any response or in any of the 50 sampled rows.
-Treat that part of the description as wrong. For prospectus prose, use
-[extractor](./extractor.md).
+summary". No such field exists in any response. Treat that part of the
+description as wrong. For prospectus prose, use [extractor](./extractor.md).
 
 ## When to use it
 
@@ -59,10 +58,14 @@ The colon rule is strict. A bare word such as `apple` returns HTTP 400 with
 
 Query fields:
 
+Every field of the extracted data is searchable. The fields used most are
 `ticker`, `cik`, `entityName`, `formType`, `filedAt`, `accessionNo`,
-`tickers.exchange`, `underwriters.name`, `auditors.name`,
-`publicOfferingPrice.total`. Range syntax works on the numeric fields, for
-example `publicOfferingPrice.total:[100000000 TO *]`.
+`tickers.type`, `tickers.exchange`, `securities.name`,
+`publicOfferingPrice.total`, `underwritingDiscount.total`,
+`proceedsBeforeExpenses.total`, `underwriters.name`, `lawFirms.name`,
+`lawFirms.location`, `auditors.name`, `management.name`, `management.age`,
+`management.position` and `employees.total`. Range syntax works on the numeric
+fields, for example `publicOfferingPrice.total:[100000000 TO *]`.
 
 `entityName`, `underwriters.name` and `auditors.name` are analysed text fields.
 A quoted phrase matches loosely, so check the rows you get back.
@@ -73,26 +76,89 @@ The envelope is `{total, data[]}`. `total` is an object, `{value, relation}`.
 When `relation` is `gte` and `value` is `10000`, read it as "10,000 or more".
 Elasticsearch stops counting there.
 
+### Envelope
+
+| Field            | Type   | Meaning                                                          |
+| ---------------- | ------ | ---------------------------------------------------------------- |
+| `total.value`    | number | Number of filings that match the query.                           |
+| `total.relation` | string | `eq` means the count is exact. `gte` means at least that many.     |
+| `data[]`         | array  | The matching filings. One item per filing, up to 50 per request.   |
+
+### Filing and issuer
+
 | Field                    | Type    | Meaning                                                     |
 | ------------------------ | ------- | ----------------------------------------------------------- |
-| `id`                     | string  | Internal document ID                                        |
-| `accessionNo`            | string  | EDGAR accession number of the filing                        |
-| `formType`               | string  | `S-1`, `S-1/A`, `424B4`, `F-1`, `F-1/A`, `S-11`             |
-| `filedAt`                | string  | Filing timestamp with offset                                |
-| `cik`                    | string  | Issuer CIK, no leading zeros                                |
-| `ticker`                 | string  | Primary ticker, empty when the issuer has none              |
-| `entityName`             | string  | Issuer name as filed                                        |
-| `filingUrl`              | string  | Link to the document on sec.gov                             |
-| `tickers[]`              | array   | `ticker`, `type` (share class), `exchange`                  |
-| `securities[]`           | array   | `name`, the share counts and classes named in the prospectus |
-| `publicOfferingPrice`    | object  | `perShare`, `perShareText`, `total`, `totalText`            |
-| `underwritingDiscount`   | object  | Same four keys. The banks' fee.                             |
-| `proceedsBeforeExpenses` | object  | Same four keys. Net to the issuer before expenses.          |
-| `underwriters[]`         | array   | `name`                                                      |
-| `lawFirms[]`             | array   | `name`, `location`                                          |
-| `auditors[]`             | array   | `name`                                                      |
-| `management[]`           | array   | `name`, `age`, `position`                                   |
-| `employees`              | object  | `total`, `asOfDate`, `perDivision[]`, `perRegion[]`         |
+| `data[].id`              | string  | System-internal identifier of the record.                    |
+| `data[].accessionNo`     | string  | EDGAR accession number of the filing.                        |
+| `data[].formType`        | string  | EDGAR form type. `S-1`, `S-1/A`, `F-1`, `F-1/A`, `S-11`, `S-11/A` or `424B4`. |
+| `data[].filedAt`         | string  | Date and time EDGAR accepted the filing for processing. ISO 8601 with an offset. |
+| `data[].cik`             | string  | Central Index Key of the issuer. Leading zeros are removed.  |
+| `data[].ticker`          | string  | Trading symbol of the issuer when the filing was indexed. Empty when there is none. |
+| `data[].entityName`      | string  | Name of the issuer.                                          |
+| `data[].filingUrl`       | string  | URL of the filing document.                                  |
+
+### Securities
+
+| Field                     | Type    | Meaning                                                    |
+| ------------------------- | ------- | ---------------------------------------------------------- |
+| `data[].tickers[]`        | array   | One item per security the issuer offers, for example common stock, preferred stock, warrants or debt securities. |
+| `data[].tickers[].ticker` | string  | Trading symbol of that security.                            |
+| `data[].tickers[].type`   | string  | Type of that security, for example `Common Stock`.          |
+| `data[].tickers[].exchange` | string | Exchange the security trades on, or is being listed on.    |
+| `data[].securities[]`     | array   | One item per security the filing offers or refers to.       |
+| `data[].securities[].name` | string | The security, with the number of shares, warrants or other units, for example `Up to 3,409,091 Shares of Common Stock`. |
+
+### Offering economics
+
+The three objects below share the same four keys.
+
+| Field                                    | Type    | Meaning                                     |
+| ---------------------------------------- | ------- | ------------------------------------------- |
+| `data[].publicOfferingPrice`             | object  | The public offering price. Not every S-1 states it. A 424B4 does as a rule. |
+| `data[].publicOfferingPrice.perShare`    | number  | Public offering price per share. It is US dollars in most filings. |
+| `data[].publicOfferingPrice.perShareText` | string | The same price with its currency symbol, for example `$10.00`. Read it to learn the currency. |
+| `data[].publicOfferingPrice.total`       | number  | Total public offering price.                 |
+| `data[].publicOfferingPrice.totalText`   | string  | The same total with its currency symbol and thousands separators. |
+| `data[].underwritingDiscount`            | object  | The underwriting discount, which is the banks' fee. Not every S-1 states it. A 424B4 does. |
+| `data[].underwritingDiscount.perShare`   | number  | Underwriting discount per share.             |
+| `data[].underwritingDiscount.perShareText` | string | The same amount with its currency symbol.  |
+| `data[].underwritingDiscount.total`      | number  | Total underwriting discount.                 |
+| `data[].underwritingDiscount.totalText`  | string  | The same total with its currency symbol and thousands separators. |
+| `data[].proceedsBeforeExpenses`          | object  | The proceeds to the company before expenses, which is the offering price minus the discount. Not every S-1 states it. A 424B4 does. |
+| `data[].proceedsBeforeExpenses.perShare` | number  | Proceeds before expenses per share.          |
+| `data[].proceedsBeforeExpenses.perShareText` | string | The same amount with its currency symbol. |
+| `data[].proceedsBeforeExpenses.total`    | number  | Total proceeds before expenses to the company. |
+| `data[].proceedsBeforeExpenses.totalText` | string | The same total with its currency symbol and thousands separators. |
+
+### Deal participants
+
+| Field                          | Type    | Meaning                                               |
+| ------------------------------ | ------- | ----------------------------------------------------- |
+| `data[].underwriters[]`        | array   | One item per underwriter on the offering. The first item is the lead underwriter as a rule. A registration statement may name none, and a later S-1/A adds them as they become known. |
+| `data[].underwriters[].name`   | string  | Name of the underwriter.                               |
+| `data[].lawFirms[]`            | array   | One item per legal counsel or law firm on the offering. |
+| `data[].lawFirms[].name`       | string  | Name of the law firm.                                  |
+| `data[].lawFirms[].location`   | string  | Location of the law firm, for example `California, USA`. It can be empty. |
+| `data[].auditors[]`            | array   | One item per auditor on the offering.                  |
+| `data[].auditors[].name`       | string  | Name of the audit firm.                                |
+| `data[].management[]`          | array   | One item per member of the management team the filing names. |
+| `data[].management[].name`     | string  | Name of the person.                                    |
+| `data[].management[].age`      | number  | Age of the person.                                     |
+| `data[].management[].position` | string  | Position of the person at the company. The titles are not standardised, so the same job reads as `President`, `Chief Executive Officer` or `CEO`. |
+
+### Employees
+
+| Field                                   | Type           | Meaning                                |
+| --------------------------------------- | -------------- | -------------------------------------- |
+| `data[].employees`                      | object         | The headcount the filing states, in total, per business unit and per region. |
+| `data[].employees.total`                | number         | Total number of employees.              |
+| `data[].employees.asOfDate`             | string or null | The date the total headcount refers to. It is `null` when the filing gives no date. |
+| `data[].employees.perDivision[]`        | array          | One item per business division. Empty when the filing gives no split. |
+| `data[].employees.perDivision[].division` | string       | Name of the business division, for example `Research and Development`. |
+| `data[].employees.perDivision[].employees` | number      | Number of employees in that division.   |
+| `data[].employees.perRegion[]`          | array          | One item per geographical region. Empty when the filing gives no split. |
+| `data[].employees.perRegion[].region`   | string         | Name of the region, for example `Europe` or `Los Angeles`. |
+| `data[].employees.perRegion[].employees` | number        | Number of employees in that region.     |
 
 The `*Text` twins carry the currency symbol. `perShare` and `total` are plain
 numbers. Use the numbers for maths, the text for display.
@@ -100,7 +166,8 @@ numbers. Use the numbers for maths, the text for display.
 Fields are omitted, not nulled, when the prospectus does not state them. An S-1
 filed before pricing has no `publicOfferingPrice`.
 
-Paging is real but shallow. `from` plus `size` must stay at or below 10,000.
+`from` plus `size` must stay at or below 10,000. That is the deepest you can
+page.
 
 ## Example
 

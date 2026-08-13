@@ -15,7 +15,8 @@ advice for a Form ADV firm.
 
 One item in `filings[]` is one person, not one filing. The row is the current
 record for that individual CRD number, `Info.indvlPK`. A query for a single
-`indvlPK` returns exactly one row. There is no history of versions.
+`indvlPK` returns exactly one row. There is no history of versions. The set
+holds more than 380,000 individual advisers. It updates once a day.
 
 Each row carries the person's name, the firm that employs them now, their state
 registrations, their exams, their professional designations, ten years of
@@ -32,7 +33,7 @@ the full detail on the IAPD page in `Info.link`.
 - Which exams has this person passed, and when?
 - Where did this person work before the current firm?
 - Which representatives report a bankruptcy or a customer complaint?
-- Which representatives hold the Certified Financial Planner designation?
+- Which professional designations does this person hold?
 
 ## When to use a different tool
 
@@ -48,7 +49,7 @@ the full detail on the IAPD page in `Info.link`.
 | Parameter | Type    | Required | Constraints              | Notes                                              |
 | --------- | ------- | -------- | ------------------------ | -------------------------------------------------- |
 | `query`   | string  | Yes      | Lucene syntax            | For example `CrntEmps.CrntEmp.orgPK:149777`.       |
-| `from`    | integer | No       | Minimum 0                | Offset of the first result. Default 0.             |
+| `from`    | integer | No       | 0 to 10,000              | Offset of the first result. Default 0.             |
 | `size`    | integer | No       | 1 to 50                  | Default 50.                                         |
 | `sort`    | array   | No       | Elasticsearch sort array | Default `[{"Info.indvlPK": {"order": "desc"}}]`.   |
 
@@ -79,22 +80,133 @@ object, `{value, relation}`. A `relation` of `gte` means the count stopped at
 Every row carries the same ten keys. Nested blocks use a plural container with a
 singular member inside it, for example `Exms.Exm[]`. Query the full path.
 
-| Field                             | Type   | Meaning                                                           |
-| --------------------------------- | ------ | ----------------------------------------------------------------- |
-| `Info.indvlPK`                    | number | Individual CRD number. Equals `id`.                               |
-| `Info.firstNm`, `midNm`, `lastNm` | string | Legal name parts. `midNm` is often absent.                        |
-| `Info.actvAGReg`                  | string | `Y` or `N`. Active agent registration flag.                        |
-| `Info.link`                       | string | IAPD summary page for the person.                                  |
-| `OthrNms.OthrNm[]`                | array  | Other names used, same name parts.                                 |
-| `CrntEmps.CrntEmp[]`              | array  | Current employers. `orgNm`, `orgPK`, and the firm address.        |
-| `CrntEmps.CrntEmp[].CrntRgstns.CrntRgstn[]` | array | State registrations. `regAuth`, `regCat`, `st`, `stDt`.  |
-| `CrntEmps.CrntEmp[].BrnchOfLocs.BrnchOfLoc[]` | array | Branch offices the person works from.                  |
-| `Exms.Exm[]`                      | array  | Exams passed. `exmCd`, `exmNm`, `exmDt`, for example `S65`.        |
-| `Dsgntns.Dsgntn[]`                | array  | Professional designations. `dsgntnNm`, for example `Certified Financial Planner`. |
-| `PrevRgstns.PrevRgstn[]`          | array  | Former firms. `orgNm`, `orgPK`, `regBeginDt`, `regEndDt`.         |
-| `EmpHss.EmpHs[]`                  | array  | Employment history. `fromDt` and `toDt` are `MM/YYYY`. An open `toDt` means current. |
-| `OthrBuss.OthrBus`                | object | Outside business activities as one free-text `desc` string.        |
-| `DRPs.DRP[]`                      | array  | Disclosure flags, `Y` or `N`. `hasRegAction`, `hasCriminal`, `hasBankrupt`, `hasCivilJudc`, `hasBond`, `hasJudgment`, `hasInvstgn`, `hasCustComp`, `hasTermination`. |
+### Envelope
+
+| Field            | Type   | Meaning                                                             |
+| ---------------- | ------ | ------------------------------------------------------------------- |
+| `total`          | object | Hit count for the query.                                            |
+| `total.value`    | number | Number of people that match. The count stops at 10,000.             |
+| `total.relation` | string | `eq` when `value` is the exact count. `gte` when the count stopped at 10,000. |
+| `filings[]`      | array  | One item is one person.                                             |
+| `filings[].id`   | number | Record key. It repeats the individual CRD number in `Info.indvlPK`. |
+
+### `Info`
+
+Basic information that describes the person.
+
+| Field               | Type   | Meaning                                                          |
+| ------------------- | ------ | ---------------------------------------------------------------- |
+| `Info.indvlPK`      | number | Individual CRD number.                                           |
+| `Info.actvAGReg`    | string | `Y` when the person holds an active agent registration, `N` when not. |
+| `Info.lastNm`       | string | Last name.                                                       |
+| `Info.firstNm`      | string | First name.                                                      |
+| `Info.midNm`        | string | Middle name. Often absent.                                       |
+| `Info.sufNm`        | string | Name suffix, for example `JR`.                                   |
+| `Info.link`         | string | IAPD composite page for the person.                              |
+
+### `OthrNms`
+
+| Field                        | Type   | Meaning                                                 |
+| ---------------------------- | ------ | ------------------------------------------------------- |
+| `OthrNms.OthrNm[]`           | array  | Names the person uses, or has used, since the age of 18, other than the legal name. It holds nicknames, aliases, and names used before or after marriage. |
+| `OthrNms.OthrNm[].lastNm`    | string | Last name in the other name.                            |
+| `OthrNms.OthrNm[].firstNm`   | string | First name in the other name.                           |
+| `OthrNms.OthrNm[].midNm`     | string | Middle name in the other name.                          |
+| `OthrNms.OthrNm[].sufNm`     | string | Suffix in the other name.                               |
+
+### `CrntEmps`
+
+The firms that employ the person now, and the registration the person holds at
+each firm.
+
+| Field                                                    | Type   | Meaning                                       |
+| -------------------------------------------------------- | ------ | --------------------------------------------- |
+| `CrntEmps.CrntEmp[]`                                      | array  | One item is one active employment.            |
+| `CrntEmps.CrntEmp[].orgNm`                                | string | Firm business name from the IARD composite record. |
+| `CrntEmps.CrntEmp[].orgPK`                                | number | Firm CRD number.                              |
+| `CrntEmps.CrntEmp[].str1`                                 | string | Firm street address, first line.              |
+| `CrntEmps.CrntEmp[].str2`                                 | string | Firm street address, second line.             |
+| `CrntEmps.CrntEmp[].city`                                 | string | Firm city.                                    |
+| `CrntEmps.CrntEmp[].state`                                | string | Firm state code.                              |
+| `CrntEmps.CrntEmp[].cntry`                                | string | Firm country.                                 |
+| `CrntEmps.CrntEmp[].postlCd`                              | string | Firm postal code.                             |
+| `CrntEmps.CrntEmp[].CrntRgstns.CrntRgstn[]`               | array  | Registrations the person holds through this employment. |
+| `CrntEmps.CrntEmp[].CrntRgstns.CrntRgstn[].regAuth`       | string | State code of the regulatory authority, for example `NY` for New York. |
+| `CrntEmps.CrntEmp[].CrntRgstns.CrntRgstn[].regCat`        | string | Registration category with that regulator. `RA` is investment adviser representative. |
+| `CrntEmps.CrntEmp[].CrntRgstns.CrntRgstn[].st`            | string | Current registration status, not a state. Values include `APPROVED`, `APPROVED_RES` restricted approval, `PENDING`, `DEFICIENT`, `TEMPREG` temporary registration, `CE_INACTIVE` inactive for continuing education, `REQUEST_TERM` termination requested, `TERMED`, `FTR` terminated for failure to renew, `SUSPENSION`, `REVOKED` and `BAR`. |
+| `CrntEmps.CrntEmp[].CrntRgstns.CrntRgstn[].stDt`          | string | Date the system posted the status change. `YYYY-MM-DD`. |
+| `CrntEmps.CrntEmp[].BrnchOfLocs.BrnchOfLoc[]`             | array  | Branch offices tied to this employment.       |
+| `CrntEmps.CrntEmp[].BrnchOfLocs.BrnchOfLoc[].str1`        | string | Branch street address, first line.            |
+| `CrntEmps.CrntEmp[].BrnchOfLocs.BrnchOfLoc[].str2`        | string | Branch street address, second line.           |
+| `CrntEmps.CrntEmp[].BrnchOfLocs.BrnchOfLoc[].city`        | string | Branch city.                                  |
+| `CrntEmps.CrntEmp[].BrnchOfLocs.BrnchOfLoc[].state`       | string | Branch state code.                            |
+| `CrntEmps.CrntEmp[].BrnchOfLocs.BrnchOfLoc[].cntry`       | string | Branch country.                               |
+| `CrntEmps.CrntEmp[].BrnchOfLocs.BrnchOfLoc[].postlCd`     | string | Branch postal code.                           |
+
+### `Exms`
+
+| Field                | Type   | Meaning                                                          |
+| -------------------- | ------ | ---------------------------------------------------------------- |
+| `Exms.Exm[]`         | array  | State exams the person passed.                                   |
+| `Exms.Exm[].exmCd`   | string | Exam code. `S63` Uniform Securities Agent State Law Examination, `S64` NASAA Real Estate Securities Exam, `S65` Uniform Investment Adviser Law Examination, `S66` Uniform Combined State Law Examination. |
+| `Exms.Exm[].exmNm`   | string | Exam name.                                                       |
+| `Exms.Exm[].exmDt`   | string | Date the person took the exam. `YYYY-MM-DD`.                     |
+
+### `Dsgntns`
+
+| Field                        | Type   | Meaning                                            |
+| ---------------------------- | ------ | -------------------------------------------------- |
+| `Dsgntns.Dsgntn[]`           | array  | Professional designations the person holds.        |
+| `Dsgntns.Dsgntn[].dsgntnNm`  | string | Designation code.                                  |
+
+### `PrevRgstns`
+
+| Field                                                | Type   | Meaning                                           |
+| ---------------------------------------------------- | ------ | ------------------------------------------------- |
+| `PrevRgstns.PrevRgstn[]`                              | array  | Registrations the person held before.             |
+| `PrevRgstns.PrevRgstn[].orgNm`                        | string | Firm business name from the IARD composite record. |
+| `PrevRgstns.PrevRgstn[].orgPK`                        | number | Firm CRD number.                                  |
+| `PrevRgstns.PrevRgstn[].regBeginDt`                   | string | Date the registration began. `YYYY-MM-DD`.        |
+| `PrevRgstns.PrevRgstn[].regEndDt`                     | string | Date the registration ended. `YYYY-MM-DD`.        |
+| `PrevRgstns.PrevRgstn[].BrnchOfLocs[]`                | array  | Branch offices tied to the former registration.   |
+| `PrevRgstns.PrevRgstn[].BrnchOfLocs[].BrnchOfLoc[]`   | array  | One item is one branch office.                    |
+| `PrevRgstns.PrevRgstn[].BrnchOfLocs[].BrnchOfLoc[].city`  | string | Branch city.                                  |
+| `PrevRgstns.PrevRgstn[].BrnchOfLocs[].BrnchOfLoc[].state` | string | Branch state code.                            |
+
+### `EmpHss`
+
+| Field                    | Type   | Meaning                                                      |
+| ------------------------ | ------ | ------------------------------------------------------------ |
+| `EmpHss.EmpHs[]`         | array  | Employment history. It covers work outside the industry too.  |
+| `EmpHss.EmpHs[].fromDt`  | string | Employment begin date. `MM/YYYY`.                            |
+| `EmpHss.EmpHs[].toDt`    | string | Employment end date. `MM/YYYY`. Absent while the job runs.    |
+| `EmpHss.EmpHs[].orgNm`   | string | Employer name.                                                |
+| `EmpHss.EmpHs[].city`    | string | City of employment.                                           |
+| `EmpHss.EmpHs[].state`   | string | State of employment.                                          |
+
+### `OthrBuss`
+
+| Field                     | Type   | Meaning                                                     |
+| ------------------------- | ------ | ----------------------------------------------------------- |
+| `OthrBuss.OthrBus`        | object | Other businesses the person runs.                           |
+| `OthrBuss.OthrBus.desc`   | string | All of those businesses in one free-text string. It packs the business name, whether the business is investment related, the address, the nature of the business, the position and title held, the start date, and the hours worked. |
+
+### `DRPs`
+
+Disclosure reporting page flags. Each flag is `Y` or `N`.
+
+| Field                          | Type   | Meaning                                              |
+| ------------------------------ | ------ | ---------------------------------------------------- |
+| `DRPs.DRP[]`                   | array  | Reportable and disclosable events for the person.    |
+| `DRPs.DRP[].hasRegAction`      | string | The person has a regulatory action disclosure.       |
+| `DRPs.DRP[].hasCriminal`       | string | The person has a criminal disclosure.                |
+| `DRPs.DRP[].hasBankrupt`       | string | The person has a bankruptcy disclosure.              |
+| `DRPs.DRP[].hasCivilJudc`      | string | The person has a civil judicial disclosure.          |
+| `DRPs.DRP[].hasBond`           | string | The person has a bond disclosure.                    |
+| `DRPs.DRP[].hasJudgment`       | string | The person has a judgment disclosure.                |
+| `DRPs.DRP[].hasInvstgn`        | string | The person has an investigation disclosure.          |
+| `DRPs.DRP[].hasCustComp`       | string | The person has a customer complaint disclosure.      |
+| `DRPs.DRP[].hasTermination`    | string | The person has a termination disclosure.             |
 
 `OthrNms`, `Dsgntns`, `PrevRgstns` and `DRPs` are empty objects when the person
 has nothing to report. Test for content, do not index blindly.
@@ -150,6 +262,7 @@ Keys were removed to fit. The values are unchanged. The default sort is
 - `size` above 50 returns HTTP 400 with
   `Maximum 'size' limit of 50 exceeded.`
 - Omitting `size` returns 50 people, not 10.
+- One query returns at most 10,000 people. `from` stops at 10,000.
 - A firm query on `orgPK` can match more than 10,000 people. Narrow it with a
   state, an exam code or a name before you page.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).

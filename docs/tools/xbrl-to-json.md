@@ -19,8 +19,9 @@ a list of fact objects, one per period and per reporting dimension.
 
 A request for Apple's fiscal 2025 10-K, accession
 `0000320193-25-000079`, returned **84 top-level keys** and **1,313,231 bytes**
-of JSON. It covers 10-K and 10-Q filings, and also 20-F, 40-F, S-1, POS AM,
-485BPOS and 8-K.
+of JSON. It covers every filing with XBRL data from 2005 to today. That includes
+10-K, 10-Q, 8-K, 20-F, 40-F, 6-K, S-1, S-3, S-4, POS AM, F-1, F-3, F-4, 485BPOS,
+497, N-1A and N-2, and the amendments of these forms.
 
 ## When to use it
 
@@ -45,8 +46,8 @@ present, in this order: `htm-url`, `xbrl-url`, `accession-no`.
 
 | Parameter | Type | Required | Constraints | Notes |
 | --------- | ---- | -------- | ----------- | ----- |
-| `htm-url` | string | no | none in the schema | URL of the primary filing document. |
-| `xbrl-url` | string | no | none in the schema | URL of the XBRL instance file. |
+| `htm-url` | string | no | none in the schema | URL of the primary filing document, ending in `.htm` or `.html`. The URL of the filing index page also works. |
+| `xbrl-url` | string | no | none in the schema | URL of the XBRL instance file, ending in `.xml`. |
 | `accession-no` | string | no | none in the schema | Dashed accession number, for example `0000320193-25-000079`. |
 
 The schema marks nothing as required. That contradicts the server, which returns
@@ -58,7 +59,8 @@ This tool takes no `query`, so there are no Lucene fields.
 
 A JSON object. The top-level keys are the filing's own statement and disclosure
 names, so **they differ between filers and between years**. A key in one filing
-can be absent in the next.
+can be absent in the next. Line item names come from the US GAAP taxonomy
+without the `us-gaap_` prefix, for example `NetIncomeLoss`.
 
 | Key seen in the response | Type | Meaning |
 | ----------------------- | ---- | ------- |

@@ -18,8 +18,10 @@ notices. One row is one released document, not one case. A case with an order
 instituting proceedings, a settlement and a later distribution order produces
 several rows that share a file number such as `3-19038`. Each row carries the
 `respondents`, the `complaints`, the `violatedSections` and the `orders` the
-Commission issued. A request for `releaseNo:*` returns `total.value: 10000`
-with `relation: "gte"`, so the index holds 10,000 documents or more.
+Commission issued. Coverage starts in 1995 and runs to the present, with more
+than 18,000 proceedings. New documents arrive as the SEC publishes them. A
+request for `releaseNo:*` returns `total.value: 10000` with `relation: "gte"`,
+so the index holds 10,000 documents or more.
 
 Field shapes differ from the sibling tools. `releaseNo` is an **array** here,
 not a string. There is no `url` field. Get the document from `resources[].url`.
@@ -46,15 +48,17 @@ not a string. There is no `url` field. Get the document from `resources[].url`.
 | Parameter | Type | Required | Constraints | Notes |
 | --------- | ---- | -------- | ----------- | ----- |
 | `query` | string | yes | Lucene syntax, max 1,000 characters, must contain a `:` | Example: `releaseNo:*`. |
-| `from` | integer | no | minimum 0 | Offset of the first row. Default 0. |
+| `from` | integer | no | 0 to 10,000 | Offset of the first row. Default 0. |
 | `size` | integer | no | 1 to 50 | Rows per call. Default 50. Over 50 returns an error. |
 | `sort` | array | no | Elasticsearch sort array | Default `[{"releasedAt": {"order": "desc"}}]`. |
 
 
-Query fields: `releaseNo`, `releasedAt`, `fileNumbers`, `respondents.name`,
-`respondentsText`, `tags`, `orders` and `violatedSections`. Every other name in
-the Output table below is a response field. The sec-api REST docs treat those
-as searchable too. A date range looks like
+Query fields: `releaseNo`, `releasedAt`, `fileNumbers`, `respondents.type`,
+`respondents.role`, `entities.name`, `entities.cik`, `entities.ticker`, `tags`,
+`complaints`, `orders`, `violatedSections`, `requestedRelief`,
+`hasAgreedToSettlement`, `hasAgreedToPayPenalty`, `penaltyAmounts`,
+`parallelActionsTakenBy` and `otherAgenciesInvolved`. Other names in the Output
+table below are response fields. A date range looks like
 `releasedAt:[2024-01-01 TO 2024-12-31]`.
 
 ## Output
@@ -63,27 +67,79 @@ The envelope has two keys. `total` is an object, `{value, relation}`, not a
 number. `data` is the array of rows. This is the `{total, data[]}` family in
 [response format](../response-format.md).
 
+The tables below list every field the response can hold.
+
+### Envelope
+
 | Field | Type | Meaning |
 | ----- | ---- | ------- |
-| `total.value` | number | Number of matching documents. `10000` means 10,000 or more. |
+| `total.value` | number | Number of documents that match the query. `10000` means 10,000 or more. |
 | `total.relation` | string | `eq` means exact. `gte` means at least that many. |
-| `data[].id` | string | Internal record hash. |
-| `data[].releaseNo[]` | array | Release numbers for this document, for example `34-106124`. Can also hold an `AAER-xxxx` number. |
-| `data[].fileNumbers[]` | array | Administrative file numbers, for example `3-19038`. This is the case key. |
-| `data[].releasedAt` | string | Release timestamp, ISO 8601 with an offset. |
-| `data[].title` | string | Order title, in capitals as the SEC publishes it. |
-| `data[].summary` | string | One-paragraph summary of the order. |
-| `data[].respondents[]` | array | Formal respondents. Each has `name`, `type`, `role`, and `cik` and `ticker` when known. |
-| `data[].respondentsText` | string | The respondent line as printed, including notes such as `(Order Granting Extension of Time)`. |
-| `data[].entities[]` | array | All parties, including related ones that are not respondents. |
-| `data[].tags[]` | array | Short subject labels, for example `conflicts of interest`. |
-| `data[].complaints[]` | array | One sentence per allegation. |
-| `data[].orders[]` | array | What the Commission ordered. Unique to this tool. |
-| `data[].violatedSections[]` | array | Statutes and rules cited in the order. |
-| `data[].requestedRelief[]` | array | Relief sought, such as `disgorgement of profits`. |
-| `data[].hasAgreedToSettlement`, `data[].hasAgreedToPayPenalty` | boolean | True when the order states a settlement, or a penalty payment. |
-| `data[].penaltyAmounts[]` | array | Each has `penaltyAmount` (a numeric string), `penaltyAmountText` and `imposedOn`. |
-| `data[].resources[]` | array | Documents. Each has `label` and `url`. The order PDF has the label `primary`. |
+| `data[]` | array | One object per released document. |
+
+### Proceeding
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].id` | string | Internal unique identifier of the administrative proceeding. |
+| `data[].releaseNo[]` | string[] | The SEC release numbers of the proceeding, for example `34-106124`. An AAER release number is listed here too, if the SEC issued one. |
+| `data[].fileNumbers[]` | string[] | The file numbers of the proceeding, for example `3-19038`. This is the case key. |
+| `data[].releasedAt` | string | Publication date and time of the proceeding, format `yyyy-MM-ddTHH:mm:ssXXX`. |
+| `data[].title` | string | Title of the proceeding as stated in the official release. The SEC prints it in capitals. |
+| `data[].summary` | string | Brief summary of the proceeding. |
+| `data[].tags[]` | string[] | Tags for the proceeding, such as `accounting fraud` or `audit failure`. |
+
+### Respondents and parties
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].respondents[]` | object[] | The respondents in the proceeding. |
+| `data[].respondents[].name` | string | Name of the respondent. |
+| `data[].respondents[].type` | string | Type of the party, such as `individual`, `company` or `other`. |
+| `data[].respondents[].role` | string | Role of the party, normally `respondent`. |
+| `data[].respondents[].cik` | string | Central Index Key of the party, if available. |
+| `data[].respondents[].ticker` | string | Ticker symbol of the party, if available. |
+| `data[].respondentsText` | string | The respondent line as the SEC prints it. It can carry a note such as `(Order Granting Extension of Time)`. |
+| `data[].entities[]` | object[] | All parties involved in the proceeding, including related parties that are not respondents. |
+| `data[].entities[].name` | string | Name of the party involved. |
+| `data[].entities[].type` | string | Type of the party, such as `individual`, `company` or `other`. |
+| `data[].entities[].role` | string | Role of the party, such as `respondent`, `defendant`, `affected entity` or `other`. |
+| `data[].entities[].cik` | string | Central Index Key of the party, if available. |
+| `data[].entities[].ticker` | string | Ticker symbol of the party, if available. |
+
+### Charges, orders and penalties
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].complaints[]` | string[] | The complaints or charges in the proceeding. One sentence each. |
+| `data[].violatedSections[]` | string[] | The securities laws the respondents violated. |
+| `data[].orders[]` | string[] | The orders the SEC issued in the proceeding, for example `Respondent is suspended from appearing or practicing before the Commission as an accountant`. Unique to this tool. |
+| `data[].requestedRelief[]` | string[] | The relief requested, such as `cease-and-desist order`, `permanent injunctions` or `civil penalties`. |
+| `data[].hasAgreedToSettlement` | boolean | True when the respondent has agreed to a settlement. |
+| `data[].hasAgreedToPayPenalty` | boolean | True when the respondent has agreed to pay a penalty. |
+| `data[].penaltyAmounts[]` | object[] | One object per penalty in the order. |
+| `data[].penaltyAmounts[].penaltyAmount` | string | The cleaned penalty amount in USD. Digits only, no currency sign and no separators. |
+| `data[].penaltyAmounts[].penaltyAmountText` | string | The penalty amount as stated in the order, for example `$75,000`. |
+| `data[].penaltyAmounts[].imposedOn` | string | The party on which the penalty was imposed. |
+
+### Documents
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].resources[]` | object[] | Links to source documents and related material, such as a submission for comments. |
+| `data[].resources[].label` | string | Name of the document. The order PDF carries the label `primary`. |
+| `data[].resources[].url` | string | Direct link to the document. |
+
+### Who acted
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].investigationConductedBy[]` | string[] | The persons or entities that conducted the investigation, for example `Division of Enforcement`. |
+| `data[].litigationLedBy[]` | string[] | The persons or entities that litigated the case, for example `Division of Enforcement`. |
+| `data[].parallelActionsTakenBy[]` | string[] | Other agencies that took a parallel action related to the proceeding. |
+| `data[].otherAgenciesInvolved[]` | object[] | Other agencies involved in the proceeding, for example `Autorité des Marchés Financiers`. |
+| `data[].otherAgenciesInvolved[].name` | string | Name of the agency. |
+| `data[].otherAgenciesInvolved[].country` | string | Country of the agency. |
 
 Size behaviour. `size` defaults to 50 and cannot exceed 50. Page with `from`.
 This example set `size: 1` and returned 1,824 bytes for one row, so a `size: 50`

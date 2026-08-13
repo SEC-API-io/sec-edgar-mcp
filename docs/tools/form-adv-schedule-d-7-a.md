@@ -20,7 +20,7 @@ of pooled vehicles. Schedule D Section 7.A holds one row per related person,
 with the control relationship, the registrations and the shared-staff answers.
 
 The tool reads the **latest** Form ADV on file for that CRD number. There is no
-history and no as-of date.
+history and no as-of date. The data updates once a day.
 
 This is the largest Form ADV schedule for a big group. Morgan Stanley Smith
 Barney, CRD 149777, returned **149 rows and about 101 KB** on 2026-08-13.
@@ -56,33 +56,74 @@ A one-character CRD is rejected. The tool takes no query and no paging.
 The tool returns a **bare JSON array**. There is no `total` and no wrapper
 object. An adviser with no affiliations returns `[]`.
 
+Each related person carries 17 keys. The key numbers match the question numbers
+in Item 7.A. Every boolean is the filer's `Yes` or `No` answer to that question.
+
+### Related person
+
 | Field                        | Type    | Meaning                                                            |
 | ---------------------------- | ------- | ------------------------------------------------------------------ |
 | `1-nameOfRelatedPerson`      | string  | Legal name of the related person.                                   |
-| `2-businessName`             | string  | Name it does business under.                                        |
-| `3-secFileNumber`            | string  | SEC file number, digits only, no dash.                              |
-| `4a-crdNumber`               | string  | CRD of the related person. Use it with the other Form ADV tools.    |
-| `4b-cikNumbers`              | array   | CIK numbers. Often empty.                                            |
-| `5-typesOfRelatedPerson`     | array   | One or more type codes. See the list below.                          |
-| `6-controlsRelatedPerson`    | boolean | True when the adviser controls the related person.                   |
-| `7-underCommonControl`       | boolean | True when both sit under the same parent.                            |
-| `8a-relatedPersonActsAsCustodian` | boolean | True when the related person holds client assets.               |
-| `8b-notOperationallyIndependent`  | boolean | Custody independence answer.                                     |
-| `8c-locationOfRelatedPerson` | object  | `street1`, `street2`, `city`, `state`, `zipCode`, `country`. Often all empty. |
-| `9a-exemptFromRegistration`  | boolean | True when the related person is exempt. `9b-exemption` gives the reason. |
-| `10a-registeredWithForeignRegulator` | boolean | Foreign registration answer. `10b-foreignRegulator` lists them. |
-| `11-shareSupervisedPersons`  | boolean | True when staff are shared with the adviser.                         |
-| `12-shareSameLocation`       | boolean | True when the two share an office.                                   |
+| `2-businessName`             | string  | Primary business name of the related person.                        |
+| `3-secFileNumber`            | string  | SEC file number of the related person, if any. It starts with `801`, `8`, `866` or `802`, and carries no dash. |
+| `4a-crdNumber`               | string  | CRD of the related person, if any. Use it with the other Form ADV tools. |
+| `4b-cikNumbers`              | array   | CIK numbers of the related person, if any. Often empty.              |
+| `4b-cikNumbers[]`            | string  | One CIK, digits only and without leading zeros. Use it with the EDGAR tools. |
+| `5-typesOfRelatedPerson`     | array   | The categories the filer checked for this related person.            |
+| `5-typesOfRelatedPerson[]`   | string  | One category code. See the table below.                              |
+| `6-controlsRelatedPerson`    | boolean | True when the adviser controls the related person, or the related person controls the adviser. |
+| `7-underCommonControl`       | boolean | True when the adviser and the related person are under common control. |
+| `8a-relatedPersonActsAsCustodian` | boolean | True when the related person acts as a qualified custodian for the adviser's clients, for the advisory services the adviser gives them. |
+| `8b-notOperationallyIndependent`  | boolean | True when the adviser has overcome the presumption that it is not operationally independent from the related person under rule 206(4)-2(d)(5), and so needs no surprise examination of the client funds and securities held there. It applies only when the adviser is registering or registered with the SEC and `8a-relatedPersonActsAsCustodian` is true. |
+| `8c-locationOfRelatedPerson` | object  | Office location of the related person. The key is in every row. The filer fills it in when `8a-relatedPersonActsAsCustodian` is true, so it is empty in most rows. |
+| `9a-exemptFromRegistration`  | boolean | True when the related person is an investment adviser that is exempt from registration. |
+| `9b-exemption`               | string  | The exemption the related person relies on, when `9a-exemptFromRegistration` is true. Free text, for example `EXEMPT REPORTING ADVISER` or `ABA 2005 NO ACTION LETTER`. Empty otherwise. |
+| `10a-registeredWithForeignRegulator` | boolean | True when the related person is registered with a foreign financial regulatory authority. |
+| `10b-foreignRegulator`       | array   | The foreign financial regulatory authorities the related person is registered with. Empty when `10a-registeredWithForeignRegulator` is false. |
+| `10b-foreignRegulator[]`     | string  | One authority, as `Country - Authority`, for example `United Kingdom - Financial Conduct Authority`. An authority outside the Form ADV list carries the prefix `Other - `. |
+| `11-shareSupervisedPersons`  | boolean | True when the adviser and the related person share supervised persons. |
+| `12-shareSameLocation`       | boolean | True when the two share the same physical location.                  |
 
-Type codes in the 149 rows for CRD 149777, with the row count:
-`p-sponsorOfPooledInvestmentVehicles` (115), `b-otherAdviser` (38),
-`f-commodityPoolOperator` (23), `a-brokerBealer` (5), `h-bankingThriftingInstitution` (3),
-`g-futuresCommissionMerchant` (2), `l-insuranceCompany` (2), `d-swapDealer` (1).
+### `8c-locationOfRelatedPerson`
+
+The address of the office of the related person. All six keys are strings, and
+all six are in every row. They are empty in most rows.
+
+| Field                                | Type   | Meaning                                            |
+| ------------------------------------ | ------ | -------------------------------------------------- |
+| `8c-locationOfRelatedPerson.street1` | string | First line of the street address.                   |
+| `8c-locationOfRelatedPerson.street2` | string | Second line, such as a floor or a suite. Empty when the address has one line. |
+| `8c-locationOfRelatedPerson.city`    | string | City, in upper case.                                |
+| `8c-locationOfRelatedPerson.state`   | string | State or province, written in full, for example `Utah`. |
+| `8c-locationOfRelatedPerson.zipCode` | string | Postal code.                                        |
+| `8c-locationOfRelatedPerson.country` | string | Country, written in full, for example `United States`. |
+
+### Category codes in `5-typesOfRelatedPerson`
+
+The letter prefix matches the checkbox letter in Item 7.A.5. There are sixteen
+codes, `a` to `p`. The last column counts the 149 rows of CRD 149777.
+
+| Code                                          | Form ADV category                                                                        | Rows |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------- | ---- |
+| `a-brokerBealer`                              | (a) Broker-dealer, municipal securities dealer, or government securities broker or dealer. | 5    |
+| `b-otherAdviser`                              | (b) Other investment adviser, including a financial planner.                               | 38   |
+| `c-municipalAdvisor`                          | (c) Registered municipal advisor.                                                          | 0    |
+| `d-swapDealer`                                | (d) Registered security-based swap dealer.                                                 | 1    |
+| `e-swapParticipant`                           | (e) Major security-based swap participant.                                                 | 0    |
+| `f-commodityPoolOperator`                     | (f) Commodity pool operator or commodity trading advisor, registered or exempt.             | 23   |
+| `g-futuresCommissionMerchant`                 | (g) Futures commission merchant.                                                           | 2    |
+| `h-bankingThriftingInstitution`               | (h) Banking or thrift institution.                                                         | 3    |
+| `i-trustCompany`                              | (i) Trust company.                                                                         | 0    |
+| `j-accountant`                                | (j) Accountant or accounting firm.                                                         | 0    |
+| `k-lawyer`                                    | (k) Lawyer or law firm.                                                                    | 0    |
+| `l-insuranceCompany`                          | (l) Insurance company or agency.                                                           | 2    |
+| `m-pensionConsultant`                         | (m) Pension consultant.                                                                    | 0    |
+| `n-realEstateBroker`                          | (n) Real estate broker or dealer.                                                          | 0    |
+| `o-sponsorExcludingPooledInvestmentVehicles`  | (o) Sponsor or syndicator of limited partnerships, or the equivalent, excluding pooled investment vehicles. | 0 |
+| `p-sponsorOfPooledInvestmentVehicles`         | (p) Sponsor, general partner or managing member, or the equivalent, of pooled investment vehicles. | 115 |
 
 `a-brokerBealer` is **spelled that way in the API**. It is a typo for
-broker-dealer. A filter on `a-brokerDealer` matches nothing. The letter prefix
-matches the checkbox letter on Form ADV, so other letters exist that this
-adviser did not use.
+broker-dealer. A filter on `a-brokerDealer` matches nothing.
 
 **There is no pagination.** Every related person arrives in one call. For a
 large group that is roughly 100 KB of JSON in a single text block. Expect it to

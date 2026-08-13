@@ -55,13 +55,13 @@ Such a month has no counter behind it. Stay inside `01` to `12`.
 ## Output
 
 The envelope is a plain scalar object. There is no `total`, no `data[]`, and no
-array of any kind. This is one of the four singleton envelopes in the tool set.
+array of any kind. This is the only scalar object envelope in the tool set.
 See [response format](../response-format.md).
 
 | Field                      | Type   | Meaning                                                       |
 | -------------------------- | ------ | ------------------------------------------------------------- |
-| `date`                     | string | The month you asked for, echoed back, format `YYYY-MM`.       |
-| `monthlyBandwidthUsedInMb` | number | Bandwidth used by your API key in that month, in megabytes.   |
+| `date`                     | string | The calendar month the counter covers, format `YYYY-MM`. The server echoes back the value you sent. |
+| `monthlyBandwidthUsedInMb` | number | Bytes the API served to your key in that month, given in megabytes. It counts data volume, not requests. |
 
 The value is rounded to two decimals. The server counts in kilobytes and divides
 by 1024, so one megabyte is 1024 kilobytes here.
@@ -113,7 +113,6 @@ Further behaviour:
   response.
 - How far back the monthly counters are kept is unknown. Old months may return
   `0` once their counter is gone.
-- The month boundary follows the server clock. The exact time zone is unknown.
 
 The tool reports usage. It does not report whether MCP tool calls add to that
 usage. One key returned 37.58 MB for August 2026. That figure mixes every source

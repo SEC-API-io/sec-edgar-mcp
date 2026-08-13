@@ -14,7 +14,9 @@ Get the executive pay history of one company by its CIK or ticker.
 
 Public companies publish a summary compensation table in the proxy statement.
 This tool returns every row sec-api holds for one company, newest fiscal year
-first. One element of the array is one person in one fiscal year.
+first. One element of the array is one person in one fiscal year. The data comes
+from DEF 14A filings from 2005 to today. Records remain after a company
+delists or stops reporting to the SEC.
 
 A request for NVIDIA returns 110 rows in 38,842 bytes. They cover nine
 people across fiscal years 2007 to 2026, about five named executive officers per
@@ -64,22 +66,24 @@ Read `response[0]`, not `response.data[0]`. See
 
 There is no result count anywhere in the response. Count the array yourself.
 
+Every field of a row is listed below. A row has 14 fields and no nested object.
+
 | Field                                     | Type   | Meaning                                                   |
 | ----------------------------------------- | ------ | --------------------------------------------------------- |
-| `id`                                      | string | Record hash. It identifies one person-year row.           |
-| `cik`                                     | string | Company CIK, no leading zeros.                            |
-| `ticker`                                  | string | Company ticker.                                           |
+| `id`                                      | string | Record hash of 32 hexadecimal characters. It identifies one person-year row. |
+| `cik`                                     | string | CIK of the reporting company, no leading zeros.           |
+| `ticker`                                  | string | Ticker of the reporting company.                          |
 | `name`                                    | string | Executive name as filed. Spelling follows the proxy, so `Jen-Hsun Huang` appears rather than `Jensen Huang`. |
-| `position`                                | string | Title as filed, for example `EVP and CFO`. Free text, not normalized. It changes as the person is promoted. |
-| `year`                                    | number | Fiscal year the pay belongs to.                           |
-| `salary`                                  | number | Base salary in dollars.                                   |
-| `bonus`                                   | number | Cash bonus.                                               |
-| `stockAwards`                             | number | Grant-date value of stock awards.                         |
-| `optionAwards`                            | number | Grant-date value of option awards.                        |
-| `nonEquityIncentiveCompensation`          | number | Non-equity incentive plan pay.                            |
-| `changeInPensionValueAndDeferredEarnings` | number | Pension value change and deferred earnings.               |
-| `otherCompensation`                       | number | All other compensation.                                   |
-| `total`                                   | number | Total pay for the year, as the company reported it.       |
+| `position`                                | string | Position of the executive, for example `EVP and CFO`. Free text, not normalized. It changes as the person is promoted. |
+| `year`                                    | number | Year of the reporting period the pay belongs to.          |
+| `salary`                                  | number | Salary of the executive for the reporting year, in dollars. |
+| `bonus`                                   | number | Cash bonus. It is the discretionary part of the cash pay. |
+| `stockAwards`                             | number | Stock awards, at grant-date value.                        |
+| `optionAwards`                            | number | Option awards, at grant-date value.                       |
+| `nonEquityIncentiveCompensation`          | number | Non-equity incentive plan compensation. A formula sets it, and the company pays it in cash. |
+| `changeInPensionValueAndDeferredEarnings` | number | Change in pension value and nonqualified deferred compensation earnings. |
+| `otherCompensation`                       | number | All other compensation. Perquisites, severance and benefits sit here. |
+| `total`                                   | number | Total compensation for the year. It sums the pay components above. |
 
 `total` is a field on every row, not a result count. Zero is a real value here,
 not missing data.

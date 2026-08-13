@@ -17,13 +17,13 @@ the allegations and the penalties already extracted.
 enforcement action or a whistleblower award. One row is one press release. Each
 row carries a plain-language `summary`, the `entities` involved with their CIK
 and ticker, the `complaints`, the `violatedSections` and any `penaltyAmounts`.
-A request for `releaseNo:*` returned `total.value: 2768`. The index held 2,768
-releases on 2026-08-13.
+Coverage starts in 1997 and runs to the present. New actions arrive as the SEC
+publishes them. A request for `releaseNo:*` returned `total.value: 2768`. The
+index held 2,768 releases on 2026-08-13.
 
 Coverage limit. The source is the SEC newsroom, not the case docket. The SEC
-does not publish a press release for every action it brings. The server also
-adds `tags:* AND ` in front of your query, so only releases with extracted tags
-can match. For full case coverage, search the two sibling tools as well.
+does not publish a press release for every action it brings. For full case
+coverage, search the two sibling tools as well.
 
 ## When to use it
 
@@ -46,16 +46,19 @@ can match. For full case coverage, search the two sibling tools as well.
 | Parameter | Type | Required | Constraints | Notes |
 | --------- | ---- | -------- | ----------- | ----- |
 | `query` | string | yes | Lucene syntax, max 1,000 characters, must contain a `:` | Example: `releaseNo:*`. |
-| `from` | integer | no | minimum 0 | Offset of the first row. Default 0. |
+| `from` | integer | no | 0 to 10,000 | Offset of the first row. Default 0. |
 | `size` | integer | no | 1 to 50 | Rows per call. Default 50. Over 50 returns an error. |
 | `sort` | array | no | Elasticsearch sort array | Default `[{"releasedAt": {"order": "desc"}}]`. |
 
 
-Query fields: `releaseNo`, `releasedAt`, `tags`, `entities.name`,
-`entities.cik`, `entities.ticker`, `violatedSections` and
-`hasAgreedToSettlement`. Every other name in the Output table below is a
-response field. The sec-api REST docs treat those as searchable too. A date
-range looks like `releasedAt:[2024-01-01 TO 2024-12-31]`.
+Query fields: `releaseNo`, `releasedAt`, `entities.name`, `entities.cik`,
+`entities.ticker`, `entities.role`, `entities.type`, `tags`, `complaints`,
+`violatedSections`, `requestedRelief`, `hasAgreedToSettlement`,
+`hasAgreedToPayPenalty`, `penaltyAmounts.penaltyAmount`,
+`investigationConductedBy`, `litigationLedBy`, `parallelActionsTakenBy` and
+`otherAgenciesInvolved.country`. Other names in the Output table below are
+response fields. A date range looks like
+`releasedAt:[2024-01-01 TO 2024-12-31]`.
 
 ## Output
 
@@ -63,29 +66,71 @@ The envelope has two keys. `total` is an object, `{value, relation}`, not a
 number. `data` is the array of rows. This is the `{total, data[]}` family in
 [response format](../response-format.md).
 
+The tables below list every field the response can hold.
+
+### Envelope
+
 | Field | Type | Meaning |
 | ----- | ---- | ------- |
-| `total.value` | number | Number of matching releases. |
+| `total.value` | number | Number of releases that match the query. |
 | `total.relation` | string | `eq` means exact. `gte` means at least that many. |
-| `data[].id` | string | Internal record hash. |
-| `data[].releaseNo` | string | Press release number, for example `2026-73`. A string here, an array on [`sec-administrative-proceedings`](./sec-administrative-proceedings.md). |
-| `data[].releasedAt` | string | Publication timestamp, ISO 8601. |
-| `data[].url` | string | URL of the press release on sec.gov. |
-| `data[].title` | string | Headline of the release. |
-| `data[].summary` | string | One-paragraph summary of the action. |
-| `data[].tags[]` | array | Short subject labels, for example `fraud`, `investment advisory`. |
-| `data[].entities[]` | array | Parties. Each has `name`, `type`, `role`, and `cik` and `ticker` when known. |
-| `data[].complaints[]` | array | One sentence per allegation. |
-| `data[].violatedSections[]` | array | Statutes and rules the SEC says were violated. |
-| `data[].requestedRelief[]` | array | Relief the SEC asks for, such as `civil penalties`. |
-| `data[].hasAgreedToSettlement`, `data[].hasAgreedToPayPenalty` | boolean | True when the release states a settlement, or a penalty payment. |
-| `data[].penaltyAmounts[]` | array | Each has `penaltyAmount` (a numeric string), `penaltyAmountText` and `imposedOn`. |
-| `data[].resources[]` | array | Attached documents. Each has `label` and `url`. |
-| `data[].investigationConductedBy[]` | array | Staff names, or a division such as `Division of Enforcement`. |
-| `data[].otherAgenciesInvolved[]` | array | Each has `name` and `country`. |
+| `data[]` | array | One object per press release. |
 
-Two more arrays name the staff and bodies involved: `parallelActionsTakenBy`
-and `litigationLedBy`. Both were empty in the example response.
+### Release
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].id` | string | Internal unique identifier of the enforcement action. |
+| `data[].releaseNo` | string | SEC release number of the enforcement action, for example `2011-279`. A string here, an array on [`sec-administrative-proceedings`](./sec-administrative-proceedings.md). |
+| `data[].releasedAt` | string | Publication date and time of the enforcement action, format `yyyy-MM-ddTHH:mm:ssXXX`. Records before 2012 carry the date part only, for example `2011-12-29`. |
+| `data[].url` | string | URL of the original SEC press release. |
+| `data[].title` | string | Title of the enforcement action. |
+| `data[].summary` | string | Brief summary of the enforcement action. |
+| `data[].tags[]` | string[] | Tags for the enforcement action, such as `bribery` or `insider trading`. |
+
+### Parties
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].entities[]` | object[] | The parties involved in the enforcement action. |
+| `data[].entities[].name` | string | Name of the party involved. |
+| `data[].entities[].type` | string | Type of the party, such as `individual`, `company` or `other`. |
+| `data[].entities[].role` | string | Role of the party, such as `respondent`, `defendant` or `other`. |
+| `data[].entities[].cik` | string | Central Index Key of the party, if available. |
+| `data[].entities[].ticker` | string | Ticker symbol of the party, if available. |
+
+### Charges, relief and penalties
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].complaints[]` | string[] | The complaints or charges filed in the enforcement action. One sentence each. |
+| `data[].violatedSections[]` | string[] | The securities laws the defendants violated, such as `Section 10(b) of the Securities Exchange Act of 1934` or `Foreign Corrupt Practices Act (FCPA)`. |
+| `data[].requestedRelief[]` | string[] | The relief the SEC requests, such as `disgorgement of profits`, `injunction` or `civil penalty`. |
+| `data[].hasAgreedToSettlement` | boolean | True when the defendant has agreed to a settlement. |
+| `data[].hasAgreedToPayPenalty` | boolean | True when the defendant has agreed to pay a penalty. |
+| `data[].penaltyAmounts[]` | object[] | One object per penalty in the release. |
+| `data[].penaltyAmounts[].penaltyAmount` | string | The cleaned penalty amount in USD. Digits only, no currency sign and no separators. |
+| `data[].penaltyAmounts[].penaltyAmountText` | string | The penalty amount as stated in the enforcement action, for example `$31.2 million`. |
+| `data[].penaltyAmounts[].imposedOn` | string | The party on which the penalty was imposed. |
+
+### Documents
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].resources[]` | object[] | Links to related documents, such as litigation releases and complaints. |
+| `data[].resources[].label` | string | Name of the related document, for example `SEC Complaint`. |
+| `data[].resources[].url` | string | Direct link to the document. |
+
+### Who acted
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].investigationConductedBy[]` | string[] | The persons or entities that conducted the investigation that led to the enforcement action. Holds staff names, or a division such as `Division of Enforcement`. |
+| `data[].litigationLedBy[]` | string[] | The persons or entities that litigated the case. |
+| `data[].parallelActionsTakenBy[]` | string[] | Other agencies that took a parallel action, such as `U.S. Department of Justice` for criminal charges. |
+| `data[].otherAgenciesInvolved[]` | object[] | Other agencies involved in the investigation or the enforcement action. |
+| `data[].otherAgenciesInvolved[].name` | string | Name of the agency. |
+| `data[].otherAgenciesInvolved[].country` | string | Country of the agency. |
 
 Size behaviour. `size` defaults to 50 and cannot exceed 50. Page with `from`.
 This example set `size: 1` and returned 2,550 bytes for one row, so a `size: 50`

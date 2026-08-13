@@ -58,7 +58,10 @@ Query fields:
 | Field                                        | Example                                      |
 | -------------------------------------------- | -------------------------------------------- |
 | `cik`                                         | `cik:2000719`                                |
+| `accessionNo`                                 | `accessionNo:"0001096906-26-001033"`         |
 | `companyName`                                 | `companyName:"PARADYME FUND A II"`           |
+| `ticker`                                      | `ticker:BSFC`                                |
+| `fileNo`                                      | `fileNo:"24R-00955"`                         |
 | `formType`                                    | `formType:"1-Z"`                             |
 | `filedAt`                                     | `filedAt:[2025-01-01 TO 2025-12-31]`         |
 | `item1.stateOrCountry`                        | `item1.stateOrCountry:AZ`                    |
@@ -75,50 +78,95 @@ not include the 12 `1-Z/A` amendments.
 The envelope is `{total, data[]}`. `total` is `{value, relation}`. On this index
 `relation` is `eq`, so the count is exact.
 
-| Field                      | Type   | Meaning                                             |
-| -------------------------- | ------ | --------------------------------------------------- |
-| `id`                        | string | Internal document ID                                |
-| `accessionNo`               | string | EDGAR accession number                              |
-| `fileNo`                    | string | SEC file number, `24R-` prefixed                    |
-| `formType`                  | string | `1-Z` or `1-Z/A`                                    |
-| `filedAt`                   | string | Filing timestamp with offset                        |
-| `cik`                       | string | Issuer CIK, no leading zeros                        |
-| `ticker`                    | string | Usually empty. Most Reg A issuers are unlisted.     |
-| `companyName`               | string | Issuer name                                         |
-| `item1`                     | object | Cover page, see below                               |
-| `summaryInfoOffering[]`     | array  | Final offering result, see below                    |
-| `certificationSuspension[]` | array  | `securitiesClassTitle`, `certificationFileNumber[]`, `approxRecordHolders` |
-| `signatureTab[]`            | array  | `cik`, `regulationIssuerName1`, `regulationIssuerName2`, `signatureBy`, `date`, `title` |
+One element of `data[]` is one filing.
 
-`item1` holds `issuerName`, `street1`, `city`, `stateOrCountry`, `zipCode`,
-`phone` and `commissionFileNumber[]`. The key is `phone` here, not
-`phoneNumber` as on [reg-a-form-1k](./reg-a-form-1k.md).
+### Filing
 
-`summaryInfoOffering[]` is the substance of the form:
+| Field                              | Type   | Meaning                                                                                                  |
+| ---------------------------------- | ------ | -------------------------------------------------------------------------------------------------------- |
+| `data[].id`                        | string | Internal identifier of the filing record.                                                                |
+| `data[].accessionNo`               | string | EDGAR accession number of the 1-Z.                                                                       |
+| `data[].fileNo`                    | string | SEC file number. It ties together every filing of the same process. Values carry a `24R-` or `024-` prefix. |
+| `data[].formType`                  | string | `1-Z` or `1-Z/A`.                                                                                        |
+| `data[].filedAt`                   | string | Time EDGAR accepted the filing.                                                                          |
+| `data[].periodOfReport`            | string | Reporting period the filing covers, `YYYY-MM-DD`. Optional.                                              |
+| `data[].cik`                       | string | Central Index Key of the reporting entity, no leading zeros.                                             |
+| `data[].ticker`                    | string | Stock ticker, if the issuer trades publicly. Usually empty. Most Reg A issuers are unlisted.              |
+| `data[].companyName`               | string | Legal name of the issuer as given in the filing.                                                         |
+| `data[].item1`                     | object | Cover page of the exit report.                                                                           |
+| `data[].summaryInfoOffering[]`     | array  | Final result of the offering. One entry per offering.                                                    |
+| `data[].certificationSuspension[]` | array  | Certification that the reporting duty stops. One entry per class of securities.                          |
+| `data[].signatureTab[]`            | array  | Signature block. One entry per signatory.                                                                |
 
-| Field                                   | Type   | Meaning                                    |
-| --------------------------------------- | ------ | ------------------------------------------ |
-| `offeringQualificationDate`              | string | `MM-DD-YYYY`, when the SEC qualified it    |
-| `offeringCommenceDate`                   | string | `MM-DD-YYYY`, when selling started         |
-| `offeringSecuritiesQualifiedSold`         | number | Securities qualified for sale              |
-| `offeringSecuritiesSold`                  | number | Securities actually sold                   |
-| `pricePerSecurity`                        | number | Price per unit                             |
-| `portionSecuritiesSoldIssuer`             | number | Dollars sold on the issuer's behalf        |
-| `portionSecuritiesSoldSecurityholders`    | number | Dollars sold on selling holders' behalf    |
-| `issuerNetProceeds`                       | number | What the issuer kept                       |
+### Cover page, `item1`
 
-Seven service-provider roles each get a name array and a fee number:
-`underwrittenSpName` with `underwriterFees`, `salesCommissionsSpName` with
-`salesCommissionsFee`, `findersSpName` with `findersFees`, `auditorSpName` with
-`auditorFees`, `legalSpName` with `legalFees`, `promoterSpName` with
-`promotersFees`, and `blueSkySpName` with `blueSkyFees`.
+| Field                                 | Type     | Meaning                                                             |
+| ------------------------------------- | -------- | -------------------------------------------------------------------- |
+| `data[].item1.issuerName`             | string   | Legal name of the issuer as written in its charter.                 |
+| `data[].item1.street1`                | string   | Street address of the principal executive office.                   |
+| `data[].item1.street2`                | string   | Second address line of the principal executive office, such as a suite. |
+| `data[].item1.city`                   | string   | City of the principal executive office.                             |
+| `data[].item1.stateOrCountry`         | string   | State or country of the principal executive office.                 |
+| `data[].item1.zipCode`                | string   | Postal code of the principal executive office.                      |
+| `data[].item1.phone`                  | string   | Contact phone number of the principal executive office.             |
+| `data[].item1.commissionFileNumber[]` | string[] | Commission file numbers the SEC assigned to the issuer.             |
 
-This block also holds `crdNumberBrokerDealer` and `clarificationResponses`.
+The key is `phone` here, not `phoneNumber` as on
+[reg-a-form-1k](./reg-a-form-1k.md).
+
+### Final offering result, `summaryInfoOffering[]`
+
+| Field                                                          | Type     | Meaning                                                        |
+| -------------------------------------------------------------- | -------- | --------------------------------------------------------------- |
+| `data[].summaryInfoOffering[].offeringQualificationDate`        | string   | Date the SEC qualified the offering statement, `MM-DD-YYYY`.   |
+| `data[].summaryInfoOffering[].offeringCommenceDate`             | string   | Date the offering started, `MM-DD-YYYY`.                       |
+| `data[].summaryInfoOffering[].offeringSecuritiesQualifiedSold`  | number   | Quantity of securities qualified for sale in the offering.     |
+| `data[].summaryInfoOffering[].offeringSecuritiesSold`           | number   | Quantity of securities sold in the offering.                   |
+| `data[].summaryInfoOffering[].pricePerSecurity`                 | number   | Price of each security in the offering.                        |
+| `data[].summaryInfoOffering[].portionSecuritiesSoldIssuer`      | number   | Share of the sales that came from the issuer's own selling effort. |
+| `data[].summaryInfoOffering[].portionSecuritiesSoldSecurityholders` | number | Share of the sales that came from selling securityholders.    |
+| `data[].summaryInfoOffering[].underwrittenSpName[]`             | string[] | Names of the underwriters in the offering.                     |
+| `data[].summaryInfoOffering[].underwriterFees`                  | number   | Fees the underwriters charged.                                 |
+| `data[].summaryInfoOffering[].salesCommissionsSpName[]`         | string[] | Names of the providers paid sales commissions.                 |
+| `data[].summaryInfoOffering[].salesCommissionsFee`              | number   | Amount paid as sales commission.                               |
+| `data[].summaryInfoOffering[].findersSpName[]`                  | string[] | Names of the finders in the offering.                          |
+| `data[].summaryInfoOffering[].findersFees`                      | number   | Amount paid for finders' services.                             |
+| `data[].summaryInfoOffering[].auditorSpName[]`                  | string[] | Names of the auditors engaged for the offering.                |
+| `data[].summaryInfoOffering[].auditorFees`                      | number   | Amount paid for audit services.                                |
+| `data[].summaryInfoOffering[].legalSpName[]`                    | string[] | Names of the law firms or counsel engaged.                     |
+| `data[].summaryInfoOffering[].legalFees`                        | number   | Amount paid for legal services.                                |
+| `data[].summaryInfoOffering[].promoterSpName[]`                 | string[] | Names of the promoters in the offering.                        |
+| `data[].summaryInfoOffering[].promotersFees`                    | number   | Amount paid for promotional services.                          |
+| `data[].summaryInfoOffering[].blueSkySpName[]`                  | string[] | Names of the blue-sky providers. Blue sky is the state-level securities compliance work. |
+| `data[].summaryInfoOffering[].blueSkyFees`                      | number   | Amount paid for blue-sky compliance.                           |
+| `data[].summaryInfoOffering[].crdNumberBrokerDealer`            | string   | CRD number of the broker-dealer in the offering.               |
+| `data[].summaryInfoOffering[].issuerNetProceeds`                | number   | Proceeds the issuer kept after fees and expenses.              |
+| `data[].summaryInfoOffering[].clarificationResponses`           | string   | Free-text notes the filer added about the offering figures.    |
 
 Filers write `"None"` or `"-"` in the `*SpName[]` arrays when a role was unused.
 Those two values are not company names.
 
-Paging is real but shallow. `from` plus `size` must stay at or below 10,000.
+### Suspension certificate, `certificationSuspension[]`
+
+| Field                                                     | Type     | Meaning                                                             |
+| --------------------------------------------------------- | -------- | -------------------------------------------------------------------- |
+| `data[].certificationSuspension[].securitiesClassTitle`    | string   | Title of the class of securities the exit report covers.            |
+| `data[].certificationSuspension[].certificationFileNumber[]`| string[] | Commission file numbers tied to the certification of suspension.    |
+| `data[].certificationSuspension[].approxRecordHolders`     | number   | Approximate number of record holders on the date of certification.  |
+
+### Signatures, `signatureTab[]`
+
+| Field                                            | Type   | Meaning                                                     |
+| ------------------------------------------------ | ------ | ------------------------------------------------------------ |
+| `data[].signatureTab[].cik`                      | string | Central Index Key of the reporting entity, zero-padded to ten digits. |
+| `data[].signatureTab[].regulationIssuerName1`    | string | Primary issuer name as written in the signature block.      |
+| `data[].signatureTab[].regulationIssuerName2`    | string | Secondary issuer name, if the filer gave one.               |
+| `data[].signatureTab[].signatureBy`              | string | Name of the person who signed for the issuer.               |
+| `data[].signatureTab[].date`                     | string | Date of signature, `MM-DD-YYYY`.                            |
+| `data[].signatureTab[].title`                    | string | Role of the signatory inside the issuer.                    |
+
+`from` plus `size` must stay at or below 10,000. That is the deepest you can
+page.
 With 648 rows in the index, that ceiling never bites here.
 
 ## Example
@@ -177,8 +225,8 @@ Response, trimmed for length:
 - `from` plus `size` above 10,000 returns `{"total":{"value":0},"data":[]}` with
   no error.
 - The index holds 648 rows. A broad query returns an exact `total`.
-- Dates inside `item1`, `summaryInfoOffering[]` and `signatureTab[]` use
-  `MM-DD-YYYY`. Only the top-level `filedAt` is ISO. The two formats differ.
+- Dates inside `summaryInfoOffering[]` and `signatureTab[]` use `MM-DD-YYYY`.
+  Only the top-level `filedAt` is ISO. The two formats differ.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

@@ -16,9 +16,13 @@ their proxy statements.
 Public companies report what they paid their audit firm. The disclosure sits in
 the proxy statement, usually a DEF 14A. This tool searches those disclosures.
 
+The data covers DEF 14A filings from 2001 to today. It holds more than 139,000
+fee records from 69,000 filings. Records remain after a company delists or stops reporting to the SEC.
+
 One row is one filing, not one fee figure. Each row carries a `records[]` array
 with one entry per fiscal year, so a single proxy statement gives you the
-current year and the prior year side by side. A request for NVIDIA returns 22
+current year and the prior year side by side. A filing that names more than one
+audit firm gets one entry per firm and year. A request for NVIDIA returns 22
 filings, the newest holding fees for 2026 and 2025, both audited by PwC.
 
 ## When to use it
@@ -43,15 +47,20 @@ filings, the newest holding fees for 2026 and 2025, both audited by PwC.
 | Parameter | Type    | Required | Constraints        | Notes                                                        |
 | --------- | ------- | -------- | ------------------ | ------------------------------------------------------------ |
 | `query`   | string  | Yes      | Lucene syntax      | `field:value`. `AND`, `OR` and ranges work.                  |
-| `from`    | integer | No       | minimum 0          | Offset. Default 0.                                           |
+| `from`    | integer | No       | 0 to 10,000        | Offset. Default 0.                                           |
 | `size`    | integer | No       | 1 to 50            | Default 50. Above 50 the server returns HTTP 400.            |
 | `sort`    | array   | No       | Elasticsearch sort | Default `[{"filedAt": {"order": "desc"}}]`.                  |
 
-Query fields: `entities.ticker`, `entities.cik`, `formType`, `records.auditor`,
+Query fields: `accessionNo`, `formType`, `filedAt`, `periodOfReport`, `cik`,
+`entities.cik`, `entities.ticker`, `entities.companyName`, `entities.fileNo`,
+`entities.sic`, `entities.stateOfIncorporation`, `entities.fiscalYearEnd`,
+`records.year`, `records.auditor`, `records.auditFees`,
+`records.auditRelatedFees`, `records.taxFees`, `records.allOtherFees`,
 `records.totalFees`.
 
 Note the shape. The company identifiers sit under `entities`, so the ticker
-field is `entities.ticker`, not bare `ticker`. Other tools differ. See
+field is `entities.ticker`, not bare `ticker`. The CIK works both ways, as
+`cik` and as `entities.cik`. Other tools differ. See
 [query language](../query-language.md).
 
 Ranges work on the fee fields. `records.totalFees:[10000000 TO *]` returned
@@ -62,25 +71,59 @@ Ranges work on the fee fields. `records.totalFees:[10000000 TO *]` returned
 The envelope is `{total, data[]}`. `total` is an object, `{value, relation}`,
 not a number.
 
-| Field                        | Type   | Meaning                                                              |
-| ---------------------------- | ------ | -------------------------------------------------------------------- |
-| `total.value`                | number | Number of matching filings. `10000` with `relation: "gte"` means "10,000 or more". |
-| `data[].accessionNo`         | string | Accession number of the proxy statement.                              |
-| `data[].formType`            | string | Form that carried the disclosure, usually `DEF 14A`.                  |
-| `data[].filedAt`             | string | Filing timestamp, ISO 8601 with an offset.                            |
-| `data[].periodOfReport`      | string | Period of the filing, `YYYY-MM-DD`. For a proxy this is the meeting date. |
-| `data[].entities[]`          | array  | Filer blocks. Each holds `cik`, `ticker`, `companyName`, `irsNo`, `fiscalYearEnd`, `stateOfIncorporation`, `sic`. |
-| `data[].records[]`           | array  | One entry per fiscal year reported in that filing.                    |
-| `records[].year`             | number | Fiscal year the fees belong to.                                       |
-| `records[].auditFees`        | number | Audit fees in dollars.                                                |
-| `records[].auditRelatedFees` | number | Audit-related fees. `null` when the company reported none.            |
-| `records[].taxFees`          | number | Tax fees. `null` when none.                                           |
-| `records[].allOtherFees`     | number | All other fees. `null` when none.                                     |
-| `records[].totalFees`        | number | Sum reported by the company.                                          |
-| `records[].auditor`          | string | Audit firm name as filed. Spelling is not normalized. `PwC` and `Ernst & Young` both appear. |
+A row has 27 fields across three levels. Every one is listed below.
 
-`null` means "not reported", not zero. The `sic` string keeps the HTML entity
-`&amp;`, so it can read `3674 Semiconductors &amp; Related Devices`.
+### Envelope
+
+| Field            | Type   | Meaning                                                          |
+| ---------------- | ------ | ----------------------------------------------------------------- |
+| `total.value`    | number | Number of filings that match the query.                          |
+| `total.relation` | string | `eq` for an exact count. `gte` at 10000 means "10,000 or more".  |
+| `data[]`         | array  | The matching filings. One item is one proxy statement.           |
+
+### Filing
+
+| Field                   | Type   | Meaning                                                            |
+| ----------------------- | ------ | ------------------------------------------------------------------- |
+| `data[].id`             | string | System-internal unique identifier of the filing record.            |
+| `data[].accessionNo`    | string | Accession number of the Form DEF 14A filing.                       |
+| `data[].formType`       | string | Form type of the SEC filing, usually `DEF 14A`.                    |
+| `data[].filedAt`        | string | Timestamp when EDGAR accepted the filing. ISO 8601 with an offset. |
+| `data[].periodOfReport` | string | Reporting period the filing covers, `YYYY-MM-DD`.                  |
+| `data[].entities[]`     | array  | Filer blocks. One item per entity in the filing header.            |
+| `data[].records[]`      | array  | Fee records. One item per fiscal year, and per audit firm.         |
+
+### Entity
+
+| Field                                    | Type   | Meaning                                               |
+| ---------------------------------------- | ------ | ------------------------------------------------------- |
+| `data[].entities[].cik`                  | string | Central Index Key of the reporting entity, no leading zeros. |
+| `data[].entities[].ticker`               | string | Stock ticker that identifies the entity. It can be an empty string. |
+| `data[].entities[].companyName`          | string | Legal name of the issuer as filed. A role follows it, for example `NVIDIA CORP (Filer)`. |
+| `data[].entities[].irsNo`                | string | IRS Employer Identification Number of the entity, digits only. |
+| `data[].entities[].fiscalYearEnd`        | string | Fiscal year end as four digits, month then day. `0131` is 31 January. |
+| `data[].entities[].stateOfIncorporation` | string | US state or country where the entity is incorporated, for example `DE`. |
+| `data[].entities[].sic`                  | string | Standard Industrial Classification code of the primary industry, and its name. The name keeps the HTML entity `&amp;`, so it can read `3674 Semiconductors &amp; Related Devices`. |
+| `data[].entities[].act`                  | string | Act the entity files its reports under. `34` is the Securities Exchange Act of 1934. |
+| `data[].entities[].fileNo`               | string | SEC file number. It ties together the filings of one registration process, for example `001-38377`. |
+| `data[].entities[].filmNo`               | string | Film number the SEC assigns to the one filing.        |
+
+`act`, `fileNo` and `filmNo` are absent from some filer blocks. Test for the key
+before you read it.
+
+### Fee record
+
+| Field                               | Type   | Meaning                                                       |
+| ----------------------------------- | ------ | --------------------------------------------------------------- |
+| `data[].records[].year`             | number | Fiscal year of the audit fee record.                          |
+| `data[].records[].auditFees`        | number | Fees for the audit of the financial statements and of internal control over financial reporting. |
+| `data[].records[].auditRelatedFees` | number | Fees for assurance work reasonably related to the audit or review of the financial statements. `null` when the company reported none. |
+| `data[].records[].taxFees`          | number | Fees for tax compliance, tax advice and tax planning. `null` when none. |
+| `data[].records[].allOtherFees`     | number | Fees for work outside the audit, audit-related and tax groups. `null` when none. |
+| `data[].records[].totalFees`        | number | Sum of all fee groups for the year. `null` when the company reported no total. |
+| `data[].records[].auditor`          | string | Name of the independent accounting firm that did the audit, as filed. Spelling is not normalized. `PwC` and `Ernst & Young` both appear. It can be an empty string. |
+
+`null` means "not reported", not zero.
 
 `size` defaults to 50 and caps at 50. Page with `from`. One filing with two fee
 records was 706 bytes, so a `size: 50` call stays small.
@@ -123,6 +166,10 @@ Trimmed response:
   next one. Deduplicate on `entities[].cik` plus `records[].year`.
 - Auditor names are free text. Match with a wildcard or a phrase, not an exact
   string.
+- One query reaches 10,000 filings at most, because `from` stops at 10,000.
+  Split a larger search with a `filedAt` range.
+- Small filers can carry an empty `entities.ticker`. Query them by
+  `entities.cik`.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

@@ -22,7 +22,9 @@ A request for `sro:NASDAQ` returned `total.value: 7743`, so Nasdaq alone had
 
 This tool sits in the Enforcement category, but the content is regulatory, not
 punitive. A row is a proposed rule or a fee change, never a charge against a
-firm. The registry description names NYSE, Nasdaq, FINRA and MSRB as filers.
+firm. The data covers every SRO the SEC oversees. That includes the securities
+exchanges, FINRA, the clearing agencies, the joint industry plans and the MSRB.
+It holds all filings from 1995 to now, more than 30,000 documents.
 
 ## When to use it
 
@@ -52,13 +54,14 @@ firm. The registry description names NYSE, Nasdaq, FINRA and MSRB as filers.
 
 The schema sets `additionalProperties: true`, but this tool reads no extra key.
 
-Query field: `sro`. The field holds the full name, for example `The Nasdaq Stock
-Market LLC (NASDAQ)`. A single token such as `NASDAQ` matches it, so the field
-is analysed text. `sro:NYSE` is another query example.
+Query fields: `sro`, `releaseNumber`, `issueDate`, `fileNumber`, `details`,
+`commentsDue` and `urls.type`.
 
-Every other name in the Output table below is a response field. The sec-api REST
-docs treat `releaseNumber`, `issueDate`, `fileNumber`, `details` and
-`commentsDue` as searchable too.
+The `sro` field holds the full name, for example `The Nasdaq Stock Market LLC
+(NASDAQ)`. A single token such as `NASDAQ` matches it, so the field is analysed
+text. `sro:NYSE` is another query example. `issueDate` takes a range, for
+example `issueDate:[2023-01-01 TO 2023-12-31]`. `urls.type` finds a document
+class, for example `urls.type:"Exhibit 5"`.
 
 ## Output
 
@@ -66,21 +69,36 @@ The envelope has two keys. `total` is an object, `{value, relation}`, not a
 number. `data` is the array of rows. This is the `{total, data[]}` family in
 [response format](../response-format.md).
 
-Rows are flat and small. There are seven fields, and no nested party or
-allegation data.
+Rows are flat and small. Each row holds eight fields, and no nested party or
+allegation data. The tables below list every field the response can hold.
+
+### Envelope
 
 | Field | Type | Meaning |
 | ----- | ---- | ------- |
-| `total.value` | number | Number of matching notices. |
+| `total.value` | number | Number of notices that match the query. |
 | `total.relation` | string | `eq` means exact. `gte` means at least that many. |
-| `data[].id` | string | Internal record hash. |
-| `data[].releaseNumber` | string | SEC release number, for example `34-106072`. The name differs here. It is `releaseNo` on the other enforcement tools. |
-| `data[].issueDate` | string | Publication date, `YYYY-MM-DD`. The sort field for this tool. |
-| `data[].fileNumber` | string | SRO file number, for example `SR-NYSEAMER-2026-25`. Can be an empty string. |
-| `data[].sro` | string | Full name of the filing organisation, with its short code in brackets. |
-| `data[].details` | string | One-line description of the rule change. Long titles are truncated with `...`. |
-| `data[].commentsDue` | string | Free text comment deadline, for example `21 days after date of publication in the Federal Register.` Not a date. |
-| `data[].urls[]` | array | Documents. Each has `type` and `url`. The notice itself uses the release number as its `type`. Exhibits use `Exhibit 5`. A comment link can also appear. |
+| `data[]` | object[] | One object per notice. |
+
+### Notice
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].id` | string | Internal unique identifier of the notice. |
+| `data[].releaseNumber` | string | SEC release number of the notice, for example `34-106072`. The name differs here. It is `releaseNo` on the other enforcement tools. |
+| `data[].issueDate` | string | Release date of the notice, format `YYYY-MM-DD`. The sort field for this tool. |
+| `data[].fileNumber` | string | File number of the filing, for example `SR-ISE-2023-22`. Can be an empty string. |
+| `data[].sro` | string | The self-regulatory organisation that filed the rule change. Full name with its short code in brackets, for example `Nasdaq ISE, LLC (ISE)`. |
+| `data[].details` | string | Details of the filing, for example `Notice of Filing and Immediate Effectiveness of Proposed Rule Change to Amend its Complex Order Rules`. Long titles are truncated with `...`. |
+| `data[].commentsDue` | string | The date by which comments on the filing are due. Optional. It holds a period, for example `21 days after date of publication in the Federal Register.`, or a date, for example `July 18, 2023`. |
+
+### Documents
+
+| Field | Type | Meaning |
+| ----- | ---- | ------- |
+| `data[].urls[]` | object[] | Links to the notice and to the documents that belong to it. |
+| `data[].urls[].type` | string | Class of the document. The notice itself uses the release number as its `type` and is always present. Other classes are the exhibits 2 to 5, a link to submit a comment, a link to the received comments, the Commission's request for more information, the response to that request, and an order granting accelerated approval. |
+| `data[].urls[].url` | string | Direct link to the document on sec.gov, or to the page on the SEC comments portal. Older notices link to an HTML page instead of a PDF. |
 
 Size behaviour. `size` defaults to 50 and cannot exceed 50. `from` moves the
 window to later rows and stops at 10000. This example set `size: 1` and returned
@@ -126,8 +144,8 @@ Prompt: "What is the newest Nasdaq rule filing?"
 - `fileNumber` is not on every row. It is an empty string in the example
   response, while other records hold a value such as `SR-NYSEAMER-2026-25`. An
   empty `fileNumber` identifies no row.
-- `commentsDue` is free text, not a date. You cannot sort or range query it as a
-  date.
+- `commentsDue` is a text field. Some rows hold a period, others hold a date.
+  You cannot sort or range query it as a date.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

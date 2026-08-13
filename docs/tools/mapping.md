@@ -16,8 +16,10 @@ and name.
 You give the tool one identifier type and one value. It returns every company
 that matches, each with its full identifier set plus sector, industry and
 listing data. One element of the array is one company, not one filing. The list
-covers listed and delisted companies, and some institutional filers. Most
-workflows start here, because the other tools need a ticker or a CIK.
+covers listed and delisted companies on US exchanges: ADRs, common and
+preferred stock, warrants, ETFs, ETNs and ETDs. It also holds some
+institutional filers. The database is updated daily. Most workflows start here,
+because the other tools need a ticker or a CIK.
 
 ## When to use it
 
@@ -48,6 +50,10 @@ How matching works:
 - Every other `param` treats `value` as a case-insensitive regular expression.
   `name=Apple` returned 12 companies, one of them `APPLE ORTHODONTIX INC`.
   An anchored value matches one name: `name=^APPLE INC$` returned 1.
+- One CIK can return several rows, one per security: share classes, warrants
+  and the like.
+- One ticker can also return several rows, because a symbol can be reused after
+  a delisting. Read `isDelisted` to pick the security that still trades.
 - No match returns an empty array, `[]`, not an error.
 
 The server also accepts `param: "sic"`. `sic=3571` returns 43 companies. The
@@ -62,24 +68,30 @@ tools do the same: [`compensation`](./compensation.md),
 [`compensation-by-key`](./compensation-by-key.md) and five of the Form ADV
 schedule tools. See [response format](../response-format.md).
 
-| Field                       | Type    | Meaning                                                           |
-| --------------------------- | ------- | ----------------------------------------------------------------- |
-| `name`, `ticker`            | string  | Company name in upper case, `APPLE INC`, and its trading symbol.  |
-| `cik`                       | string  | CIK, no leading zeros. The other tools take this value.           |
-| `cusip`                     | string  | CUSIP of the main security. Empty for filers that have none.      |
-| `exchange`                  | string  | `NASDAQ`, `NYSE`, `NYSEMKT` and similar.                          |
-| `isDelisted`                | boolean | `true` if the security no longer trades.                          |
-| `category`                  | string  | `Domestic Common Stock`, `Institutional Investor` and similar.    |
-| `sector`, `industry`        | string  | Market classification, `Technology`, `Consumer Electronics`.      |
-| `sic`, `sicSector`, `sicIndustry` | string | SEC classification, `3571`, `Manufacturing`, `Electronic Computers`. |
-| `famaIndustry`              | string  | Fama-French industry, `Computers`.                                |
-| `currency`, `location`      | string  | `USD`, `California; U.S.A`.                                       |
-| `id`                        | string  | Internal record ID.                                               |
+| Field         | Type    | Meaning                                                                 |
+| ------------- | ------- | ------------------------------------------------------------------------- |
+| `name`        | string  | Name of the company, in upper case, `APPLE INC`.                        |
+| `ticker`      | string  | Trading symbol of the company, `AAPL`.                                  |
+| `cik`         | string  | CIK of the company, no leading zeros. The other tools take this value.  |
+| `cusip`       | string  | One or more CUSIPs linked to the company, separated by a space. Empty for filers that have none. |
+| `exchange`    | string  | The main exchange the company is listed on, `NASDAQ`, `NYSE`, `NYSEMKT`. |
+| `isDelisted`  | boolean | `true` if the company is no longer listed, `false` if it still trades.  |
+| `category`    | string  | The security category, `Domestic Common Stock`, `Institutional Investor` and similar. |
+| `sector`      | string  | Market sector of the company, `Technology`.                             |
+| `industry`    | string  | Market industry of the company, `Consumer Electronics`. It holds one of 175 values. |
+| `sic`         | string  | Four-digit SEC Standard Industrial Classification code, `3571`.         |
+| `sicSector`   | string  | Name of the SIC sector, `Manufacturing`.                                |
+| `sicIndustry` | string  | Name of the SIC industry, `Electronic Computers`.                       |
+| `famaSector`  | string  | Name of the Fama-French sector. An empty string on most records.        |
+| `famaIndustry` | string | Name of the Fama-French industry, `Computers`, `Automobiles and Trucks`. |
+| `currency`    | string  | Operating currency of the company, `USD`.                               |
+| `location`    | string  | Where the company has its headquarters, `California; U.S.A`.            |
+| `id`          | string  | Unique internal ID of the company record.                               |
 
 Unknown values come back as empty strings. An investment manager, for example,
-returns empty `cusip`, `exchange`, `sector`, `industry` and `sic`. The canonical
-REST response also has `famaSector`, which the Apple response does not. That one
-field is optional.
+returns empty `cusip`, `exchange`, `sector`, `industry` and `sic`. `famaSector`
+is optional. Some records leave it out, and the Apple example below is one of
+them.
 
 **This tool has no pagination.** It returns every match in one text block, and
 you cannot ask for fewer. Measured sizes:

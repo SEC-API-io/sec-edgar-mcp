@@ -13,11 +13,12 @@ Extract one named section from a 10-K, 10-Q or 8-K filing.
 ## What it does
 
 The server locates the named item inside the filing and returns only that
-section. It supports three form types: 10-K, 10-Q and 8-K. Any other form type
-is rejected. Each form type has its own item vocabulary, and the vocabularies do
-not overlap. The `url` must start with `https://www.sec.gov/` and must point at
-the primary filing document, not at an exhibit. Output is cleaned text by
-default, or the original HTML of the section.
+section. It supports three form types: 10-K, 10-Q and 8-K, and their variants.
+Any other form type is rejected. Coverage starts with filings from 1994. Each
+form type has its own item vocabulary, and the vocabularies do not overlap. The
+`url` must start with `https://www.sec.gov/` and must point at the primary
+filing document, not at an exhibit. Output is cleaned text by default, or the
+original HTML of the section.
 
 One request pulled Item 1A, Risk Factors, from Apple's fiscal 2025 10-K. The
 section came back as 69,877 bytes of text.
@@ -42,7 +43,7 @@ section came back as 69,877 bytes of text.
 
 | Parameter | Type | Required | Constraints | Notes |
 | --------- | ---- | -------- | ----------- | ----- |
-| `url` | string | yes | `format: uri`. Must match `https://www.sec.gov/...` | The primary 10-K, 10-Q or 8-K document. |
+| `url` | string | yes | `format: uri`. Must match `https://www.sec.gov/...` | The primary 10-K, 10-Q or 8-K document. The `.htm` or the `.txt` version. |
 | `item` | string | yes | enum, 68 values, listed below | Must belong to the form type at `url`. |
 | `type` | string | no | enum: `text`, `html`. Default `text` | `html` keeps the original markup of the section. |
 
@@ -53,40 +54,71 @@ tool takes no `query`, so there are no Lucene fields.
 
 **10-K.** `1` Business, `1A` Risk Factors, `1B` Unresolved Staff Comments,
 `1C` Cybersecurity, `2` Properties, `3` Legal Proceedings, `4` Mine Safety
-Disclosures, `5` Market for Common Equity, `6` Selected Financial Data,
-`7` MD&A, `7A` Market Risk, `8` Financial Statements, `9` Changes in and
-Disagreements with Accountants, `9A` Controls and Procedures, `9B` Other
-Information, `9C`, `10` Directors and Officers, `11` Executive Compensation,
-`12` Security Ownership, `13` Related Transactions, `14` Principal Accountant
-Fees, `15` Exhibits. The server accepts `9C`, but no section title is documented
-for it.
+Disclosures, `5` Market for Registrant's Common Equity, `6` Selected Financial
+Data, `7` MD&A, `7A` Market Risk, `8` Financial Statements and Supplementary
+Data, `9` Changes in and Disagreements with Accountants, `9A` Controls and
+Procedures, `9B` Other Information, `9C`, `10` Directors, Executive Officers and
+Corporate Governance, `11` Executive Compensation, `12` Security Ownership,
+`13` Certain Relationships and Related Transactions, `14` Principal Accountant
+Fees and Services, `15` Exhibits and Financial Statement Schedules. The server
+accepts `9C`, but no section title is documented for it.
 
 **10-Q.** `part1item1` Financial Statements, `part1item2` MD&A,
 `part1item3` Market Risk, `part1item4` Controls and Procedures,
 `part2item1` Legal Proceedings, `part2item1a` Risk Factors,
-`part2item2` Unregistered Sales of Equity, `part2item3` Defaults Upon Senior
-Securities, `part2item4` Mine Safety Disclosures, `part2item5` Other
+`part2item2` Unregistered Sales of Equity Securities, `part2item3` Defaults Upon
+Senior Securities, `part2item4` Mine Safety Disclosures, `part2item5` Other
 Information, `part2item6` Exhibits.
 
 **8-K.** The value `X-Y` maps to SEC Item X.0Y. For example `2-2` is Item 2.02,
 Results of Operations and Financial Condition, and `5-2` is Item 5.02, Departure
-of Directors or Certain Officers. Full set: `1-1`, `1-2`, `1-3`, `1-4`, `1-5`,
-`2-1`, `2-2`, `2-3`, `2-4`, `2-5`, `2-6`, `3-1`, `3-2`, `3-3`, `4-1`, `4-2`,
-`5-1`, `5-2`, `5-3`, `5-4`, `5-5`, `5-6`, `5-7`, `5-8`, `6-1`, `6-2`, `6-3`,
-`6-4`, `6-5`, `6-6`, `6-10`, `7-1`, `8-1`, `9-1`, `signature`. Only 8-K supports
-`signature`.
+of Directors or Certain Officers. The one exception is `6-10`, which maps to
+Item 6.10. Full set: `1-1`, `1-2`, `1-3`, `1-4`, `1-5`, `2-1`, `2-2`, `2-3`,
+`2-4`, `2-5`, `2-6`, `3-1`, `3-2`, `3-3`, `4-1`, `4-2`, `5-1`, `5-2`, `5-3`,
+`5-4`, `5-5`, `5-6`, `5-7`, `5-8`, `6-1`, `6-2`, `6-3`, `6-4`, `6-5`, `6-6`,
+`6-10`, `7-1`, `8-1`, `9-1`, `signature`. Only 8-K supports `signature`.
 
 ## Output
 
 One MCP `text` content block that holds the section body. There is no JSON
 envelope, no `total`, no `data[]`, no item title field and no length field.
 
-| Detail | Value |
-| ------ | -------------- |
-| First line, `type: text` | The item heading, for example ` Item 1A. Risk Factors ` |
-| Paragraph separator | A blank line between paragraphs |
-| Character entities | **Not decoded.** The text still contains numeric HTML entities such as `&#8217;` for an apostrophe and `&#8220;` for a quotation mark. Decode them yourself. |
-| Size | 69,877 bytes for Apple's Item 1A |
+The block carries no named fields. The `type` input decides its format. The
+tables below list every element that can appear in it.
+
+### Block
+
+| Element | Type | Meaning |
+| ------- | ---- | ------- |
+| Content block | string | The one named section, from its heading to the end of the item. One call returns one item. |
+| Format | text or HTML | Follows the `type` input. `text` is the default. |
+| Size | bytes | Length of the section. Apple's Item 1A gave 69,877 bytes. |
+
+### Text form, `type: text`
+
+| Element | Type | Meaning |
+| ------- | ---- | ------- |
+| First line | string | The item heading as the filer wrote it, for example ` Item 1A. Risk Factors `. It keeps one leading and one trailing space. |
+| Body | string | The section as clear text. Every XBRL, XML and HTML tag is stripped. |
+| Paragraph | string | One paragraph is one line, however long the paragraph is. |
+| Paragraph separator | string | A blank line between two paragraphs. |
+| Character entities | string | **Not decoded.** The text still contains numeric HTML entities such as `&#160;` for a non-breaking space, `&#8217;` for an apostrophe and `&#8220;` for a quotation mark. Decode them yourself. |
+| `##TABLE_START` | marker | The line before the first row of a table in the source filing. |
+| `##TABLE_END` | marker | The line after the last row of that table. The lines between the two markers are the table. |
+
+### HTML form, `type: html`
+
+| Element | Type | Meaning |
+| ------- | ---- | ------- |
+| Body | string | The original HTML of the item, cleaned. It keeps the tables of the section. |
+| Heading element | string | The item heading in its own element, for example `<p>RISK FACTORS</p>`. |
+| `##TABLE_START`, `##TABLE_END` | none | The table markers belong to the text form. HTML output marks a table with `<table>` and its rows and cells. |
+
+### Status value
+
+| Element | Type | Meaning |
+| ------- | ---- | ------- |
+| `processing` | string | The whole block is this one word. The server is still extracting the sections of a new filing, or the item may not exist in the filing. Wait 500 to 1000 ms and call again. After three tries the section is not extractable. |
 
 **This tool has no pagination.** There is no `from`, no `size` and no `sort`. The
 whole section arrives in one block. Risk Factors and MD&A are the longest items
@@ -130,6 +162,10 @@ Paragraphs are single long lines in the real response. They are wrapped above.
   Sending `part2item1a` to a 10-K URL fails this way.
 - The server defaults `item` to `1A` when it is missing, but the MCP schema
   marks `item` as required, so always send it.
+- One call returns one item. Ask for each item separately.
+- Filings from before 2002 have no standard structure, so extraction of these
+  filings can fail. In about 1 filing in 1,000 the filer merges two or more
+  sections into one section. These merged sections are not supported.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

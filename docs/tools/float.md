@@ -19,6 +19,11 @@ disclosed once a year, in the 10-K, so `publicFloat` is an empty array on most
 rows. A request for Apple returns 61 rows and reaches back to a filing reported
 on 2011-07-20.
 
+The data starts in 2011. It covers listed and unlisted companies on US markets,
+domestic and foreign filers, and it keeps companies that no longer trade. A row
+holds the count as of the last quarterly or annual report. Shares issued or
+bought back after that report are not in it.
+
 ## When to use it
 
 - How many Apple shares are outstanding today?
@@ -53,20 +58,38 @@ This tool takes no `query`. There is no Lucene syntax here.
 The envelope is `{total, data[]}`. `total` is an object, `{value, relation}`,
 not a number. One element of `data[]` is one source filing.
 
-| Field                       | Type     | Meaning                                                                                                |
-| --------------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
-| `id`                        | string   | Internal record ID.                                                                                    |
-| `tickers`                   | string[] | Every ticker of the filer. Alphabet returns `["GOOGL","GOOG","GOOGM","GOOGN"]`.                        |
-| `cik`                       | string   | Filer CIK, no leading zeros.                                                                           |
-| `float.outstandingShares[]` | object[] | One entry per share class. Keys: `period`, `shareClass`, `value`.                                      |
-| `float.publicFloat[]`       | object[] | Same keys. Empty on 10-Q rows.                                                                         |
-| `...[].period`              | string   | The date the number was measured, `YYYY-MM-DD`. It is not the filing date.                             |
-| `...[].shareClass`          | string   | Class label. Often an empty string. Alphabet rows use `CommonClassA`, `CommonClassB`, `CapitalClassC`. |
-| `outstandingShares[].value` | number   | A share count.                                                                                         |
-| `publicFloat[].value`       | number   | A market value in USD, not a share count. Apple reported 3,253,431,000,000 for 2025-03-28.             |
-| `reportedAt`                | string   | When the source filing was filed, ISO 8601 with offset.                                                |
-| `periodOfReport`            | string   | Fiscal period end of the source filing. Absent on some pre-2013 rows.                                  |
-| `sourceFilingAccessionNo`   | string   | Accession number of the 10-K or 10-Q the numbers came from.                                            |
+### Envelope
+
+| Field            | Type   | Meaning                                                          |
+| ---------------- | ------ | ------------------------------------------------------------------ |
+| `total.value`    | number | Number of float records that match the request.                  |
+| `total.relation` | string | `eq` for an exact count.                                         |
+| `data[]`         | array  | The float records. One item is one reporting period.             |
+
+### Record
+
+| Field                            | Type     | Meaning                                                          |
+| -------------------------------- | -------- | ------------------------------------------------------------------ |
+| `data[].id`                      | string   | Unique identifier of the float record.                           |
+| `data[].tickers`                 | string[] | The tickers the record applies to. One ticker for one share class, several for more. Alphabet returns `["GOOGL","GOOG","GOOGM","GOOGN"]`. |
+| `data[].cik`                     | string   | CIK of the filer, no leading zeros.                              |
+| `data[].reportedAt`              | string   | Time the source filing and its share data went public, ISO 8601 with offset. |
+| `data[].periodOfReport`          | string   | Fiscal period the source filing covers, `YYYY-MM-DD`. Absent on some pre-2013 rows. |
+| `data[].sourceFilingAccessionNo` | string   | Accession number of the 10-K or 10-Q the numbers came from.      |
+| `data[].float`                   | object   | The share data for that reporting period.                        |
+
+### Share counts and public float
+
+| Field                                         | Type     | Meaning                                            |
+| --------------------------------------------- | -------- | ---------------------------------------------------- |
+| `data[].float.outstandingShares[]`            | object[] | One object per share class. Each one holds a share count and the date it applies to. |
+| `data[].float.outstandingShares[].period`     | string   | The date the count applies to, `YYYY-MM-DD`. It is not the filing date. It usually falls between `periodOfReport` and `reportedAt`. |
+| `data[].float.outstandingShares[].shareClass` | string   | Class label, when the filer reports one. Often an empty string. Alphabet rows use `CommonClassA`, `CommonClassB`, `CapitalClassC`. |
+| `data[].float.outstandingShares[].value`      | number   | Number of shares outstanding in that class.        |
+| `data[].float.publicFloat[]`                  | object[] | One object per share class. Each one holds the dollar amount of the public float and the date it applies to. Empty when the filing gave no figure. That is normal on 10-Q rows. |
+| `data[].float.publicFloat[].period`           | string   | The date the amount applies to, `YYYY-MM-DD`.      |
+| `data[].float.publicFloat[].shareClass`       | string   | Class label, when the filer reports one. Often an empty string. |
+| `data[].float.publicFloat[].value`            | number   | The public float in US dollars, not a share count. Apple reported 3,253,431,000,000 for 2025-03-28. |
 
 **This tool has no pagination.** `size`, `from` and `sort` are accepted by the
 schema and then ignored. One call returns every period the server holds for that
@@ -123,8 +146,8 @@ Prompt: "How many Apple shares are outstanding, and what was the last public flo
   return an error. Strip the leading zeros.
 - The server caps the underlying query at 200 records. Apple has 61, so it
   stays under the cap.
-- The tool description calls public float "shares held by non-affiliates". The
-  returned `publicFloat[].value` is a dollar amount. Trust the data.
+- The tool description calls public float "shares held by non-affiliates".
+  `publicFloat[].value` is the public float in US dollars, not a share count.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

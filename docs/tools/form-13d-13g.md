@@ -14,9 +14,9 @@ Search Schedule 13D and Schedule 13G beneficial-ownership filings.
 
 An investor who crosses 5% of a class of a public company's shares must file a
 Schedule 13D or 13G. 13D signals an active intent. 13G signals a passive
-position. This tool searches both. One item in `filings[]` is one filing. Each
-filing lists one or more reporting persons in `owners[]`, with voting power,
-dispositive power and percent of class.
+position. This tool searches both, from 1994 to present. One item in `filings[]`
+is one filing. Each filing lists one or more reporting persons in `owners[]`,
+with voting power, dispositive power and percent of class.
 
 A request for `owners.name:Point72 AND owners.amountAsPercent:[10 TO *]`
 with `size: 1` returned `total.value: 8` and one SC 13D from 2022 in 1,319
@@ -54,8 +54,13 @@ returns both form families. Query fields:
 - `owners.amountAsPercent`, including range syntax, for example
   `owners.amountAsPercent:[10 TO *]`.
 - `accessionNo`, for example `accessionNo:*`.
-- `formType`, `nameOfIssuer`, `cusip`, `filers.cik`, `eventDate`, `filedAt`,
-  `titleOfSecurities`. All present in the response body.
+- `owners.typeOfReportingPerson`, `owners.sourceOfFunds`,
+  `owners.memberOfGroup.a` and `owners.memberOfGroup.b`.
+- `formType`, `nameOfIssuer`, `cusip`, `filers.cik`, `filers.name`, `eventDate`,
+  `filedAt`, `titleOfSecurities`. All present in the response body.
+- The narrative items are searchable too. `item4.transactionPurpose` and
+  `item6.contractDescription` cover 13D. `item5.classOwnership5PercentOrLess`
+  and `item8.identificationAndClassificationOfGroupMembers` cover 13G.
 
 ## Output
 
@@ -63,24 +68,125 @@ The envelope is `{total, filings[]}`. This is one of six tools that use
 `filings[]` instead of `data[]`. Read `total.value` and `total.relation`.
 `"gte"` at 10000 means 10,000 or more.
 
-| Field                                                                                                | Type    | Meaning                                                                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `accessionNo`                                                                                        | string  | EDGAR accession number.                                                                                                                                                                                                                                                  |
-| `formType`                                                                                           | string  | `SC 13D` in the example response. `SC 13D/A` also appears.                                                                                                                                                                                                              |
-| `filedAt`, `eventDate`                                                                               | string  | Filing timestamp in ISO 8601, and the `YYYY-MM-DD` date of the event that triggered the filing.                                                                                                                                                                          |
-| `filers[]`                                                                                           | array   | `cik` and `name`. The name carries the role as a suffix, `(Subject)` for the issuer and `(Filed by)` for the investor. Parse that suffix to tell them apart.                                                                                                             |
-| `nameOfIssuer`, `titleOfSecurities`                                                                  | string  | The subject company and the class covered, as filed.                                                                                                                                                                                                                     |
-| `cusip`                                                                                              | array   | Array of strings. It can be empty.                                                                                                                                                                                                                                       |
-| `schedule13GFiledPreviously`                                                                         | boolean | Whether a 13G was filed before this 13D. `amendmentNo` appears on amendments and is absent here.                                                                                                                                                                         |
-| `owners[]`                                                                                           | array   | One item per reporting person.                                                                                                                                                                                                                                           |
-| `owners[].name`                                                                                      | string  | **Type varies.** A string in the example response, an array of strings in other records. Handle both.                                                                                                                                                                   |
-| `owners[].sourceOfFunds`                                                                             | array   | **Type varies.** `["OO"]` in the example response, `"OO"` in other records.                                                                                                                                                                                             |
-| `owners[].soleVotingPower`, `.sharedVotingPower`, `.soleDispositivePower`, `.sharedDispositivePower` | number  | Shares the person can vote or sell, alone or with others.                                                                                                                                                                                                                |
-| `owners[].aggregateAmountOwned`, `.amountAsPercent`                                                  | number  | Total beneficially owned shares, and percent of the class. `5351000` and `20.3` in the example response.                                                                                                                                                                 |
-| `owners[].typeOfReportingPerson`                                                                     | array   | SEC codes, such as `IN` individual, `CO` corporation, `OO` other. Not the full code list.                                                                                                                                                                               |
-| `owners[].place`                                                                                     | string  | Place of organisation or citizenship. `Delaware` and `United States` in the example response. Other records use codes such as `X0` and `D8`.                                                                                                                             |
-| `owners[].amountExcludesCertainShares`                                                               | boolean | **Field name varies.** The example response uses this name. Other records use `isAggregateExcludeShares`. Check for both.                                                                                                                                                |
-| `item1` to `item7`                                                                                   | object  | Narrative items: security and issuer, identity, source of funds, purpose, interest in securities, contracts, exhibits. **Absent in the example response.** Present on an `SC 13D/A` record. They do not appear on every record.                                          |
+### Envelope
+
+| Field            | Type   | Meaning                                                        |
+| ---------------- | ------ | --------------------------------------------------------------- |
+| `total.value`    | number | Number of filings that match the query.                          |
+| `total.relation` | string | `eq` means the count is exact. `gte` means at least that many.    |
+| `filings[]`      | array  | The matching filings. One item per filing.                       |
+
+### Filing
+
+| Field                                   | Type    | Meaning                                                                                                                        |
+| --------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `filings[].id`                          | string  | System-internal identifier of the filing record.                                                                                 |
+| `filings[].accessionNo`                 | string  | EDGAR accession number of the filing.                                                                                            |
+| `filings[].formType`                    | string  | EDGAR form type. `SC 13D` in the example response. `SC 13D/A`, `SC 13G` and `SC 13G/A` also appear. The `/A` suffix marks an amendment. |
+| `filings[].amendmentNo`                 | string  | Sequence number of the amendment. Only an amended filing carries it.                                                              |
+| `filings[].filedAt`                     | string  | Time EDGAR accepted the filing, ISO 8601 with an offset.                                                                         |
+| `filings[].eventDate`                   | string  | Date of the event that made the filing obligatory, `YYYY-MM-DD`.                                                                 |
+| `filings[].filers[]`                    | array   | The parties on the EDGAR header. It holds the issuer and the investor.                                                            |
+| `filings[].filers[].cik`                | string  | CIK of the party.                                                                                                                |
+| `filings[].filers[].name`               | string  | Name of the party, with the role as a suffix. `(Subject)` marks the issuer. `(Filed by)` marks the investor. Parse that suffix to tell them apart. |
+| `filings[].nameOfIssuer`                | string  | Name of the issuer of the acquired security.                                                                                     |
+| `filings[].titleOfSecurities`           | string  | Title of the class of securities acquired, as filed.                                                                             |
+| `filings[].cusip[]`                     | array   | Strings. CUSIP numbers of the acquired securities. It can be empty.                                                              |
+| `filings[].schedule13GFiledPreviously`  | boolean | 13D only. Whether the person filed a Schedule 13G on this position before.                                                        |
+| `filings[].applicableRule`              | object  | 13G only. The rule the filer relies on.                                                                                          |
+| `filings[].applicableRule.13d-1b`       | boolean | 13G only. `true` when the filer files under Rule 13d-1(b).                                                                        |
+| `filings[].applicableRule.13d-1c`       | boolean | 13G only. `true` when the filer files under Rule 13d-1(c).                                                                        |
+| `filings[].applicableRule.13d-1d`       | boolean | 13G only. `true` when the filer files under Rule 13d-1(d).                                                                        |
+| `filings[].owners[]`                    | array   | The reporting persons. One item per person.                                                                                      |
+| `filings[].signatures[]`                | array   | The signature blocks of the filing.                                                                                              |
+| `filings[].exhibits[]`                  | array   | The exhibits attached to the filing.                                                                                             |
+
+### `filings[].owners[]`
+
+| Field                                          | Type            | Meaning                                                                                                                          |
+| ---------------------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `owners[].name`                                | string or array | Full legal name of the reporting person. **Type varies.** A string in the example response, an array of strings in other records. Handle both. |
+| `owners[].memberOfGroup`                       | object          | Group membership of the person. `a` affirms it, `b` disclaims it.                                                                  |
+| `owners[].memberOfGroup.a`                     | boolean         | `true` when the person holds the shares as an affirmed member of a group.                                                          |
+| `owners[].memberOfGroup.b`                     | boolean         | `true` when the person disclaims membership in the group.                                                                          |
+| `owners[].sourceOfFunds`                       | array or string | 13D only. Codes for the money used to buy the shares: `SC` securities of the issuer, `BK` bank loan, `AF` affiliate funds, `WC` working capital, `PF` personal funds, `OO` other. **Type varies.** `["OO"]` in the example response, `"OO"` in other records. |
+| `owners[].legalProceedingsDisclosureRequired`  | boolean         | 13D only. Whether the person must disclose legal proceedings.                                                                      |
+| `owners[].place`                               | string          | Citizenship of a person, or place of organisation of an entity. `Delaware` and `United States` in the example response. Other records use codes such as `X0` and `D8`. |
+| `owners[].soleVotingPower`                     | number          | Shares the person alone can vote.                                                                                                  |
+| `owners[].sharedVotingPower`                   | number          | Shares the person votes together with others.                                                                                      |
+| `owners[].soleDispositivePower`                | number          | Shares the person alone can sell.                                                                                                  |
+| `owners[].sharedDispositivePower`              | number          | Shares the person can sell together with others.                                                                                   |
+| `owners[].aggregateAmountOwned`                | number          | Total shares the person owns beneficially. `5351000` in the example response.                                                      |
+| `owners[].amountExcludesCertainShares`         | boolean         | `true` when the aggregate amount leaves out shares the person disclaims. **Field name varies.** Other records use `isAggregateExcludeShares`. Check for both. |
+| `owners[].isAggregateExcludeShares`            | boolean         | The same flag under a second name. A record carries one name or the other.                                                         |
+| `owners[].amountAsPercent`                     | number          | Beneficial ownership as a percent of the class, rounded to one decimal. `20.3` in the example response.                            |
+| `owners[].typeOfReportingPerson[]`             | array           | Strings. Classification codes of the person, such as `IN` individual, `CO` corporation and `OO` other. The full set is `BD`, `BK`, `CO`, `CP`, `EP`, `FI`, `HC`, `IA`, `IC`, `IN`, `IV`, `PN`, `SA` and `OO`. |
+| `owners[].footnotes[]`                         | array           | Footnotes attached to the row of the person, if any.                                                                               |
+
+### Schedule 13D items
+
+A 13D carries seven narrative items. They hold long free text. They are absent
+from the example response and do not appear on every record.
+
+| Field                                          | Type   | Meaning                                                                     |
+| ---------------------------------------------- | ------ | ----------------------------------------------------------------------------- |
+| `item1.securityTitle`                          | string | Title of the class of security the schedule covers.                           |
+| `item1.issuerName`                             | string | Name of the issuer.                                                           |
+| `item1.issuerPrincipalAddress.street1`         | string | First street line of the principal office of the issuer.                      |
+| `item1.issuerPrincipalAddress.street2`         | string | Second street line of that office.                                            |
+| `item1.issuerPrincipalAddress.city`            | string | City of that office.                                                          |
+| `item1.issuerPrincipalAddress.stateOrCountry`  | string | State or country of that office.                                              |
+| `item1.issuerPrincipalAddress.zipCode`         | string | Postal code of that office.                                                   |
+| `item1.commentText`                            | string | Context the filer added to item 1.                                            |
+| `item2.filingPersonName`                       | string | Name of the person that files the schedule.                                   |
+| `item2.principalBusinessAddress`               | string | Residence or business address of that person.                                 |
+| `item2.principalJob`                           | string | Principal occupation or employment of that person.                            |
+| `item2.hasBeenConvicted`                       | string | Whether a criminal proceeding convicted that person.                          |
+| `item2.convictionDescription`                  | string | Civil proceedings and securities law violations of that person.               |
+| `item2.citizenship`                            | string | Citizenship of that person.                                                   |
+| `item3.fundsSource`                            | string | Source and amount of the money used to buy the shares.                        |
+| `item4.transactionPurpose`                     | string | Purpose of the purchase, and the actions the person plans.                    |
+| `item5.percentageOfClassSecurities`            | string | Aggregate percent of the class the person owns.                               |
+| `item5.numberOfShares`                         | string | Breakdown of voting power and dispositive power.                              |
+| `item5.transactionDescription`                 | string | Transactions in the class in the past 60 days.                                |
+| `item5.listOfShareholders`                     | string | Other persons with a right to the dividends or the sale proceeds.             |
+| `item5.date5PercentOwnership`                  | string | Date the person stopped owning more than 5% of the class.                     |
+| `item6.contractDescription`                    | string | Contracts, arrangements and understandings about the securities.              |
+| `item7.filedExhibits`                          | string | Description of the exhibits filed with the schedule.                          |
+
+### Schedule 13G items
+
+A 13G carries ten items, not seven. The keys differ from the 13D item that
+carries the same number.
+
+| Field                                                          | Type    | Meaning                                                                    |
+| -------------------------------------------------------------- | ------- | ---------------------------------------------------------------------------- |
+| `item1.issuerName`                                             | string  | Name of the issuer.                                                          |
+| `item1.issuerPrincipalExecutiveOfficeAddress`                  | string  | Address of the principal executive office of the issuer.                     |
+| `item2.filingPersonName`                                       | string  | Name of the reporting person.                                                |
+| `item2.principalBusinessOfficeOrResidenceAddress`              | string  | Business office or residence address of that person.                         |
+| `item2.citizenship`                                            | string  | Citizenship of that person.                                                  |
+| `item3.notApplicable`                                          | boolean | `true` when item 3 does not apply to the filer.                              |
+| `item3.typesOfPersons[]`                                       | array   | Classification of the filer under sub-paragraphs (a) to (k) of the rule.     |
+| `item3.otherTypeOfPersonFiling`                                | string  | Context for a filer type outside that list.                                  |
+| `item4[]`                                                      | array   | Ownership of each reporting person. One item per person.                     |
+| `item4[].amountBeneficiallyOwned`                              | number  | Shares the person owns beneficially.                                         |
+| `item4[].classPercent`                                         | number  | Percent of the class the person owns.                                        |
+| `item4[].numberOfSharesPersonHas.solePowerOrDirectToVote`      | number  | Shares the person alone can vote or direct the vote of.                      |
+| `item4[].numberOfSharesPersonHas.sharedPowerOrDirectToVote`    | number  | Shares the person votes or directs the vote of with others.                  |
+| `item4[].numberOfSharesPersonHas.solePowerOrDirectToDispose`   | number  | Shares the person alone can sell or direct the sale of.                      |
+| `item4[].numberOfSharesPersonHas.sharedPowerOrDirectToDispose` | number  | Shares the person can sell or direct the sale of with others.                |
+| `item5.classOwnership5PercentOrLess`                           | boolean | `true` when the person stopped owning more than 5% of the class.             |
+| `item6.notApplicable`                                          | boolean | `true` when item 6 does not apply.                                           |
+| `item6.ownershipMoreThan5PercentOnBehalfOfAnotherPerson`       | string  | Disclosure of shares the person holds for someone else.                      |
+| `item7.notApplicable`                                          | boolean | `true` when item 7 does not apply.                                           |
+| `item7.subsidiaryIdentificationAndClassification`              | string  | Identity and classification of the subsidiary that bought the shares.        |
+| `item8.notApplicable`                                          | boolean | `true` when item 8 does not apply.                                           |
+| `item8.identificationAndClassificationOfGroupMembers`          | string  | Identity and classification of each member of the group.                     |
+| `item9.notApplicable`                                          | boolean | `true` when item 9 does not apply.                                           |
+| `item9.groupDissolutionNotice`                                 | string  | Notice that the group has dissolved.                                         |
+| `item10.notApplicable`                                         | boolean | `true` when item 10 does not apply.                                          |
+| `item10.certifications`                                        | string  | Certification text of the filer.                                             |
 
 Add the `owners[]` numbers with care. In the example response both reporting
 persons report the same 5,351,000 shares and the same 20.3%. That is one economic
