@@ -1,0 +1,92 @@
+{
+  "tool": "sec-litigation-releases",
+  "request": {
+    "query": "releaseNo:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 128,
+  "rawBytes": 2010,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":10000,\"relation\":\"gte\"},\"data\":[{\"id\":\"2593bbd5e44e4ed973e3b7d90525864c\",\"releaseNo\":\"LR-26609\",\"releasedAt\":\"2026-08-11T21:11:14Z\",\"url\":\"https://www.sec.gov/enforcement-litigation/litigation-releases/lr-26609\",\"title\":\"Benjamin Tesfaye\",\"subTitle\":\"SEC Files Settled Action as to Texas Resident Charged with Insider Trading\",\"caseCitations\":[\"Securities and Exchange Commission v. Benjamin Tesfaye, No. 3:26-cv-02660-K (N.D. Tex. filed Aug. 11, 2026)\"],\"resources\":[{\"label\":\"SEC Complaint\",\"url\":\"https://www.sec.gov/files/litigation/complaints/2026/comp26609.pdf\"}],\"summary\":\"The SEC filed settled insider trading charges against Benjamin Tesfaye for illegally trading Calliditas Therapeutics AB securities using nonpublic information from his romantic partner, resulting in illicit profits.\",\"tags\":[\"insider trading\"],\"entities\":[{\"name\":\"Benjamin Tesfaye\",\"type\":\"individual\",\"role\":\"defendant\"},{\"name\":\"Calliditas Therapeutics AB\",\"type\":\"company\",\"role\":\"target of insider trading\",\"cik\":\"1795579\",\"ticker\":\"CALT\"},{\"name\":\"Asahi Kasei Corp.\",\"type\":\"company\",\"role\":\"acquirer\"}],\"complaints\":[\"Tesfaye misappropriated material, nonpublic information about the tender offer from his then-romantic partner.\",\"Tesfaye purchased Calliditas securities, including American Depository Receipts and out-of-the-money call options, based on nonpublic information.\"],\"parallelActionsTakenBy\":[],\"hasAgreedToSettlement\":true,\"hasAgreedToPayPenalty\":true,\"penaltyAmounts\":[{\"penaltyAmount\":\"18668\",\"penaltyAmountText\":\"$18,668\",\"imposedOn\":\"Benjamin Tesfaye\"}],\"requestedRelief\":[\"permanent injunctions\",\"disgorgement of profits\",\"civil penalties\"],\"violatedSections\":[\"Sections 10(b) and 14(e) of the Securities Exchange Act of 1934\",\"Rules 10b-5 and 14e-3\"],\"investigationConductedBy\":[\"Geoffrey Gettinger\",\"Brittany Garmyn\",\"Charles Joshua Felker\",\"Pei Y. Chung\"],\"litigationLedBy\":[],\"otherAgenciesInvolved\":[{\"name\":\"Financial Industry Regulatory Authority\",\"country\":\"United States\"}]}]}",
+  "data": {
+    "total": {
+      "value": 10000,
+      "relation": "gte"
+    },
+    "data": [
+      {
+        "id": "2593bbd5e44e4ed973e3b7d90525864c",
+        "releaseNo": "LR-26609",
+        "releasedAt": "2026-08-11T21:11:14Z",
+        "url": "https://www.sec.gov/enforcement-litigation/litigation-releases/lr-26609",
+        "title": "Benjamin Tesfaye",
+        "subTitle": "SEC Files Settled Action as to Texas Resident Charged with Insider Trading",
+        "caseCitations": [
+          "Securities and Exchange Commission v. Benjamin Tesfaye, No. 3:26-cv-02660-K (N.D. Tex. filed Aug. 11, 2026)"
+        ],
+        "resources": [
+          {
+            "label": "SEC Complaint",
+            "url": "https://www.sec.gov/files/litigation/complaints/2026/comp26609.pdf"
+          }
+        ],
+        "summary": "The SEC filed settled insider trading charges against Benjamin Tesfaye for illegally trading Calliditas Therapeutics AB securities using nonpublic information from his romantic partner, resulting in illicit profits.",
+        "tags": [
+          "insider trading"
+        ],
+        "entities": [
+          {
+            "name": "Benjamin Tesfaye",
+            "type": "individual",
+            "role": "defendant"
+          },
+          {
+            "name": "Calliditas Therapeutics AB",
+            "type": "company",
+            "role": "target of insider trading",
+            "cik": "1795579",
+            "ticker": "CALT"
+          },
+          "... 1 more rows trimmed"
+        ],
+        "complaints": [
+          "Tesfaye misappropriated material, nonpublic information about the tender offer from his then-romantic partner.",
+          "Tesfaye purchased Calliditas securities, including American Depository Receipts and out-of-the-money call options, based on nonpublic information."
+        ],
+        "parallelActionsTakenBy": [],
+        "hasAgreedToSettlement": true,
+        "hasAgreedToPayPenalty": true,
+        "penaltyAmounts": [
+          {
+            "penaltyAmount": "18668",
+            "penaltyAmountText": "$18,668",
+            "imposedOn": "Benjamin Tesfaye"
+          }
+        ],
+        "requestedRelief": [
+          "permanent injunctions",
+          "disgorgement of profits",
+          "... 1 more rows trimmed"
+        ],
+        "violatedSections": [
+          "Sections 10(b) and 14(e) of the Securities Exchange Act of 1934",
+          "Rules 10b-5 and 14e-3"
+        ],
+        "investigationConductedBy": [
+          "Geoffrey Gettinger",
+          "Brittany Garmyn",
+          "... 2 more rows trimmed"
+        ],
+        "litigationLedBy": [],
+        "otherAgenciesInvolved": [
+          {
+            "name": "Financial Industry Regulatory Authority",
+            "country": "United States"
+          }
+        ]
+      }
+    ]
+  }
+}

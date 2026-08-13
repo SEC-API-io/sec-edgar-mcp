@@ -1,0 +1,79 @@
+{
+  "tool": "form-x-17a-5",
+  "request": {
+    "query": "*:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 120,
+  "rawBytes": 1342,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":10000,\"relation\":\"gte\"},\"data\":[{\"id\":\"448c171413f4f3d8b7fded18b897d4c6\",\"accessionNo\":\"0001876509-26-000001\",\"formType\":\"X-17A-5\",\"filedAt\":\"2026-08-12T17:50:20-04:00\",\"periodOfReport\":\"2026-06-30\",\"effectivenessDate\":\"2026-08-12\",\"entities\":[{\"companyName\":\"RMB SECURITIES (USA) INC. (Filer)\",\"cik\":\"1876509\",\"irsNo\":\"863557404\",\"stateOfIncorporation\":\"DE\",\"fiscalYearEnd\":\"0630\",\"type\":\"X-17A-5\",\"act\":\"34\",\"fileNo\":\"008-70765\",\"filmNo\":\"261269057\"}],\"submissionInformation\":{\"periodBegin\":\"07-01-2025\",\"periodEnd\":\"06-30-2026\",\"typeOfRegistrant\":{\"typeOfBDRegistrant\":\"Broker-dealer\"},\"materialWeakness\":\"N\"},\"registrantIdentification\":{\"brokerDealerName\":\"RMB SECURITIES (USA) INC.\",\"businessAddress\":{\"street1\":\"75 ROCKEFELLER PLAZA\",\"street2\":\"SUITE 23A\",\"city\":\"NEW YORK\",\"stateOrCountry\":\"NY\",\"zipCode\":\"10019\"},\"contactPersonName\":\"Phyllis Chin\",\"contactPersonPhoneNumber\":\"212-751-4422\"},\"accountantIdentification\":{\"accountantName\":\"Rayfield & Licata, PC\",\"accountantAddress\":{\"street1\":\"25B Vreeland Road, Suite 104\",\"city\":\"Florham Park\",\"stateOrCountry\":\"NJ\",\"zipCode\":\"7932\"},\"accountantType\":\"Certified Public Accountant\"},\"oathSignature\":{\"signPersonName\":\"James Gregory\",\"entityName\":\"RMB SECURITIES (USA) INC.\",\"signDate\":\"06-30-2026\",\"signature\":\"James Gregory\",\"oathTitle\":\"Chief Executive Officer\"}}]}",
+  "data": {
+    "total": {
+      "value": 10000,
+      "relation": "gte"
+    },
+    "data": [
+      {
+        "id": "448c171413f4f3d8b7fded18b897d4c6",
+        "accessionNo": "0001876509-26-000001",
+        "formType": "X-17A-5",
+        "filedAt": "2026-08-12T17:50:20-04:00",
+        "periodOfReport": "2026-06-30",
+        "effectivenessDate": "2026-08-12",
+        "entities": [
+          {
+            "companyName": "RMB SECURITIES (USA) INC. (Filer)",
+            "cik": "1876509",
+            "irsNo": "863557404",
+            "stateOfIncorporation": "DE",
+            "fiscalYearEnd": "0630",
+            "type": "X-17A-5",
+            "act": "34",
+            "fileNo": "008-70765",
+            "filmNo": "261269057"
+          }
+        ],
+        "submissionInformation": {
+          "periodBegin": "07-01-2025",
+          "periodEnd": "06-30-2026",
+          "typeOfRegistrant": {
+            "typeOfBDRegistrant": "Broker-dealer"
+          },
+          "materialWeakness": "N"
+        },
+        "registrantIdentification": {
+          "brokerDealerName": "RMB SECURITIES (USA) INC.",
+          "businessAddress": {
+            "street1": "75 ROCKEFELLER PLAZA",
+            "street2": "SUITE 23A",
+            "city": "NEW YORK",
+            "stateOrCountry": "NY",
+            "zipCode": "10019"
+          },
+          "contactPersonName": "Phyllis Chin",
+          "contactPersonPhoneNumber": "212-751-4422"
+        },
+        "accountantIdentification": {
+          "accountantName": "Rayfield & Licata, PC",
+          "accountantAddress": {
+            "street1": "25B Vreeland Road, Suite 104",
+            "city": "Florham Park",
+            "stateOrCountry": "NJ",
+            "zipCode": "7932"
+          },
+          "accountantType": "Certified Public Accountant"
+        },
+        "oathSignature": {
+          "signPersonName": "James Gregory",
+          "entityName": "RMB SECURITIES (USA) INC.",
+          "signDate": "06-30-2026",
+          "signature": "James Gregory",
+          "oathTitle": "Chief Executive Officer"
+        }
+      }
+    ]
+  }
+}

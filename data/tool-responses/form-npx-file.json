@@ -1,0 +1,163 @@
+{
+  "tool": "form-npx-file",
+  "request": {
+    "accessionNo": "0001021408-25-002642"
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 447,
+  "rawBytes": 1935174,
+  "truncated": true,
+  "text": "{\"id\":\"2224a830ab6324d47e6cff7158aeb49b\",\"accessionNo\":\"0001021408-25-002642\",\"formType\":\"N-PX\",\"filedAt\":\"2025-08-21T13:52:49-04:00\",\"periodOfReport\":\"2025-06-30\",\"cik\":\"2110\",\"ticker\":\"\",\"companyName\":\"COLUMBIA ACORN TRUST\",\"proxyVotingRecordsAttached\":true,\"headerData\":{\"submissionType\":\"N-PX\",\"filerInfo\":{\"registrantType\":\"RMIC\",\"filer\":{\"issuerCredentials\":{\"cik\":\"0000002110\"}},\"flags\":{\"overrideInternetFlag\":false,\"confirmingCopyFlag\":false},\"investmentCompanyType\":\"N-1A\",\"periodOfReport\":\"06/30/2025\"},\"seriesClass\":{\"reportSeriesClass\":{\"rptIncludeAllSeriesFlag\":true}}},\"formData\":{\"coverPage\":{\"yearOrQuarter\":\"YEAR\",\"reportCalendarYear\":\"2025\",\"reportingPerson\":{\"name\":\"Columbia Acorn Trust\",\"phoneNumber\":\"617-385-9536\",\"address\":{\"street1\":\"71 S. Wacker Drive, Suite 2500\",\"city\":\"Chicago\",\"stateOrCountry\":\"IL\",\"zipCode\":\"60606\"}},\"agentForService\":{\"name\":\"Ryan C. Larrenaga\",\"address\":{\"street1\":\"290 Congress Street\",\"city\":\"Boston\",\"stateOrCountry\":\"MA\",\"zipCode\":\"02210\"}},\"reportInfo\":{\"reportType\":\"FUND VOTING REPORT\"},\"fileNumber\":\"811-01829\",\"leiNumber\":\"549300DX0CWIN8VE1908\",\"explanatoryInformation\":{\"explanatoryChoice\":false}},\"summaryPage\":{\"otherIncludedManagersCount\":0},\"seriesPage\":{\"seriesCount\":5,\"seriesDetails\":{\"seriesReports\":[{\"idOfSeries\":\"S000009184\",\"nameOfSeries\":\"Columbia Acorn Fund\",\"leiOfSeries\":\"549300X3KJ5X2R54O387\"},{\"idOfSeries\":\"S000009185\",\"nameOfSeries\":\"Columbia Acorn International\",\"leiOfSeries\":\"5493004K6O04MY5NT292\"},{\"idOfSeries\":\"S000009188\",\"nameOfSeries\":\"Columbia Acorn International Select\",\"leiOfSeries\":\"549300KTP8INZROJV026\"},{\"idOfSeries\":\"S000009189\",\"nameOfSeries\":\"Columbia Thermostat Fund\",\"leiOfSeries\":\"549300EN4NJA2NPKY702\"},{\"idOfSeries\":\"S000033621\",\"nameOfSeries\":\"Columbia Acorn European Fund\",\"leiOfSeries\":\"5493000YCDHFU2BTMI80\"}]}},\"signaturePage\":{\"reportingPerson\":\"Columbia Acorn Trust\",\"txSignature\":\"Daniel J. Beckman\",\"txPrintedSignature\":\"Daniel J. Beckman\",\"txTitle\":\"President and Principal Executive Officer\",\"txAsOfDate\":\"08/13/2025\"}},\"proxyVotingRecords\":[{\"issuerName\":\"monday.com Ltd.\",\"cusip\":\"M7S64H106\",\"isin\":\"IL0011762130\",\"meetingDate\":\"07/31/2024\",\"voteDescription\":\"Reelect Jeff Horing as Director\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":96858,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":96858,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"monday.com Ltd.\",\"cusip\":\"M7S64H106\",\"isin\":\"IL0011762130\",\"meetingDate\":\"07/31/2024\",\"voteDescription\":\"Reelect Avishai Abrahami as Director\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":96858,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":96858,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"monday.com Ltd.\",\"cusip\":\"M7S64H106\",\"isin\":\"IL0011762130\",\"meetingDate\":\"07/31/2024\",\"voteDescription\":\"Reappoint Brightman, Almagor and Zohar as Auditors and Authorize Board to Fix Their Remuneration\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"AUDIT-RELATED\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":96858,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":96858,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"BioLife Solutions, Inc.\",\"cusip\":\"09062W204\",\"isin\":\"US09062W2044\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"Election of Directors: Roderick de Greef\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":842926,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":842926,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"BioLife Solutions, Inc.\",\"cusip\":\"09062W204\",\"isin\":\"US09062W2044\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"Election of Directors: Joydeep Goswami\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":842926,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"WITHHOLD\",\"sharesVoted\":842926,\"managementRecommendation\":\"AGAINST\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"BioLife Solutions, Inc.\",\"cusip\":\"09062W204\",\"isin\":\"US09062W2044\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"Election of Directors: Amy DuRoss\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":842926,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":842926,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"BioLife Solutions, Inc.\",\"cusip\":\"09062W204\",\"isin\":\"US09062W2044\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"Election of Directors: Rachel Ellingson\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":842926,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"WITHHOLD\",\"sharesVoted\":842926,\"managementRecommendation\":\"AGAINST\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"BioLife Solutions, Inc.\",\"cusip\":\"09062W204\",\"isin\":\"US09062W2044\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"Election of Directors: Timothy L. Moore\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":842926,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":842926,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"BioLife Solutions, Inc.\",\"cusip\":\"09062W204\",\"isin\":\"US09062W2044\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To approve, on a non-binding, advisory basis, the compensation of our named executive officers.\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"SECTION 14A SAY-ON-PAY VOTES\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":842926,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":842926,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"BioLife Solutions, Inc.\",\"cusip\":\"09062W204\",\"isin\":\"US09062W2044\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To ratify the appointment by the Board of Grant Thornton LLP as the Company's independent registered public accounting firm for the fiscal year ending December 31, 2024.\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"AUDIT-RELATED\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":842926,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":842926,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Skyline Champion Corporation\",\"cusip\":\"830830105\",\"isin\":\"US8308301055\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To elect nine members of the Board of Directors, each to serve until the next annual meeting of shareholders or until a successor has been duly elected and qualified: Keith Anderson\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":657169,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":657169,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Skyline Champion Corporation\",\"cusip\":\"830830105\",\"isin\":\"US8308301055\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To elect nine members of the Board of Directors, each to serve until the next annual meeting of shareholders or until a successor has been duly elected and qualified: Michael Berman\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":657169,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":657169,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Skyline Champion Corporation\",\"cusip\":\"830830105\",\"isin\":\"US8308301055\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To elect nine members of the Board of Directors, each to serve until the next annual meeting of shareholders or until a successor has been duly elected and qualified: Eddie Capel\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":657169,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":657169,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Skyline Champion Corporation\",\"cusip\":\"830830105\",\"isin\":\"US8308301055\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To elect nine members of the Board of Directors, each to serve until the next annual meeting of shareholders or until a successor has been duly elected and qualified: Erin Mulligan Helgren\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":657169,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":657169,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Skyline Champion Corporation\",\"cusip\":\"830830105\",\"isin\":\"US8308301055\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To elect nine members of the Board of Directors, each to serve until the next annual meeting of shareholders or until a successor has been duly elected and qualified: Michael Kaufman\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":657169,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"WITHHOLD\",\"sharesVoted\":657169,\"managementRecommendation\":\"AGAINST\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Skyline Champion Corporation\",\"cusip\":\"830830105\",\"isin\":\"US8308301055\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To elect nine members of the Board of Directors, each to serve until the next annual meeting of shareholders or until a successor has been duly elected and qualified: Tawn Kelley\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":657169,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":657169,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Skyline Champion Corporation\",\"cusip\":\"830830105\",\"isin\":\"US8308301055\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To elect nine members of the Board of Directors, each to serve until the next annual meeting of shareholders or until a successor has been duly elected and qualified: Nikul Patel\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":657169,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":657169,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Skyline Champion Corporation\",\"cusip\":\"830830105\",\"isin\":\"US8308301055\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To elect nine members of the Board of Directors, each to serve until the next annual meeting of shareholders or until a successor has been duly elected and qualified: Gary E. Robinette\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":657169,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":657169,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Skyline Champion Corporation\",\"cusip\":\"830830105\",\"isin\":\"US8308301055\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To elect nine members of the Board of Directors, each to serve until the next annual meeting of shareholders or until a successor has been duly elected and qualified: Mark Yost\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":657169,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":657169,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Skyline Champion Corporation\",\"cusip\":\"830830105\",\"isin\":\"US8308301055\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To ratify the appointment of Ernst & Young LLP as Skyline Champion's independent registered public accounting firm.\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"AUDIT-RELATED\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":657169,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":657169,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Skyline Champion Corporation\",\"cusip\":\"830830105\",\"isin\":\"US8308301055\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To consider a non-binding advisory vote on fiscal 2024 compensation paid to Skyline Champion's Named Executive Officers.\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"SECTION 14A SAY-ON-PAY VOTES\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":657169,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":657169,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Skyline Champion Corporation\",\"cusip\":\"830830105\",\"isin\":\"US8308301055\",\"meetingDate\":\"08/01/2024\",\"voteDescription\":\"To approve the amendment and restatement of the Company's Articles of Incorporation to change the Company's name from Skyline Champion Corporation to Champion Homes, Inc.\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"CORPORATE GOVERNANCE\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":657169,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":657169,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Allegro MicroSystems, Inc.\",\"cusip\":\"01749D105\",\"isin\":\"US01749D1054\",\"meetingDate\":\"08/08/2024\",\"voteDescription\":\"To elect four individuals to the Board of Directors for three-year terms expiring in 2027: Katsumi Kawashima\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":645114,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":645114,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Allegro MicroSystems, Inc.\",\"cusip\":\"01749D105\",\"isin\":\"US01749D1054\",\"meetingDate\":\"08/08/2024\",\"voteDescription\":\"To elect four individuals to the Board of Directors for three-year terms expiring in 2027: Joseph R. Martin\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":645114,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":645114,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Allegro MicroSystems, Inc.\",\"cusip\":\"01749D105\",\"isin\":\"US01749D1054\",\"meetingDate\":\"08/08/2024\",\"voteDescription\":\"To elect four individuals to the Board of Directors for three-year terms expiring in 2027: Vineet Nargolwala\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":645114,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":645114,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Allegro MicroSystems, Inc.\",\"cusip\":\"01749D105\",\"isin\":\"US01749D1054\",\"meetingDate\":\"08/08/2024\",\"voteDescription\":\"To elect four individuals to the Board of Directors for three-year terms expiring in 2027: Mary G. Puma\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":645114,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":645114,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Allegro MicroSystems, Inc.\",\"cusip\":\"01749D105\",\"isin\":\"US01749D1054\",\"meetingDate\":\"08/08/2024\",\"voteDescription\":\"To ratify the appointment of PricewaterhouseCoopers LLP as the Company's independent registered public accounting firm for the fiscal year ending March 28, 2025.\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"AUDIT-RELATED\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":645114,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":645114,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Allegro MicroSystems, Inc.\",\"cusip\":\"01749D105\",\"isin\":\"US01749D1054\",\"meetingDate\":\"08/08/2024\",\"voteDescription\":\"To approve, on an advisory basis, the Company's executive compensation.\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"SECTION 14A SAY-ON-PAY VOTES\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":645114,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":645114,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Modine Manufacturing Company\",\"cusip\":\"607828100\",\"isin\":\"US6078281002\",\"meetingDate\":\"08/15/2024\",\"voteDescription\":\"Election of Directors: Dr. Suresh V. Garimella\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":425038,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":425038,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Modine Manufacturing Company\",\"cusip\":\"607828100\",\"isin\":\"US6078281002\",\"meetingDate\":\"08/15/2024\",\"voteDescription\":\"Election of Directors: Mr. Christopher W. Patterson\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":425038,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":425038,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Modine Manufacturing Company\",\"cusip\":\"607828100\",\"isin\":\"US6078281002\",\"meetingDate\":\"08/15/2024\",\"voteDescription\":\"Election of Directors: Ms. Christine Y. Yan\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":425038,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":425038,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Modine Manufacturing Company\",\"cusip\":\"607828100\",\"isin\":\"US6078281002\",\"meetingDate\":\"08/15/2024\",\"voteDescription\":\"Advisory approval of the Company's named executive officer compensation.\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"SECTION 14A SAY-ON-PAY VOTES\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":425038,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":425038,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Modine Manufacturing Company\",\"cusip\":\"607828100\",\"isin\":\"US6078281002\",\"meetingDate\":\"08/15/2024\",\"voteDescription\":\"Ratification of the appointment of the Company's independent registered public accounting firm.\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"AUDIT-RELATED\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":425038,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":425038,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Dynatrace, Inc.\",\"cusip\":\"268150109\",\"isin\":\"US2681501092\",\"meetingDate\":\"08/23/2024\",\"voteDescription\":\"Election of Class II Directors: Jill Ward\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":488326,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":488326,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Dynatrace, Inc.\",\"cusip\":\"268150109\",\"isin\":\"US2681501092\",\"meetingDate\":\"08/23/2024\",\"voteDescription\":\"Election of Class II Directors: Kirsten O. Wolberg\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"DIRECTOR ELECTIONS\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":488326,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":488326,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Dynatrace, Inc.\",\"cusip\":\"268150109\",\"isin\":\"US2681501092\",\"meetingDate\":\"08/23/2024\",\"voteDescription\":\"Ratify the appointment of Ernst & Young LLP as Dynatrace's independent registered public accounting firm for the fiscal year ending March 31, 2025.\",\"voteCategories\":{\"voteCategory\":[{\"categoryType\":\"AUDIT-RELATED\"}]},\"voteSource\":\"ISSUER\",\"sharesVoted\":488326,\"sharesOnLoan\":0,\"vote\":{\"voteRecord\":[{\"howVoted\":\"FOR\",\"sharesVoted\":488326,\"managementRecommendation\":\"FOR\"}]},\"voteSeries\":\"S000009184\"},{\"issuerName\":\"Dynatrace, Inc.\",\"",
+  "data": {
+    "id": "2224a830ab6324d47e6cff7158aeb49b",
+    "accessionNo": "0001021408-25-002642",
+    "formType": "N-PX",
+    "filedAt": "2025-08-21T13:52:49-04:00",
+    "periodOfReport": "2025-06-30",
+    "cik": "2110",
+    "ticker": "",
+    "companyName": "COLUMBIA ACORN TRUST",
+    "proxyVotingRecordsAttached": true,
+    "headerData": {
+      "submissionType": "N-PX",
+      "filerInfo": {
+        "registrantType": "RMIC",
+        "filer": {
+          "issuerCredentials": {
+            "cik": "0000002110"
+          }
+        },
+        "flags": {
+          "overrideInternetFlag": false,
+          "confirmingCopyFlag": false
+        },
+        "investmentCompanyType": "N-1A",
+        "periodOfReport": "06/30/2025"
+      },
+      "seriesClass": {
+        "reportSeriesClass": {
+          "rptIncludeAllSeriesFlag": true
+        }
+      }
+    },
+    "formData": {
+      "coverPage": {
+        "yearOrQuarter": "YEAR",
+        "reportCalendarYear": "2025",
+        "reportingPerson": {
+          "name": "Columbia Acorn Trust",
+          "phoneNumber": "617-385-9536",
+          "address": {
+            "street1": "71 S. Wacker Drive, Suite 2500",
+            "city": "Chicago",
+            "stateOrCountry": "IL",
+            "zipCode": "60606"
+          }
+        },
+        "agentForService": {
+          "name": "Ryan C. Larrenaga",
+          "address": {
+            "street1": "290 Congress Street",
+            "city": "Boston",
+            "stateOrCountry": "MA",
+            "zipCode": "02210"
+          }
+        },
+        "reportInfo": {
+          "reportType": "FUND VOTING REPORT"
+        },
+        "fileNumber": "811-01829",
+        "leiNumber": "549300DX0CWIN8VE1908",
+        "explanatoryInformation": {
+          "explanatoryChoice": false
+        }
+      },
+      "summaryPage": {
+        "otherIncludedManagersCount": 0
+      },
+      "seriesPage": {
+        "seriesCount": 5,
+        "seriesDetails": {
+          "seriesReports": [
+            {
+              "idOfSeries": "S000009184",
+              "nameOfSeries": "Columbia Acorn Fund",
+              "leiOfSeries": "549300X3KJ5X2R54O387"
+            },
+            {
+              "idOfSeries": "S000009185",
+              "nameOfSeries": "Columbia Acorn International",
+              "leiOfSeries": "5493004K6O04MY5NT292"
+            },
+            "... 3 more rows trimmed"
+          ]
+        }
+      },
+      "signaturePage": {
+        "reportingPerson": "Columbia Acorn Trust",
+        "txSignature": "Daniel J. Beckman",
+        "txPrintedSignature": "Daniel J. Beckman",
+        "txTitle": "President and Principal Executive Officer",
+        "txAsOfDate": "08/13/2025"
+      }
+    },
+    "proxyVotingRecords": [
+      {
+        "issuerName": "monday.com Ltd.",
+        "cusip": "M7S64H106",
+        "isin": "IL0011762130",
+        "meetingDate": "07/31/2024",
+        "voteDescription": "Reelect Jeff Horing as Director",
+        "voteCategories": {
+          "voteCategory": [
+            {
+              "categoryType": "DIRECTOR ELECTIONS"
+            }
+          ]
+        },
+        "voteSource": "ISSUER",
+        "sharesVoted": 96858,
+        "sharesOnLoan": 0,
+        "vote": {
+          "voteRecord": [
+            {
+              "howVoted": "FOR",
+              "sharesVoted": 96858,
+              "managementRecommendation": "FOR"
+            }
+          ]
+        },
+        "voteSeries": "S000009184"
+      },
+      {
+        "issuerName": "monday.com Ltd.",
+        "cusip": "M7S64H106",
+        "isin": "IL0011762130",
+        "meetingDate": "07/31/2024",
+        "voteDescription": "Reelect Avishai Abrahami as Director",
+        "voteCategories": {
+          "voteCategory": [
+            {
+              "categoryType": "DIRECTOR ELECTIONS"
+            }
+          ]
+        },
+        "voteSource": "ISSUER",
+        "sharesVoted": 96858,
+        "sharesOnLoan": 0,
+        "vote": {
+          "voteRecord": [
+            {
+              "howVoted": "FOR",
+              "sharesVoted": 96858,
+              "managementRecommendation": "FOR"
+            }
+          ]
+        },
+        "voteSeries": "S000009184"
+      },
+      "... 4370 more rows trimmed"
+    ]
+  }
+}

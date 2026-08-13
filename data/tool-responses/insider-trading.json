@@ -1,0 +1,154 @@
+{
+  "tool": "insider-trading",
+  "request": {
+    "query": "issuer.tradingSymbol:AAPL",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 125,
+  "rawBytes": 3296,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":1374,\"relation\":\"eq\"},\"transactions\":[{\"id\":\"b0836b822c741c818f7a3affd335b9f0\",\"accessionNo\":\"0001140361-26-025622\",\"filedAt\":\"2026-06-17T18:40:43-04:00\",\"schemaVersion\":\"X0609\",\"documentType\":\"4\",\"periodOfReport\":\"2026-06-15\",\"notSubjectToSection16\":false,\"aff10b5One\":false,\"issuer\":{\"cik\":\"320193\",\"name\":\"Apple Inc.\",\"tradingSymbol\":\"AAPL\"},\"reportingOwner\":{\"cik\":\"1780525\",\"name\":\"Newstead Jennifer\",\"address\":{\"street1\":\"ONE APPLE PARK WAY\",\"city\":\"CUPERTINO\",\"state\":\"CA\",\"zipCode\":\"95014\"},\"relationship\":{\"isDirector\":false,\"isOfficer\":true,\"officerTitle\":\"SVP, GC and Secretary\",\"isTenPercentOwner\":false,\"isOther\":false}},\"nonDerivativeTable\":{\"transactions\":[{\"securityTitle\":\"Common Stock\",\"transactionDate\":\"2026-06-15\",\"coding\":{\"formType\":\"4\",\"code\":\"M\",\"equitySwapInvolved\":false},\"amounts\":{\"shares\":30104,\"pricePerShareFootnoteId\":[\"F1\"],\"acquiredDisposedCode\":\"A\"},\"postTransactionAmounts\":{\"sharesOwnedFollowingTransaction\":57784},\"ownershipNature\":{\"directOrIndirectOwnership\":\"D\"}},{\"securityTitle\":\"Common Stock\",\"securityTitleFootnoteId\":[\"F2\"],\"transactionDate\":\"2026-06-15\",\"coding\":{\"formType\":\"4\",\"code\":\"F\",\"equitySwapInvolved\":false},\"amounts\":{\"shares\":16238,\"pricePerShare\":296.42,\"acquiredDisposedCode\":\"D\"},\"postTransactionAmounts\":{\"sharesOwnedFollowingTransaction\":41546},\"ownershipNature\":{\"directOrIndirectOwnership\":\"D\"}}]},\"derivativeTable\":{\"transactions\":[{\"securityTitle\":\"Restricted Stock Unit\",\"conversionOrExercisePriceFootnoteId\":[\"F1\"],\"transactionDate\":\"2026-06-15\",\"coding\":{\"formType\":\"4\",\"code\":\"M\",\"equitySwapInvolved\":false},\"exerciseDateFootnoteId\":[\"F3\"],\"expirationDateFootnoteId\":[\"F3\"],\"underlyingSecurity\":{\"title\":\"Common Stock\",\"shares\":30104},\"amounts\":{\"shares\":30104,\"pricePerShareFootnoteId\":[\"F1\"],\"acquiredDisposedCode\":\"D\"},\"postTransactionAmounts\":{\"sharesOwnedFollowingTransaction\":210728},\"ownershipNature\":{\"directOrIndirectOwnership\":\"D\"}}]},\"footnotes\":[{\"id\":\"F1\",\"text\":\"Each restricted stock unit (\\\"RSU\\\") represents the right to receive, at settlement, one share of common stock. This transaction represents the settlement of RSUs in shares of common stock on their scheduled vesting date.\"},{\"id\":\"F2\",\"text\":\"Shares withheld by Apple to satisfy tax withholding requirements on vesting of RSUs. No shares were sold.\"},{\"id\":\"F3\",\"text\":\"This award was granted on February 15, 2026. 20% of the total number of RSUs subject to the award vested on March 15, 2026, and 10% of the total number of RSUs subject to the award vested on June 15, 2026. 10% of the total number of RSUs subject to the award  are scheduled to vest on each of September 15 and December 15, 2026; 8.75% of the total number of RSUs subject to the award are scheduled to vest on each of March 15, June 15, September 15 and December 15, 2027; 2.5% of the total number of RSUs subject to the award are scheduled to vest on each of March 15, June 15, September 15 and December 15, 2028; and 1.25% of the total number of RSUs subject to the award are scheduled to vest on each of March 15, June 15, September 15 and December 15, 2029, subject to the terms and conditions of the underlying award agreement.\"}],\"ownerSignatureName\":\"/s/ Sam Whittington, Attorney-in-Fact for Jennifer Newstead\",\"ownerSignatureNameDate\":\"2026-06-17\"}]}",
+  "data": {
+    "total": {
+      "value": 1374,
+      "relation": "eq"
+    },
+    "transactions": [
+      {
+        "id": "b0836b822c741c818f7a3affd335b9f0",
+        "accessionNo": "0001140361-26-025622",
+        "filedAt": "2026-06-17T18:40:43-04:00",
+        "schemaVersion": "X0609",
+        "documentType": "4",
+        "periodOfReport": "2026-06-15",
+        "notSubjectToSection16": false,
+        "aff10b5One": false,
+        "issuer": {
+          "cik": "320193",
+          "name": "Apple Inc.",
+          "tradingSymbol": "AAPL"
+        },
+        "reportingOwner": {
+          "cik": "1780525",
+          "name": "Newstead Jennifer",
+          "address": {
+            "street1": "ONE APPLE PARK WAY",
+            "city": "CUPERTINO",
+            "state": "CA",
+            "zipCode": "95014"
+          },
+          "relationship": {
+            "isDirector": false,
+            "isOfficer": true,
+            "officerTitle": "SVP, GC and Secretary",
+            "isTenPercentOwner": false,
+            "isOther": false
+          }
+        },
+        "nonDerivativeTable": {
+          "transactions": [
+            {
+              "securityTitle": "Common Stock",
+              "transactionDate": "2026-06-15",
+              "coding": {
+                "formType": "4",
+                "code": "M",
+                "equitySwapInvolved": false
+              },
+              "amounts": {
+                "shares": 30104,
+                "pricePerShareFootnoteId": [
+                  "F1"
+                ],
+                "acquiredDisposedCode": "A"
+              },
+              "postTransactionAmounts": {
+                "sharesOwnedFollowingTransaction": 57784
+              },
+              "ownershipNature": {
+                "directOrIndirectOwnership": "D"
+              }
+            },
+            {
+              "securityTitle": "Common Stock",
+              "securityTitleFootnoteId": [
+                "F2"
+              ],
+              "transactionDate": "2026-06-15",
+              "coding": {
+                "formType": "4",
+                "code": "F",
+                "equitySwapInvolved": false
+              },
+              "amounts": {
+                "shares": 16238,
+                "pricePerShare": 296.42,
+                "acquiredDisposedCode": "D"
+              },
+              "postTransactionAmounts": {
+                "sharesOwnedFollowingTransaction": 41546
+              },
+              "ownershipNature": {
+                "directOrIndirectOwnership": "D"
+              }
+            }
+          ]
+        },
+        "derivativeTable": {
+          "transactions": [
+            {
+              "securityTitle": "Restricted Stock Unit",
+              "conversionOrExercisePriceFootnoteId": [
+                "F1"
+              ],
+              "transactionDate": "2026-06-15",
+              "coding": {
+                "formType": "4",
+                "code": "M",
+                "equitySwapInvolved": false
+              },
+              "exerciseDateFootnoteId": [
+                "F3"
+              ],
+              "expirationDateFootnoteId": [
+                "F3"
+              ],
+              "underlyingSecurity": {
+                "title": "Common Stock",
+                "shares": 30104
+              },
+              "amounts": {
+                "shares": 30104,
+                "pricePerShareFootnoteId": [
+                  "F1"
+                ],
+                "acquiredDisposedCode": "D"
+              },
+              "postTransactionAmounts": {
+                "sharesOwnedFollowingTransaction": 210728
+              },
+              "ownershipNature": {
+                "directOrIndirectOwnership": "D"
+              }
+            }
+          ]
+        },
+        "footnotes": [
+          {
+            "id": "F1",
+            "text": "Each restricted stock unit (\"RSU\") represents the right to receive, at settlement, one share of common stock. This transaction represents the settlement of RSUs in shares of common stock on their scheduled vesting date."
+          },
+          {
+            "id": "F2",
+            "text": "Shares withheld by Apple to satisfy tax withholding requirements on vesting of RSUs. No shares were sold."
+          },
+          "... 1 more rows trimmed"
+        ],
+        "ownerSignatureName": "/s/ Sam Whittington, Attorney-in-Fact for Jennifer Newstead",
+        "ownerSignatureNameDate": "2026-06-17"
+      }
+    ]
+  }
+}

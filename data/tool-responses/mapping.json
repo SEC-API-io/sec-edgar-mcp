@@ -1,0 +1,33 @@
+{
+  "tool": "mapping",
+  "request": {
+    "param": "ticker",
+    "value": "AAPL"
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 126,
+  "rawBytes": 396,
+  "truncated": false,
+  "text": "[{\"name\":\"APPLE INC\",\"ticker\":\"AAPL\",\"cik\":\"320193\",\"cusip\":\"037833100\",\"exchange\":\"NASDAQ\",\"isDelisted\":false,\"category\":\"Domestic Common Stock\",\"sector\":\"Technology\",\"industry\":\"Consumer Electronics\",\"sic\":\"3571\",\"sicSector\":\"Manufacturing\",\"sicIndustry\":\"Electronic Computers\",\"famaIndustry\":\"Computers\",\"currency\":\"USD\",\"location\":\"California; U.S.A\",\"id\":\"442d0fd86e9d78fe79d539ee1b7fc0e4\"}]",
+  "data": [
+    {
+      "name": "APPLE INC",
+      "ticker": "AAPL",
+      "cik": "320193",
+      "cusip": "037833100",
+      "exchange": "NASDAQ",
+      "isDelisted": false,
+      "category": "Domestic Common Stock",
+      "sector": "Technology",
+      "industry": "Consumer Electronics",
+      "sic": "3571",
+      "sicSector": "Manufacturing",
+      "sicIndustry": "Electronic Computers",
+      "famaIndustry": "Computers",
+      "currency": "USD",
+      "location": "California; U.S.A",
+      "id": "442d0fd86e9d78fe79d539ee1b7fc0e4"
+    }
+  ]
+}

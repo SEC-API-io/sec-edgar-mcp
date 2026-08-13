@@ -1,0 +1,79 @@
+{
+  "tool": "form-13f-cover-pages",
+  "request": {
+    "query": "cik:1067983",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 138,
+  "rawBytes": 2774,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":60,\"relation\":\"eq\"},\"data\":[{\"id\":\"097f8259876e26d25bd549ff1b0e67d2\",\"accessionNo\":\"0001193125-26-226661\",\"filedAt\":\"2026-05-15T16:06:05-04:00\",\"formType\":\"13F-HR\",\"cik\":\"1067983\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"028-04545\",\"periodOfReport\":\"2026-03-31\",\"isAmendment\":false,\"amendmentInfo\":{},\"filingManager\":{\"name\":\"Berkshire Hathaway Inc\",\"address\":{\"street\":\"3555 Farnam Street\",\"city\":\"Omaha\",\"stateOrCountry\":\"NE\",\"zipCode\":68131}},\"reportType\":\"13F HOLDINGS REPORT\",\"otherManagersReportingForThisManager\":[],\"provideInfoForInstruction5\":false,\"signature\":{\"name\":\"Marc D. Hamburg\",\"title\":\"Senior Vice President\",\"phone\":\"402-346-1400\",\"signature\":\"Marc D. Hamburg\",\"city\":\"Omaha\",\"stateOrCountry\":\"NE\",\"signatureDate\":\"05-15-2026\"},\"tableEntryTotal\":90,\"tableEntryTotalAsReported\":90,\"tableValueTotal\":263095703570,\"tableValueTotalAsReported\":263095703570,\"otherIncludedManagersCount\":14,\"otherIncludedManagers\":[{\"sequenceNumber\":1,\"name\":\"Berkshire Hathaway Homestate Insurance Co.\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-2226\"},{\"sequenceNumber\":2,\"name\":\"Berkshire Hathaway Life Insurance Co of Nebraska\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-5678\"},{\"sequenceNumber\":3,\"name\":\"BH Finance LLC\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-14389\"},{\"sequenceNumber\":4,\"name\":\"Buffett Warren E\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-554\"},{\"sequenceNumber\":5,\"name\":\"Columbia Insurance Co\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-1517\"},{\"sequenceNumber\":6,\"name\":\"Cypress Insurance Co\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-06102\"},{\"sequenceNumber\":7,\"name\":\"General Re Corp\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-04922\"},{\"sequenceNumber\":8,\"name\":\"GEICO Corp\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-852\"},{\"sequenceNumber\":9,\"name\":\"Medical Protective Corp\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-12941\"},{\"sequenceNumber\":10,\"name\":\"National Fire & Marine Insurance Co\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-1066\"},{\"sequenceNumber\":11,\"name\":\"National Indemnity Co\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-718\"},{\"sequenceNumber\":12,\"name\":\"National Liability & Fire Insurance Co\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-5006\"},{\"sequenceNumber\":13,\"name\":\"Nebraska Furniture Mart\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-11222\"},{\"sequenceNumber\":14,\"name\":\"U.S. Investment Corp\",\"cik\":\"\",\"crdNumber\":\"\",\"secFileNumber\":\"\",\"form13FFileNumber\":\"28-12947\"}]}]}",
+  "data": {
+    "total": {
+      "value": 60,
+      "relation": "eq"
+    },
+    "data": [
+      {
+        "id": "097f8259876e26d25bd549ff1b0e67d2",
+        "accessionNo": "0001193125-26-226661",
+        "filedAt": "2026-05-15T16:06:05-04:00",
+        "formType": "13F-HR",
+        "cik": "1067983",
+        "crdNumber": "",
+        "secFileNumber": "",
+        "form13FFileNumber": "028-04545",
+        "periodOfReport": "2026-03-31",
+        "isAmendment": false,
+        "amendmentInfo": {},
+        "filingManager": {
+          "name": "Berkshire Hathaway Inc",
+          "address": {
+            "street": "3555 Farnam Street",
+            "city": "Omaha",
+            "stateOrCountry": "NE",
+            "zipCode": 68131
+          }
+        },
+        "reportType": "13F HOLDINGS REPORT",
+        "otherManagersReportingForThisManager": [],
+        "provideInfoForInstruction5": false,
+        "signature": {
+          "name": "Marc D. Hamburg",
+          "title": "Senior Vice President",
+          "phone": "402-346-1400",
+          "signature": "Marc D. Hamburg",
+          "city": "Omaha",
+          "stateOrCountry": "NE",
+          "signatureDate": "05-15-2026"
+        },
+        "tableEntryTotal": 90,
+        "tableEntryTotalAsReported": 90,
+        "tableValueTotal": 263095703570,
+        "tableValueTotalAsReported": 263095703570,
+        "otherIncludedManagersCount": 14,
+        "otherIncludedManagers": [
+          {
+            "sequenceNumber": 1,
+            "name": "Berkshire Hathaway Homestate Insurance Co.",
+            "cik": "",
+            "crdNumber": "",
+            "secFileNumber": "",
+            "form13FFileNumber": "28-2226"
+          },
+          {
+            "sequenceNumber": 2,
+            "name": "Berkshire Hathaway Life Insurance Co of Nebraska",
+            "cik": "",
+            "crdNumber": "",
+            "secFileNumber": "",
+            "form13FFileNumber": "28-5678"
+          },
+          "... 12 more rows trimmed"
+        ]
+      }
+    ]
+  }
+}

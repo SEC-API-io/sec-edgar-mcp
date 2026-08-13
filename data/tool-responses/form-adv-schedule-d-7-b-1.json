@@ -1,0 +1,82 @@
+{
+  "tool": "form-adv-schedule-d-7-b-1",
+  "request": {
+    "crd": "344073"
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 148,
+  "rawBytes": 1976,
+  "truncated": false,
+  "text": "[{\"1a-nameOfFund\":\"LIBERTY PARTNERS WEALTH MANAGEMENT\",\"1b-fundIdentificationNumber\":\"805-2260913442\",\"2-lawOrganizedUnder\":{\"state\":\"New York\",\"country\":\"United States\"},\"3a-namesOfGeneralPartnerManagerTrusteeDirector\":[],\"3b-filingAdvisers\":\"No Information Filed\",\"4-1-exclusionUnder3c1\":true,\"4-2-exclusionUnder3c7\":true,\"5-nameCountryOfForeignFinancialRegAuthority\":[],\"6a-isMasterFundInMasterFeederArrangement\":false,\"6b-nameIdOfFeederFunds\":[],\"6c-isFeederFundInMasterFeederAgreement\":false,\"6d-nameIdOfMasterFund\":\"\",\"7a-f-feederFundDetails\":[],\"8a-isFundOfFunds\":false,\"8b-investsInFundsManagedByYouRelatedPerson\":false,\"9-investsInSecuritiesAccordingTo6e\":false,\"10-typeOfFund\":{\"selectedTypes\":[\"private equity fund\"]},\"11-grossAssetValue\":78960522,\"12-minInvestmentCommitment\":50000,\"13-numberOfBeneficialOwners\":89,\"14-percentageOwnedByYou\":10,\"15a-percentageOwnedByFundsOfFunds\":50,\"15b-salesAreLimited\":true,\"16-percentageOwnedByNonUnitedStatesPersons\":90,\"17a-isSubadviser\":false,\"17b-nameAndSecFileNumber\":\"No Information Filed\",\"18a-investmentAdvisersAdviseFund\":false,\"18b-otherAdvisers\":[],\"19-clientsAreSolicited\":false,\"20-percentageClientsInvestedInFund\":0,\"21-fundReliedOnExemption\":false,\"22-formDFileNumbers\":[],\"23a-1-financialStatementsAreSubjectToAnnualAudit\":true,\"23a-2-financialStatementsPreparedWithUsGaap\":true,\"23b-f-auditors\":[{\"23b-name\":\"INDICATOR GLOBAL\",\"23c-location\":{\"city\":\"NEW YORK\",\"state\":\"New York\",\"country\":\"United States\"},\"23d-isIndependentPublicAccountant\":true,\"23e-isRegistered\":false,\"23e-boardAssignedNumber\":\"\",\"23f-isSubjectToInspection\":false}],\"23g-financialStatementsDistributedToInvestors\":true,\"23h-reportsIncludeUnqualifiedOpinions\":\"yes\",\"24a-fundUsesPrimeBrokers\":false,\"24b-e-primeBrokers\":[],\"25a-fundUsesCustodians\":false,\"25b-g-custodians\":[],\"26a-fundUsesAdministrators\":false,\"26b-f-administrators\":[],\"27-percentageOfAssetsValuedNotByRelatedPerson\":0,\"28a-fundUsesMarketers\":false,\"28b-g-marketers\":[]}]",
+  "data": [
+    {
+      "1a-nameOfFund": "LIBERTY PARTNERS WEALTH MANAGEMENT",
+      "1b-fundIdentificationNumber": "805-2260913442",
+      "2-lawOrganizedUnder": {
+        "state": "New York",
+        "country": "United States"
+      },
+      "3a-namesOfGeneralPartnerManagerTrusteeDirector": [],
+      "3b-filingAdvisers": "No Information Filed",
+      "4-1-exclusionUnder3c1": true,
+      "4-2-exclusionUnder3c7": true,
+      "5-nameCountryOfForeignFinancialRegAuthority": [],
+      "6a-isMasterFundInMasterFeederArrangement": false,
+      "6b-nameIdOfFeederFunds": [],
+      "6c-isFeederFundInMasterFeederAgreement": false,
+      "6d-nameIdOfMasterFund": "",
+      "7a-f-feederFundDetails": [],
+      "8a-isFundOfFunds": false,
+      "8b-investsInFundsManagedByYouRelatedPerson": false,
+      "9-investsInSecuritiesAccordingTo6e": false,
+      "10-typeOfFund": {
+        "selectedTypes": [
+          "private equity fund"
+        ]
+      },
+      "11-grossAssetValue": 78960522,
+      "12-minInvestmentCommitment": 50000,
+      "13-numberOfBeneficialOwners": 89,
+      "14-percentageOwnedByYou": 10,
+      "15a-percentageOwnedByFundsOfFunds": 50,
+      "15b-salesAreLimited": true,
+      "16-percentageOwnedByNonUnitedStatesPersons": 90,
+      "17a-isSubadviser": false,
+      "17b-nameAndSecFileNumber": "No Information Filed",
+      "18a-investmentAdvisersAdviseFund": false,
+      "18b-otherAdvisers": [],
+      "19-clientsAreSolicited": false,
+      "20-percentageClientsInvestedInFund": 0,
+      "21-fundReliedOnExemption": false,
+      "22-formDFileNumbers": [],
+      "23a-1-financialStatementsAreSubjectToAnnualAudit": true,
+      "23a-2-financialStatementsPreparedWithUsGaap": true,
+      "23b-f-auditors": [
+        {
+          "23b-name": "INDICATOR GLOBAL",
+          "23c-location": {
+            "city": "NEW YORK",
+            "state": "New York",
+            "country": "United States"
+          },
+          "23d-isIndependentPublicAccountant": true,
+          "23e-isRegistered": false,
+          "23e-boardAssignedNumber": "",
+          "23f-isSubjectToInspection": false
+        }
+      ],
+      "23g-financialStatementsDistributedToInvestors": true,
+      "23h-reportsIncludeUnqualifiedOpinions": "yes",
+      "24a-fundUsesPrimeBrokers": false,
+      "24b-e-primeBrokers": [],
+      "25a-fundUsesCustodians": false,
+      "25b-g-custodians": [],
+      "26a-fundUsesAdministrators": false,
+      "26b-f-administrators": [],
+      "27-percentageOfAssetsValuedNotByRelatedPerson": 0,
+      "28a-fundUsesMarketers": false,
+      "28b-g-marketers": []
+    }
+  ]
+}

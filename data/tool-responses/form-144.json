@@ -1,0 +1,117 @@
+{
+  "tool": "form-144",
+  "request": {
+    "query": "issuerInfo.issuerTicker:TSLA",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 1283,
+  "rawBytes": 2066,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":75,\"relation\":\"eq\"},\"data\":[{\"id\":\"c5a63f0e2677eedc2bbfde76e89a45cd\",\"accessionNo\":\"0001950047-26-005795\",\"fileNo\":\"001-34756\",\"formType\":\"144\",\"filedAt\":\"2026-06-08T17:30:09-04:00\",\"entities\":[{\"cik\":\"1318605\",\"ticker\":\"TSLA\",\"companyName\":\"Tesla, Inc. (Subject)\",\"irsNo\":\"912197729\",\"fiscalYearEnd\":\"1231\",\"stateOfIncorporation\":\"TX\",\"sic\":\"3711 Motor Vehicles &amp; Passenger Car Bodies\",\"type\":\"144\",\"act\":\"33\",\"fileNo\":\"001-34756\",\"filmNo\":\"261073753\"},{\"cik\":\"1771340\",\"companyName\":\"Taneja Vaibhav (Reporting)\",\"type\":\"144\"}],\"issuerInfo\":{\"issuerCik\":\"1318605\",\"issuerTicker\":\"TSLA\",\"issuerName\":\"TESLA, INC.\",\"secFileNumber\":\"001-34756\",\"issuerAddress\":{\"street1\":\"1 TESLA ROAD\",\"city\":\"AUSTIN\",\"stateOrCountry\":\"TX\",\"zipCode\":\"78725\"},\"issuerContactPhone\":\"(512) 516-8177\",\"nameOfPersonForWhoseAccountTheSecuritiesAreToBeSold\":\"VAIBHAV TANEJA\",\"relationshipsToIssuer\":\"Officer\"},\"securitiesInformation\":[{\"securitiesClassTitle\":\"Common\",\"brokerOrMarketMakerDetails\":{\"name\":\"Morgan Stanley Smith Barney LLC Executive Financial Services\",\"address\":{\"street1\":\"1 New York Plaza\",\"street2\":\"8th Floor\",\"city\":\"New York\",\"stateOrCountry\":\"NY\",\"zipCode\":\"10004\"}},\"numberOfUnitsToBeSold\":2606,\"aggregateMarketValue\":1048124.08,\"noOfUnitsOutstanding\":3752431984,\"approxSaleDate\":\"2026-06-08\",\"securitiesExchangeName\":\"NASDAQ\"}],\"securitiesToBeSold\":[{\"securitiesClassTitle\":\"Common\",\"acquiredDate\":\"2026-06-05\",\"natureOfAcquisitionTransaction\":\"Restricted Stock\",\"nameOfPersonFromWhomAcquired\":\"Issuer\",\"isGiftTransaction\":false,\"amountOfSecuritiesAcquired\":2606,\"paymentDate\":\"2026-06-05\",\"natureOfPayment\":\"Not Applicable\"}],\"nothingToReportFlagOnSecuritiesSoldInPast3Months\":false,\"securitiesSoldInPast3Months\":[{\"sellerDetails\":{\"name\":\"VAIBHAV TANEJA\",\"address\":{\"street1\":\"1 TESLA ROAD\",\"city\":\"AUSTIN\",\"stateOrCountry\":\"TX\",\"zipCode\":\"78725\"}},\"securitiesClassTitle\":\"Common\",\"saleDate\":\"2026-05-13\",\"amountOfSecuritiesSold\":3000,\"grossProceeds\":1350000}],\"noticeSignature\":{\"noticeDate\":\"2026-06-08\",\"signature\":\"/s/ Vaibhav Taneja\"}}]}",
+  "data": {
+    "total": {
+      "value": 75,
+      "relation": "eq"
+    },
+    "data": [
+      {
+        "id": "c5a63f0e2677eedc2bbfde76e89a45cd",
+        "accessionNo": "0001950047-26-005795",
+        "fileNo": "001-34756",
+        "formType": "144",
+        "filedAt": "2026-06-08T17:30:09-04:00",
+        "entities": [
+          {
+            "cik": "1318605",
+            "ticker": "TSLA",
+            "companyName": "Tesla, Inc. (Subject)",
+            "irsNo": "912197729",
+            "fiscalYearEnd": "1231",
+            "stateOfIncorporation": "TX",
+            "sic": "3711 Motor Vehicles &amp; Passenger Car Bodies",
+            "type": "144",
+            "act": "33",
+            "fileNo": "001-34756",
+            "filmNo": "261073753"
+          },
+          {
+            "cik": "1771340",
+            "companyName": "Taneja Vaibhav (Reporting)",
+            "type": "144"
+          }
+        ],
+        "issuerInfo": {
+          "issuerCik": "1318605",
+          "issuerTicker": "TSLA",
+          "issuerName": "TESLA, INC.",
+          "secFileNumber": "001-34756",
+          "issuerAddress": {
+            "street1": "1 TESLA ROAD",
+            "city": "AUSTIN",
+            "stateOrCountry": "TX",
+            "zipCode": "78725"
+          },
+          "issuerContactPhone": "(512) 516-8177",
+          "nameOfPersonForWhoseAccountTheSecuritiesAreToBeSold": "VAIBHAV TANEJA",
+          "relationshipsToIssuer": "Officer"
+        },
+        "securitiesInformation": [
+          {
+            "securitiesClassTitle": "Common",
+            "brokerOrMarketMakerDetails": {
+              "name": "Morgan Stanley Smith Barney LLC Executive Financial Services",
+              "address": {
+                "street1": "1 New York Plaza",
+                "street2": "8th Floor",
+                "city": "New York",
+                "stateOrCountry": "NY",
+                "zipCode": "10004"
+              }
+            },
+            "numberOfUnitsToBeSold": 2606,
+            "aggregateMarketValue": 1048124.08,
+            "noOfUnitsOutstanding": 3752431984,
+            "approxSaleDate": "2026-06-08",
+            "securitiesExchangeName": "NASDAQ"
+          }
+        ],
+        "securitiesToBeSold": [
+          {
+            "securitiesClassTitle": "Common",
+            "acquiredDate": "2026-06-05",
+            "natureOfAcquisitionTransaction": "Restricted Stock",
+            "nameOfPersonFromWhomAcquired": "Issuer",
+            "isGiftTransaction": false,
+            "amountOfSecuritiesAcquired": 2606,
+            "paymentDate": "2026-06-05",
+            "natureOfPayment": "Not Applicable"
+          }
+        ],
+        "nothingToReportFlagOnSecuritiesSoldInPast3Months": false,
+        "securitiesSoldInPast3Months": [
+          {
+            "sellerDetails": {
+              "name": "VAIBHAV TANEJA",
+              "address": {
+                "street1": "1 TESLA ROAD",
+                "city": "AUSTIN",
+                "stateOrCountry": "TX",
+                "zipCode": "78725"
+              }
+            },
+            "securitiesClassTitle": "Common",
+            "saleDate": "2026-05-13",
+            "amountOfSecuritiesSold": 3000,
+            "grossProceeds": 1350000
+          }
+        ],
+        "noticeSignature": {
+          "noticeDate": "2026-06-08",
+          "signature": "/s/ Vaibhav Taneja"
+        }
+      }
+    ]
+  }
+}

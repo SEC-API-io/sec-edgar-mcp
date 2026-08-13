@@ -1,0 +1,98 @@
+{
+  "tool": "edgar-entities",
+  "request": {
+    "query": "cik:320193",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 131,
+  "rawBytes": 2432,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":1,\"relation\":\"eq\"},\"data\":[{\"id\":\"320193\",\"cik\":\"320193\",\"cikUpdatedAt\":\"2026-04-03T18:30:41-04:00\",\"name\":\"Apple Inc.\",\"nameUpdatedAt\":\"2026-04-03T18:30:41-04:00\",\"businessAddress\":{\"street1\":\"ONE APPLE PARK WAY\",\"city\":\"CUPERTINO\",\"state\":\"CA\",\"stateName\":\"CALIFORNIA\",\"zip\":\"95014\"},\"businessAddressUpdatedAt\":\"2026-04-03T18:30:41-04:00\",\"mailingAddress\":{\"street1\":\"ONE APPLE PARK WAY\",\"city\":\"CUPERTINO\",\"state\":\"CA\",\"stateName\":\"CALIFORNIA\",\"zip\":\"95014\"},\"mailingAddressUpdatedAt\":\"2026-04-03T18:30:41-04:00\",\"stateOfIncorporation\":\"CA\",\"stateOfIncorporationUpdatedAt\":\"2026-04-03T18:30:41-04:00\",\"phone\":\"(408) 996-1010\",\"phoneUpdatedAt\":\"2026-04-03T18:30:41-04:00\",\"irsNo\":\"942404110\",\"irsNoUpdatedAt\":\"2026-04-03T18:30:41-04:00\",\"fiscalYearEnd\":\"0926\",\"fiscalYearEndUpdatedAt\":\"2026-04-03T18:30:41-04:00\",\"sic\":\"3571\",\"sicUpdatedAt\":\"2026-04-03T18:30:41-04:00\",\"sicLabel\":\"3571 ELECTRONIC COMPUTERS\",\"sicLabelUpdatedAt\":\"2026-04-03T18:30:41-04:00\",\"cfOffice\":\"06 Technology\",\"cfOfficeUpdatedAt\":\"2026-04-03T18:30:41-04:00\",\"formTypes\":{\"3\":true,\"4\":true,\"144\":true,\"8-K\":true,\"DEF 14A\":true,\"DEFA14A\":true,\"PX14A6G\":true,\"10-Q\":true,\"SCHEDULE 13G/A\":true,\"SCHEDULE 13G\":true,\"SD\":true},\"formTypesUpdatedAt\":\"2026-05-28T16:30:18-04:00\",\"emergingGrowthCompany\":false,\"emergingGrowthCompanyUpdatedAt\":\"2025-12-05T16:31:42-05:00\",\"auditorLocationUpdatedAt\":\"2025-10-31T06:01:26-04:00\",\"voluntaryFilerUpdatedAt\":\"2025-10-31T06:01:26-04:00\",\"currentReportingStatusUpdatedAt\":\"2025-10-31T06:01:26-04:00\",\"auditorNameUpdatedAt\":\"2025-10-31T06:01:26-04:00\",\"currentReportingStatus\":true,\"wellKnownSeasonedIssuerUpdatedAt\":\"2025-10-31T06:01:26-04:00\",\"shellCompanyUpdatedAt\":\"2025-10-31T06:01:26-04:00\",\"latestIcfrAuditSource\":\"0000320193-25-000079\",\"interactiveDataCurrent\":true,\"filerCategoryUpdatedAt\":\"2025-10-31T06:01:26-04:00\",\"wellKnownSeasonedIssuer\":true,\"shellCompany\":false,\"voluntaryFiler\":false,\"latestIcfrAuditFiledAt\":\"2025-10-31T06:01:26-04:00\",\"filerCategory\":\"Large Accelerated Filer\",\"latestIcfrAuditSourceUpdatedAt\":\"2025-10-31T06:01:26-04:00\",\"interactiveDataCurrentUpdatedAt\":\"2025-10-31T06:01:26-04:00\",\"auditorName\":\"Ernst & Young LLP\",\"smallBusiness\":false,\"latestIcfrAuditFiledAtUpdatedAt\":\"2025-10-31T06:01:26-04:00\",\"auditorFirmId\":\"42\",\"auditorFirmIdUpdatedAt\":\"2025-10-31T06:01:26-04:00\",\"smallBusinessUpdatedAt\":\"2025-10-31T06:01:26-04:00\",\"auditorLocation\":\"San Jose, California\"}]}",
+  "data": {
+    "total": {
+      "value": 1,
+      "relation": "eq"
+    },
+    "data": [
+      {
+        "id": "320193",
+        "cik": "320193",
+        "cikUpdatedAt": "2026-04-03T18:30:41-04:00",
+        "name": "Apple Inc.",
+        "nameUpdatedAt": "2026-04-03T18:30:41-04:00",
+        "businessAddress": {
+          "street1": "ONE APPLE PARK WAY",
+          "city": "CUPERTINO",
+          "state": "CA",
+          "stateName": "CALIFORNIA",
+          "zip": "95014"
+        },
+        "businessAddressUpdatedAt": "2026-04-03T18:30:41-04:00",
+        "mailingAddress": {
+          "street1": "ONE APPLE PARK WAY",
+          "city": "CUPERTINO",
+          "state": "CA",
+          "stateName": "CALIFORNIA",
+          "zip": "95014"
+        },
+        "mailingAddressUpdatedAt": "2026-04-03T18:30:41-04:00",
+        "stateOfIncorporation": "CA",
+        "stateOfIncorporationUpdatedAt": "2026-04-03T18:30:41-04:00",
+        "phone": "(408) 996-1010",
+        "phoneUpdatedAt": "2026-04-03T18:30:41-04:00",
+        "irsNo": "942404110",
+        "irsNoUpdatedAt": "2026-04-03T18:30:41-04:00",
+        "fiscalYearEnd": "0926",
+        "fiscalYearEndUpdatedAt": "2026-04-03T18:30:41-04:00",
+        "sic": "3571",
+        "sicUpdatedAt": "2026-04-03T18:30:41-04:00",
+        "sicLabel": "3571 ELECTRONIC COMPUTERS",
+        "sicLabelUpdatedAt": "2026-04-03T18:30:41-04:00",
+        "cfOffice": "06 Technology",
+        "cfOfficeUpdatedAt": "2026-04-03T18:30:41-04:00",
+        "formTypes": {
+          "3": true,
+          "4": true,
+          "144": true,
+          "8-K": true,
+          "DEF 14A": true,
+          "DEFA14A": true,
+          "PX14A6G": true,
+          "10-Q": true,
+          "SCHEDULE 13G/A": true,
+          "SCHEDULE 13G": true,
+          "SD": true
+        },
+        "formTypesUpdatedAt": "2026-05-28T16:30:18-04:00",
+        "emergingGrowthCompany": false,
+        "emergingGrowthCompanyUpdatedAt": "2025-12-05T16:31:42-05:00",
+        "auditorLocationUpdatedAt": "2025-10-31T06:01:26-04:00",
+        "voluntaryFilerUpdatedAt": "2025-10-31T06:01:26-04:00",
+        "currentReportingStatusUpdatedAt": "2025-10-31T06:01:26-04:00",
+        "auditorNameUpdatedAt": "2025-10-31T06:01:26-04:00",
+        "currentReportingStatus": true,
+        "wellKnownSeasonedIssuerUpdatedAt": "2025-10-31T06:01:26-04:00",
+        "shellCompanyUpdatedAt": "2025-10-31T06:01:26-04:00",
+        "latestIcfrAuditSource": "0000320193-25-000079",
+        "interactiveDataCurrent": true,
+        "filerCategoryUpdatedAt": "2025-10-31T06:01:26-04:00",
+        "wellKnownSeasonedIssuer": true,
+        "shellCompany": false,
+        "voluntaryFiler": false,
+        "latestIcfrAuditFiledAt": "2025-10-31T06:01:26-04:00",
+        "filerCategory": "Large Accelerated Filer",
+        "latestIcfrAuditSourceUpdatedAt": "2025-10-31T06:01:26-04:00",
+        "interactiveDataCurrentUpdatedAt": "2025-10-31T06:01:26-04:00",
+        "auditorName": "Ernst & Young LLP",
+        "smallBusiness": false,
+        "latestIcfrAuditFiledAtUpdatedAt": "2025-10-31T06:01:26-04:00",
+        "auditorFirmId": "42",
+        "auditorFirmIdUpdatedAt": "2025-10-31T06:01:26-04:00",
+        "smallBusinessUpdatedAt": "2025-10-31T06:01:26-04:00",
+        "auditorLocation": "San Jose, California"
+      }
+    ]
+  }
+}

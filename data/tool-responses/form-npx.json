@@ -1,0 +1,115 @@
+{
+  "tool": "form-npx",
+  "request": {
+    "query": "cik:2110",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 137,
+  "rawBytes": 2086,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":2,\"relation\":\"eq\"},\"data\":[{\"id\":\"2224a830ab6324d47e6cff7158aeb49b\",\"accessionNo\":\"0001021408-25-002642\",\"formType\":\"N-PX\",\"filedAt\":\"2025-08-21T13:52:49-04:00\",\"periodOfReport\":\"2025-06-30\",\"cik\":\"2110\",\"ticker\":\"\",\"companyName\":\"COLUMBIA ACORN TRUST\",\"proxyVotingRecordsAttached\":true,\"headerData\":{\"submissionType\":\"N-PX\",\"filerInfo\":{\"registrantType\":\"RMIC\",\"filer\":{\"issuerCredentials\":{\"cik\":\"0000002110\"}},\"flags\":{\"overrideInternetFlag\":false,\"confirmingCopyFlag\":false},\"investmentCompanyType\":\"N-1A\",\"periodOfReport\":\"06/30/2025\"},\"seriesClass\":{\"reportSeriesClass\":{\"rptIncludeAllSeriesFlag\":true}}},\"formData\":{\"coverPage\":{\"yearOrQuarter\":\"YEAR\",\"reportCalendarYear\":\"2025\",\"reportingPerson\":{\"name\":\"Columbia Acorn Trust\",\"phoneNumber\":\"617-385-9536\",\"address\":{\"street1\":\"71 S. Wacker Drive, Suite 2500\",\"city\":\"Chicago\",\"stateOrCountry\":\"IL\",\"zipCode\":\"60606\"}},\"agentForService\":{\"name\":\"Ryan C. Larrenaga\",\"address\":{\"street1\":\"290 Congress Street\",\"city\":\"Boston\",\"stateOrCountry\":\"MA\",\"zipCode\":\"02210\"}},\"reportInfo\":{\"reportType\":\"FUND VOTING REPORT\"},\"fileNumber\":\"811-01829\",\"leiNumber\":\"549300DX0CWIN8VE1908\",\"explanatoryInformation\":{\"explanatoryChoice\":false}},\"summaryPage\":{\"otherIncludedManagersCount\":0},\"seriesPage\":{\"seriesCount\":5,\"seriesDetails\":{\"seriesReports\":[{\"idOfSeries\":\"S000009184\",\"nameOfSeries\":\"Columbia Acorn Fund\",\"leiOfSeries\":\"549300X3KJ5X2R54O387\"},{\"idOfSeries\":\"S000009185\",\"nameOfSeries\":\"Columbia Acorn International\",\"leiOfSeries\":\"5493004K6O04MY5NT292\"},{\"idOfSeries\":\"S000009188\",\"nameOfSeries\":\"Columbia Acorn International Select\",\"leiOfSeries\":\"549300KTP8INZROJV026\"},{\"idOfSeries\":\"S000009189\",\"nameOfSeries\":\"Columbia Thermostat Fund\",\"leiOfSeries\":\"549300EN4NJA2NPKY702\"},{\"idOfSeries\":\"S000033621\",\"nameOfSeries\":\"Columbia Acorn European Fund\",\"leiOfSeries\":\"5493000YCDHFU2BTMI80\"}]}},\"signaturePage\":{\"reportingPerson\":\"Columbia Acorn Trust\",\"txSignature\":\"Daniel J. Beckman\",\"txPrintedSignature\":\"Daniel J. Beckman\",\"txTitle\":\"President and Principal Executive Officer\",\"txAsOfDate\":\"08/13/2025\"}}}]}",
+  "data": {
+    "total": {
+      "value": 2,
+      "relation": "eq"
+    },
+    "data": [
+      {
+        "id": "2224a830ab6324d47e6cff7158aeb49b",
+        "accessionNo": "0001021408-25-002642",
+        "formType": "N-PX",
+        "filedAt": "2025-08-21T13:52:49-04:00",
+        "periodOfReport": "2025-06-30",
+        "cik": "2110",
+        "ticker": "",
+        "companyName": "COLUMBIA ACORN TRUST",
+        "proxyVotingRecordsAttached": true,
+        "headerData": {
+          "submissionType": "N-PX",
+          "filerInfo": {
+            "registrantType": "RMIC",
+            "filer": {
+              "issuerCredentials": {
+                "cik": "0000002110"
+              }
+            },
+            "flags": {
+              "overrideInternetFlag": false,
+              "confirmingCopyFlag": false
+            },
+            "investmentCompanyType": "N-1A",
+            "periodOfReport": "06/30/2025"
+          },
+          "seriesClass": {
+            "reportSeriesClass": {
+              "rptIncludeAllSeriesFlag": true
+            }
+          }
+        },
+        "formData": {
+          "coverPage": {
+            "yearOrQuarter": "YEAR",
+            "reportCalendarYear": "2025",
+            "reportingPerson": {
+              "name": "Columbia Acorn Trust",
+              "phoneNumber": "617-385-9536",
+              "address": {
+                "street1": "71 S. Wacker Drive, Suite 2500",
+                "city": "Chicago",
+                "stateOrCountry": "IL",
+                "zipCode": "60606"
+              }
+            },
+            "agentForService": {
+              "name": "Ryan C. Larrenaga",
+              "address": {
+                "street1": "290 Congress Street",
+                "city": "Boston",
+                "stateOrCountry": "MA",
+                "zipCode": "02210"
+              }
+            },
+            "reportInfo": {
+              "reportType": "FUND VOTING REPORT"
+            },
+            "fileNumber": "811-01829",
+            "leiNumber": "549300DX0CWIN8VE1908",
+            "explanatoryInformation": {
+              "explanatoryChoice": false
+            }
+          },
+          "summaryPage": {
+            "otherIncludedManagersCount": 0
+          },
+          "seriesPage": {
+            "seriesCount": 5,
+            "seriesDetails": {
+              "seriesReports": [
+                {
+                  "idOfSeries": "S000009184",
+                  "nameOfSeries": "Columbia Acorn Fund",
+                  "leiOfSeries": "549300X3KJ5X2R54O387"
+                },
+                {
+                  "idOfSeries": "S000009185",
+                  "nameOfSeries": "Columbia Acorn International",
+                  "leiOfSeries": "5493004K6O04MY5NT292"
+                },
+                "... 3 more rows trimmed"
+              ]
+            }
+          },
+          "signaturePage": {
+            "reportingPerson": "Columbia Acorn Trust",
+            "txSignature": "Daniel J. Beckman",
+            "txPrintedSignature": "Daniel J. Beckman",
+            "txTitle": "President and Principal Executive Officer",
+            "txAsOfDate": "08/13/2025"
+          }
+        }
+      }
+    ]
+  }
+}

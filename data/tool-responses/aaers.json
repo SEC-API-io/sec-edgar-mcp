@@ -1,0 +1,74 @@
+{
+  "tool": "aaers",
+  "request": {
+    "query": "aaerNo:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 122,
+  "rawBytes": 1110,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":3326,\"relation\":\"eq\"},\"data\":[{\"id\":\"a5b0ea2484f74507a556e430e4f6e949\",\"dateTime\":\"2026-07-22T13:35:49-04:00\",\"aaerNo\":\"AAER-4597\",\"releaseNo\":[\"33-11432\",\"34-105966\"],\"respondents\":[{\"name\":\"L&L Energy, Inc.\",\"type\":\"company\"},{\"name\":\"Dickson Lee, CPA\",\"type\":\"individual\"}],\"respondentsText\":\"L&L Energy, Inc. and Dickson Lee, CPA (Order Granting Extension of Time)\",\"urls\":[{\"type\":\"primary\",\"url\":\"https://www.sec.gov/files/litigation/opinions/2026/33-11432.pdf\"}],\"summary\":\"The SEC has granted an extension of time for the Division of Enforcement to respond to Dickson Lee's request to vacate a permanent officer and director bar imposed in a previous settlement.\",\"tags\":[\"settlement\",\"officer and director bar\"],\"entities\":[{\"name\":\"Dickson Lee\",\"type\":\"individual\",\"role\":\"respondent\"},{\"name\":\"Theodore Lee\",\"type\":\"individual\",\"role\":\"respondent\"}],\"complaints\":[],\"parallelActionsTakenBy\":[],\"hasAgreedToSettlement\":true,\"hasAgreedToPayPenalty\":false,\"penaltyAmounts\":[],\"requestedRelief\":[\"permanent officer and director bar\"],\"violatedSections\":[],\"otherAgenciesInvolved\":[]}]}",
+  "data": {
+    "total": {
+      "value": 3326,
+      "relation": "eq"
+    },
+    "data": [
+      {
+        "id": "a5b0ea2484f74507a556e430e4f6e949",
+        "dateTime": "2026-07-22T13:35:49-04:00",
+        "aaerNo": "AAER-4597",
+        "releaseNo": [
+          "33-11432",
+          "34-105966"
+        ],
+        "respondents": [
+          {
+            "name": "L&L Energy, Inc.",
+            "type": "company"
+          },
+          {
+            "name": "Dickson Lee, CPA",
+            "type": "individual"
+          }
+        ],
+        "respondentsText": "L&L Energy, Inc. and Dickson Lee, CPA (Order Granting Extension of Time)",
+        "urls": [
+          {
+            "type": "primary",
+            "url": "https://www.sec.gov/files/litigation/opinions/2026/33-11432.pdf"
+          }
+        ],
+        "summary": "The SEC has granted an extension of time for the Division of Enforcement to respond to Dickson Lee's request to vacate a permanent officer and director bar imposed in a previous settlement.",
+        "tags": [
+          "settlement",
+          "officer and director bar"
+        ],
+        "entities": [
+          {
+            "name": "Dickson Lee",
+            "type": "individual",
+            "role": "respondent"
+          },
+          {
+            "name": "Theodore Lee",
+            "type": "individual",
+            "role": "respondent"
+          }
+        ],
+        "complaints": [],
+        "parallelActionsTakenBy": [],
+        "hasAgreedToSettlement": true,
+        "hasAgreedToPayPenalty": false,
+        "penaltyAmounts": [],
+        "requestedRelief": [
+          "permanent officer and director bar"
+        ],
+        "violatedSections": [],
+        "otherAgenciesInvolved": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "tool": "audit-fees",
+  "request": {
+    "query": "entities.ticker:NVDA",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 148,
+  "rawBytes": 706,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":22,\"relation\":\"eq\"},\"data\":[{\"id\":\"16746aaa467c4db0c051d3ae5efff2ce\",\"accessionNo\":\"0001045810-26-000036\",\"formType\":\"DEF 14A\",\"filedAt\":\"2026-05-12T16:42:13-04:00\",\"periodOfReport\":\"2026-06-24\",\"entities\":[{\"cik\":\"1045810\",\"ticker\":\"NVDA\",\"companyName\":\"NVIDIA CORP (Filer)\",\"irsNo\":\"943177549\",\"fiscalYearEnd\":\"0131\",\"stateOfIncorporation\":\"DE\",\"sic\":\"3674 Semiconductors &amp; Related Devices\"}],\"records\":[{\"year\":2026,\"auditFees\":10166400,\"auditRelatedFees\":1716820,\"taxFees\":1076103,\"allOtherFees\":401999,\"totalFees\":13361322,\"auditor\":\"PwC\"},{\"year\":2025,\"auditFees\":8067106,\"auditRelatedFees\":724806,\"taxFees\":856439,\"allOtherFees\":354000,\"totalFees\":10002351,\"auditor\":\"PwC\"}]}]}",
+  "data": {
+    "total": {
+      "value": 22,
+      "relation": "eq"
+    },
+    "data": [
+      {
+        "id": "16746aaa467c4db0c051d3ae5efff2ce",
+        "accessionNo": "0001045810-26-000036",
+        "formType": "DEF 14A",
+        "filedAt": "2026-05-12T16:42:13-04:00",
+        "periodOfReport": "2026-06-24",
+        "entities": [
+          {
+            "cik": "1045810",
+            "ticker": "NVDA",
+            "companyName": "NVIDIA CORP (Filer)",
+            "irsNo": "943177549",
+            "fiscalYearEnd": "0131",
+            "stateOfIncorporation": "DE",
+            "sic": "3674 Semiconductors &amp; Related Devices"
+          }
+        ],
+        "records": [
+          {
+            "year": 2026,
+            "auditFees": 10166400,
+            "auditRelatedFees": 1716820,
+            "taxFees": 1076103,
+            "allOtherFees": 401999,
+            "totalFees": 13361322,
+            "auditor": "PwC"
+          },
+          {
+            "year": 2025,
+            "auditFees": 8067106,
+            "auditRelatedFees": 724806,
+            "taxFees": 856439,
+            "allOtherFees": 354000,
+            "totalFees": 10002351,
+            "auditor": "PwC"
+          }
+        ]
+      }
+    ]
+  }
+}

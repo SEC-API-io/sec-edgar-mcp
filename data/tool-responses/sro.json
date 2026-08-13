@@ -1,0 +1,40 @@
+{
+  "tool": "sro",
+  "request": {
+    "query": "sro:NASDAQ",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 145,
+  "rawBytes": 623,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":7743,\"relation\":\"eq\"},\"data\":[{\"id\":\"8d3248a96d8d450f4c5a8eb56bddfe80\",\"releaseNumber\":\"34-106072\",\"issueDate\":\"2026-08-11\",\"fileNumber\":\"\",\"sro\":\"The Nasdaq Stock Market LLC (NASDAQ)\",\"details\":\"Notice of Filing and Immediate Effectiveness of Proposed Rule Change to Amend the Exchange’s Transaction Fees at Options 7, Section 2\",\"commentsDue\":\"21 days after date of publication in the Federal Register.\",\"urls\":[{\"type\":\"34-106072\",\"url\":\"https://www.sec.gov/files/rules/sro/nasdaq/2026/34-106072.pdf\"},{\"type\":\"Exhibit 5\",\"url\":\"https://www.sec.gov/files/rules/sro/nasdaq/2026/34-106072-ex5.pdf\"}]}]}",
+  "data": {
+    "total": {
+      "value": 7743,
+      "relation": "eq"
+    },
+    "data": [
+      {
+        "id": "8d3248a96d8d450f4c5a8eb56bddfe80",
+        "releaseNumber": "34-106072",
+        "issueDate": "2026-08-11",
+        "fileNumber": "",
+        "sro": "The Nasdaq Stock Market LLC (NASDAQ)",
+        "details": "Notice of Filing and Immediate Effectiveness of Proposed Rule Change to Amend the Exchange’s Transaction Fees at Options 7, Section 2",
+        "commentsDue": "21 days after date of publication in the Federal Register.",
+        "urls": [
+          {
+            "type": "34-106072",
+            "url": "https://www.sec.gov/files/rules/sro/nasdaq/2026/34-106072.pdf"
+          },
+          {
+            "type": "Exhibit 5",
+            "url": "https://www.sec.gov/files/rules/sro/nasdaq/2026/34-106072-ex5.pdf"
+          }
+        ]
+      }
+    ]
+  }
+}

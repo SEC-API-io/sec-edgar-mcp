@@ -1,0 +1,199 @@
+{
+  "tool": "form-adv-firms",
+  "request": {
+    "query": "Info.FirmCrdNb:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 144,
+  "rawBytes": 2012,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":10000,\"relation\":\"gte\"},\"filings\":[{\"Info\":{\"SECRgnCD\":\"NYRO\",\"FirmCrdNb\":344073,\"SECNb\":\"802-137266\",\"BusNm\":\"LIBERTY PARTNERS WEALTH MANAGEMENT INC.\",\"LegalNm\":\"LIBERTY PARTNERS WEALTH MANAGEMENT INC.\"},\"MainAddr\":{\"Strt1\":\"244 MADISON AVENUE\",\"Strt2\":\"SUITE 1666\",\"City\":\"NEW YORK\",\"State\":\"NY\",\"Cntry\":\"United States\",\"PostlCd\":\"10016\",\"PhNb\":\"1(501)708-2778\"},\"MailingAddr\":{},\"Rgstn\":[{\"FirmType\":\"ERA\",\"St\":\"ACTIVE\",\"Dt\":\"2026-08-11\"}],\"NoticeFiled\":{},\"Filing\":[{\"Dt\":\"2026-08-11\",\"FormVrsn\":\"10/2021\"}],\"FormInfo\":{\"Part1A\":{\"Item1\":{\"WebAddrs\":{\"WebAddrs\":[]},\"Q1F5\":0,\"Q1I\":\"N\",\"Q1M\":\"N\",\"Q1N\":\"N\",\"Q1O\":\"N\"},\"Item2A\":{},\"Item2B\":{\"Q2B1\":\"N\",\"Q2B2\":\"Y\",\"Q2B3\":\"N\"},\"Item3A\":{\"OrgFormNm\":\"Limited Liability Company\"},\"Item3B\":{\"Q3B\":\"DECEMBER\"},\"Item3C\":{\"StateCD\":\"CO\",\"CntryNm\":\"United States\"},\"Item5A\":{},\"Item5B\":{},\"Item5C\":{},\"Item5D\":{},\"Item5E\":{},\"Item5F\":{},\"Item5G\":{},\"Item5H\":{},\"Item5I\":{},\"Item5J\":{},\"Item5K\":{},\"Item5L\":{},\"Item6A\":{\"Q6A1\":\"N\",\"Q6A2\":\"N\",\"Q6A3\":\"Y\",\"Q6A4\":\"N\",\"Q6A5\":\"N\",\"Q6A6\":\"N\",\"Q6A7\":\"N\",\"Q6A8\":\"N\",\"Q6A9\":\"N\",\"Q6A10\":\"N\",\"Q6A11\":\"N\",\"Q6A12\":\"N\",\"Q6A13\":\"N\",\"Q6A14\":\"N\"},\"Item6B\":{\"Q6B1\":\"N\",\"Q6B3\":\"N\"},\"Item7A\":{\"Q7A1\":\"Y\",\"Q7A2\":\"Y\",\"Q7A3\":\"N\",\"Q7A4\":\"N\",\"Q7A5\":\"N\",\"Q7A6\":\"Y\",\"Q7A7\":\"N\",\"Q7A8\":\"N\",\"Q7A9\":\"N\",\"Q7A10\":\"N\",\"Q7A11\":\"N\",\"Q7A12\":\"N\",\"Q7A13\":\"N\",\"Q7A14\":\"N\",\"Q7A15\":\"N\",\"Q7A16\":\"N\"},\"Item7B\":{\"Q7B\":\"Y\"},\"Item8A\":{},\"Item8B\":{},\"Item8C\":{},\"Item8D\":{},\"Item8E\":{},\"Item8F\":{},\"Item8G\":{},\"Item8H\":{},\"Item8I\":{},\"Item9A\":{},\"Item9B\":{},\"Item9C\":{},\"Item9D\":{},\"Item9E\":{},\"Item9F\":{},\"Item10A\":{\"Q10A\":\"N\"},\"Item11\":{\"Q11\":\"N\"},\"Item11A\":{\"Q11A1\":\"N\",\"Q11A2\":\"N\"},\"Item11B\":{\"Q11B1\":\"N\",\"Q11B2\":\"N\"},\"Item11C\":{\"Q11C1\":\"N\",\"Q11C2\":\"N\",\"Q11C3\":\"N\",\"Q11C4\":\"N\",\"Q11C5\":\"N\"},\"Item11D\":{\"Q11D1\":\"N\",\"Q11D2\":\"N\",\"Q11D3\":\"N\",\"Q11D4\":\"N\",\"Q11D5\":\"N\"},\"Item11E\":{\"Q11E1\":\"N\",\"Q11E2\":\"N\",\"Q11E3\":\"N\",\"Q11E4\":\"N\"},\"Item11F\":{\"Q11F\":\"N\"},\"Item11G\":{\"Q11G\":\"N\"},\"Item11H\":{\"Q11H1A\":\"N\",\"Q11H1B\":\"N\",\"Q11H1C\":\"N\",\"Q11H2\":\"N\"}}},\"id\":344073}]}",
+  "data": {
+    "total": {
+      "value": 10000,
+      "relation": "gte"
+    },
+    "filings": [
+      {
+        "Info": {
+          "SECRgnCD": "NYRO",
+          "FirmCrdNb": 344073,
+          "SECNb": "802-137266",
+          "BusNm": "LIBERTY PARTNERS WEALTH MANAGEMENT INC.",
+          "LegalNm": "LIBERTY PARTNERS WEALTH MANAGEMENT INC."
+        },
+        "MainAddr": {
+          "Strt1": "244 MADISON AVENUE",
+          "Strt2": "SUITE 1666",
+          "City": "NEW YORK",
+          "State": "NY",
+          "Cntry": "United States",
+          "PostlCd": "10016",
+          "PhNb": "1(501)708-2778"
+        },
+        "MailingAddr": {},
+        "Rgstn": [
+          {
+            "FirmType": "ERA",
+            "St": "ACTIVE",
+            "Dt": "2026-08-11"
+          }
+        ],
+        "NoticeFiled": {},
+        "Filing": [
+          {
+            "Dt": "2026-08-11",
+            "FormVrsn": "10/2021"
+          }
+        ],
+        "FormInfo": {
+          "Part1A": {
+            "Item1": {
+              "WebAddrs": {
+                "WebAddrs": []
+              },
+              "Q1F5": 0,
+              "Q1I": "N",
+              "Q1M": "N",
+              "Q1N": "N",
+              "Q1O": "N"
+            },
+            "Item2A": {},
+            "Item2B": {
+              "Q2B1": "N",
+              "Q2B2": "Y",
+              "Q2B3": "N"
+            },
+            "Item3A": {
+              "OrgFormNm": "Limited Liability Company"
+            },
+            "Item3B": {
+              "Q3B": "DECEMBER"
+            },
+            "Item3C": {
+              "StateCD": "CO",
+              "CntryNm": "United States"
+            },
+            "Item5A": {},
+            "Item5B": {},
+            "Item5C": {},
+            "Item5D": {},
+            "Item5E": {},
+            "Item5F": {},
+            "Item5G": {},
+            "Item5H": {},
+            "Item5I": {},
+            "Item5J": {},
+            "Item5K": {},
+            "Item5L": {},
+            "Item6A": {
+              "Q6A1": "N",
+              "Q6A2": "N",
+              "Q6A3": "Y",
+              "Q6A4": "N",
+              "Q6A5": "N",
+              "Q6A6": "N",
+              "Q6A7": "N",
+              "Q6A8": "N",
+              "Q6A9": "N",
+              "Q6A10": "N",
+              "Q6A11": "N",
+              "Q6A12": "N",
+              "Q6A13": "N",
+              "Q6A14": "N"
+            },
+            "Item6B": {
+              "Q6B1": "N",
+              "Q6B3": "N"
+            },
+            "Item7A": {
+              "Q7A1": "Y",
+              "Q7A2": "Y",
+              "Q7A3": "N",
+              "Q7A4": "N",
+              "Q7A5": "N",
+              "Q7A6": "Y",
+              "Q7A7": "N",
+              "Q7A8": "N",
+              "Q7A9": "N",
+              "Q7A10": "N",
+              "Q7A11": "N",
+              "Q7A12": "N",
+              "Q7A13": "N",
+              "Q7A14": "N",
+              "Q7A15": "N",
+              "Q7A16": "N"
+            },
+            "Item7B": {
+              "Q7B": "Y"
+            },
+            "Item8A": {},
+            "Item8B": {},
+            "Item8C": {},
+            "Item8D": {},
+            "Item8E": {},
+            "Item8F": {},
+            "Item8G": {},
+            "Item8H": {},
+            "Item8I": {},
+            "Item9A": {},
+            "Item9B": {},
+            "Item9C": {},
+            "Item9D": {},
+            "Item9E": {},
+            "Item9F": {},
+            "Item10A": {
+              "Q10A": "N"
+            },
+            "Item11": {
+              "Q11": "N"
+            },
+            "Item11A": {
+              "Q11A1": "N",
+              "Q11A2": "N"
+            },
+            "Item11B": {
+              "Q11B1": "N",
+              "Q11B2": "N"
+            },
+            "Item11C": {
+              "Q11C1": "N",
+              "Q11C2": "N",
+              "Q11C3": "N",
+              "Q11C4": "N",
+              "Q11C5": "N"
+            },
+            "Item11D": {
+              "Q11D1": "N",
+              "Q11D2": "N",
+              "Q11D3": "N",
+              "Q11D4": "N",
+              "Q11D5": "N"
+            },
+            "Item11E": {
+              "Q11E1": "N",
+              "Q11E2": "N",
+              "Q11E3": "N",
+              "Q11E4": "N"
+            },
+            "Item11F": {
+              "Q11F": "N"
+            },
+            "Item11G": {
+              "Q11G": "N"
+            },
+            "Item11H": {
+              "Q11H1A": "N",
+              "Q11H1B": "N",
+              "Q11H1C": "N",
+              "Q11H2": "N"
+            }
+          }
+        },
+        "id": 344073
+      }
+    ]
+  }
+}

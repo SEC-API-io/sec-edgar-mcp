@@ -1,0 +1,74 @@
+{
+  "tool": "form-8k",
+  "request": {
+    "query": "cik:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 141,
+  "rawBytes": 2146,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":10000,\"relation\":\"gte\"},\"data\":[{\"id\":\"f9c18b5e5b1e1b7471d6adb39fdd055e\",\"accessionNo\":\"0001140361-26-032653\",\"formType\":\"8-K\",\"filedAt\":\"2026-08-13T08:48:37-04:00\",\"periodOfReport\":\"2026-08-08\",\"cik\":\"1130713\",\"ticker\":\"BBBY\",\"companyName\":\"BED BATH & BEYOND, INC.\",\"items\":[\"Item 5.02: Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers\"],\"item5_02\":{\"keyComponents\":\"Jill Windrum was appointed as the Company's Chief Accounting Officer and Deputy Chief Financial Officer, effective August 31, 2026. She will replace Brian LaRose as the principal accounting officer.\",\"personnelChanges\":[{\"type\":\"appointment\",\"effectiveDate\":\"2026-08-31\",\"positions\":[\"Chief Accounting Officer\",\"Deputy Chief Financial Officer\",\"principal accounting officer\"],\"person\":{\"name\":\"Jill Windrum\",\"age\":46,\"academicAffiliations\":[\"Bachelor of Business Administration degree in Accounting from James Madison University\"],\"background\":\"Most recently served as Vice President of Financial Planning & Analysis and Revenue Operations at DHI Group, Inc. from May 2026 to August 2026. Previously held various finance and accounting leadership roles at Vantor, formerly known as Maxar Technologies Inc., from October 2013 to June 2025, and various roles in audit, advisory and KPMG's national office from October 2002 to September 2013.\",\"previousPositions\":[\"Vice President of Financial Planning & Analysis and Revenue Operations at DHI Group, Inc.\",\"Vice President and Chief Financial Officer of Vantor's U.S. Government segment\",\"Various roles at KPMG LLP\"]},\"compensation\":{\"annual\":\"400,000\",\"equity\":\"Sign-on equity awards with an aggregate target value of $400,000\",\"equityVesting\":\"Vesting over a period of four years, with 75% granted in the form of time-based restricted stock units and the remaining 25% granted in the form of performance shares\",\"noCompensation\":false},\"continuedConsultingRole\":false,\"termExtended\":false,\"termShortened\":false,\"compensationIncreased\":false,\"compensationDecreased\":false,\"disagreements\":false,\"interim\":false}]}}]}",
+  "data": {
+    "total": {
+      "value": 10000,
+      "relation": "gte"
+    },
+    "data": [
+      {
+        "id": "f9c18b5e5b1e1b7471d6adb39fdd055e",
+        "accessionNo": "0001140361-26-032653",
+        "formType": "8-K",
+        "filedAt": "2026-08-13T08:48:37-04:00",
+        "periodOfReport": "2026-08-08",
+        "cik": "1130713",
+        "ticker": "BBBY",
+        "companyName": "BED BATH & BEYOND, INC.",
+        "items": [
+          "Item 5.02: Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers: Compensatory Arrangements of Certain Officers"
+        ],
+        "item5_02": {
+          "keyComponents": "Jill Windrum was appointed as the Company's Chief Accounting Officer and Deputy Chief Financial Officer, effective August 31, 2026. She will replace Brian LaRose as the principal accounting officer.",
+          "personnelChanges": [
+            {
+              "type": "appointment",
+              "effectiveDate": "2026-08-31",
+              "positions": [
+                "Chief Accounting Officer",
+                "Deputy Chief Financial Officer",
+                "... 1 more rows trimmed"
+              ],
+              "person": {
+                "name": "Jill Windrum",
+                "age": 46,
+                "academicAffiliations": [
+                  "Bachelor of Business Administration degree in Accounting from James Madison University"
+                ],
+                "background": "Most recently served as Vice President of Financial Planning & Analysis and Revenue Operations at DHI Group, Inc. from May 2026 to August 2026. Previously held various finance and accounting leadership roles at Vantor, formerly known as Maxar Technologies Inc., from October 2013 to June 2025, and various roles in audit, advisory and KPMG's national office from October 2002 to September 2013.",
+                "previousPositions": [
+                  "Vice President of Financial Planning & Analysis and Revenue Operations at DHI Group, Inc.",
+                  "Vice President and Chief Financial Officer of Vantor's U.S. Government segment",
+                  "... 1 more rows trimmed"
+                ]
+              },
+              "compensation": {
+                "annual": "400,000",
+                "equity": "Sign-on equity awards with an aggregate target value of $400,000",
+                "equityVesting": "Vesting over a period of four years, with 75% granted in the form of time-based restricted stock units and the remaining 25% granted in the form of performance shares",
+                "noCompensation": false
+              },
+              "continuedConsultingRole": false,
+              "termExtended": false,
+              "termShortened": false,
+              "compensationIncreased": false,
+              "compensationDecreased": false,
+              "disagreements": false,
+              "interim": false
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

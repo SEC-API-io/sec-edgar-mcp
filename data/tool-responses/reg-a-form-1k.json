@@ -1,0 +1,58 @@
+{
+  "tool": "reg-a-form-1k",
+  "request": {
+    "query": "cik:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 127,
+  "rawBytes": 983,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":3000,\"relation\":\"eq\"},\"data\":[{\"id\":\"37e34f4ccd78a155c0d51a94859de774\",\"accessionNo\":\"0001213900-26-088286\",\"fileNo\":\"24R-00881\",\"formType\":\"1-K/A\",\"filedAt\":\"2026-08-12T15:21:43-04:00\",\"periodOfReport\":\"2025-12-31\",\"cik\":\"1968039\",\"ticker\":\"\",\"companyName\":\"Arrived STR 2, LLC\",\"item1\":{\"formIndication\":\"Annual Report\",\"fiscalYearEnd\":\"12-31-2025\",\"street1\":\"1700 Westlake Ave North\",\"street2\":\"Suite 200\",\"city\":\"Seattle\",\"stateOrCountry\":\"WA\",\"zipCode\":\"98109\",\"phoneNumber\":\"814-277-4833\",\"issuedSecuritiesTitle\":[\"Arrived Series Pinkshell\",\"Arrived Series Alta\",\"Arrived Series Vita\",\"Arrived Series Preciosa\",\"Arrived Series Seafoam\",\"Arrived Series Tiara\",\"Arrived Series Coquina\",\"Arrived Series Sandbar\",\"Arrived Series Knoll\",\"Arrived Series BeatBox\",\"Arrived Series Solano\",\"Arrived Series Byers\"]},\"item1Info\":[{\"issuerName\":\"ARRIVED STR 2, LLC\",\"cik\":\"0001968039\",\"jurisdictionOrganization\":\"DE\",\"irsNum\":\"92-1716225\"}],\"item2\":{\"regArule257\":true}}]}",
+  "data": {
+    "total": {
+      "value": 3000,
+      "relation": "eq"
+    },
+    "data": [
+      {
+        "id": "37e34f4ccd78a155c0d51a94859de774",
+        "accessionNo": "0001213900-26-088286",
+        "fileNo": "24R-00881",
+        "formType": "1-K/A",
+        "filedAt": "2026-08-12T15:21:43-04:00",
+        "periodOfReport": "2025-12-31",
+        "cik": "1968039",
+        "ticker": "",
+        "companyName": "Arrived STR 2, LLC",
+        "item1": {
+          "formIndication": "Annual Report",
+          "fiscalYearEnd": "12-31-2025",
+          "street1": "1700 Westlake Ave North",
+          "street2": "Suite 200",
+          "city": "Seattle",
+          "stateOrCountry": "WA",
+          "zipCode": "98109",
+          "phoneNumber": "814-277-4833",
+          "issuedSecuritiesTitle": [
+            "Arrived Series Pinkshell",
+            "Arrived Series Alta",
+            "... 10 more rows trimmed"
+          ]
+        },
+        "item1Info": [
+          {
+            "issuerName": "ARRIVED STR 2, LLC",
+            "cik": "0001968039",
+            "jurisdictionOrganization": "DE",
+            "irsNum": "92-1716225"
+          }
+        ],
+        "item2": {
+          "regArule257": true
+        }
+      }
+    ]
+  }
+}

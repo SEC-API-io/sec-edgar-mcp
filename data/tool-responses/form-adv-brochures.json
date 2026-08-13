@@ -1,0 +1,15 @@
+{
+  "tool": "form-adv-brochures",
+  "request": {
+    "crd": "344073"
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 188,
+  "rawBytes": 16,
+  "truncated": false,
+  "text": "{\"brochures\":[]}",
+  "data": {
+    "brochures": []
+  }
+}

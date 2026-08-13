@@ -1,0 +1,100 @@
+{
+  "tool": "form-adv-individuals",
+  "request": {
+    "query": "CrntEmps.CrntEmp.orgPK:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 164,
+  "rawBytes": 1866,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":10000,\"relation\":\"gte\"},\"filings\":[{\"Info\":{\"lastNm\":\"Kim\",\"firstNm\":\"Aaron\",\"midNm\":\"Kiyoshi\",\"indvlPK\":8328529,\"actvAGReg\":\"N\",\"link\":\"https://adviserinfo.sec.gov/individual/summary/8328529\"},\"OthrNms\":{},\"CrntEmps\":{\"CrntEmp\":[{\"CrntRgstns\":{\"CrntRgstn\":[{\"regAuth\":\"HI\",\"regCat\":\"RA\",\"st\":\"APPROVED\",\"stDt\":\"2026-08-12\"}]},\"BrnchOfLocs\":{\"BrnchOfLoc\":[{\"city\":\"Honolulu\",\"state\":\"HI\",\"cntry\":\"United States\"}]},\"orgNm\":\"FIRST ADVISORS NATIONAL, LLC\",\"orgPK\":166212,\"str1\":\"1372 PEACHTREE STREET NE\",\"city\":\"ATLANTA\",\"state\":\"GA\",\"cntry\":\"United States\",\"postlCd\":\"30309\"}]},\"Exms\":{\"Exm\":[{\"exmCd\":\"S65\",\"exmNm\":\"Uniform Investment Adviser Law Examination\",\"exmDt\":\"2026-07-20\"}]},\"Dsgntns\":{},\"PrevRgstns\":{},\"EmpHss\":{\"EmpHs\":[{\"fromDt\":\"08/2026\",\"orgNm\":\"FIRST ADVISORS NATIONAL, LLC\",\"city\":\"Atlanta\",\"state\":\"GA\"},{\"fromDt\":\"07/2023\",\"toDt\":\"09/2024\",\"orgNm\":\"Universal Retirement\",\"city\":\"Las Vegas\",\"state\":\"NV\"},{\"fromDt\":\"06/2021\",\"toDt\":\"10/2023\",\"orgNm\":\"Coldwell Banker \",\"city\":\"Honolulu\",\"state\":\"HI\"},{\"fromDt\":\"08/2021\",\"toDt\":\"09/2023\",\"orgNm\":\"Pacific Honda\",\"city\":\"Honolulu\",\"state\":\"HI\"},{\"fromDt\":\"05/2016\",\"toDt\":\"08/2021\",\"orgNm\":\"Hawaii Voice KTV\",\"city\":\"Honolulu\",\"state\":\"HI\"},{\"fromDt\":\"09/2024\",\"orgNm\":\"Independent Insurance Agent\",\"city\":\"Honolulu\",\"state\":\"HI\"}]},\"OthrBuss\":{\"OthrBus\":{\"desc\":\"NAME OF BUSINESS: �Aaron Kim - Independent Insurance Agent (HI, CA, TX)|  INVESTMENT RELATED: NO |  ADDRESS: N/A|  NATURE OF BUSINESS: Life & Annuity - Independent Insurance Agent|  POSITION IN BUSINESS: Independent Insurance Agent|  TITLE: �Independent Insurance Agent |  START DATE: 09/2024 |  APPROX. # of HRS/MTH DEVOTED TO BUSINESS: 30 HOURS PER WEEK |  # OF HRS DURING SECURITIES TRADING HOURS: 30 HOURS PER WEEK |  BRIEF DESCRIPTION OF DUTIES: Life and annuity insurance sales\"}},\"DRPs\":{},\"id\":8328529}]}",
+  "data": {
+    "total": {
+      "value": 10000,
+      "relation": "gte"
+    },
+    "filings": [
+      {
+        "Info": {
+          "lastNm": "Kim",
+          "firstNm": "Aaron",
+          "midNm": "Kiyoshi",
+          "indvlPK": 8328529,
+          "actvAGReg": "N",
+          "link": "https://adviserinfo.sec.gov/individual/summary/8328529"
+        },
+        "OthrNms": {},
+        "CrntEmps": {
+          "CrntEmp": [
+            {
+              "CrntRgstns": {
+                "CrntRgstn": [
+                  {
+                    "regAuth": "HI",
+                    "regCat": "RA",
+                    "st": "APPROVED",
+                    "stDt": "2026-08-12"
+                  }
+                ]
+              },
+              "BrnchOfLocs": {
+                "BrnchOfLoc": [
+                  {
+                    "city": "Honolulu",
+                    "state": "HI",
+                    "cntry": "United States"
+                  }
+                ]
+              },
+              "orgNm": "FIRST ADVISORS NATIONAL, LLC",
+              "orgPK": 166212,
+              "str1": "1372 PEACHTREE STREET NE",
+              "city": "ATLANTA",
+              "state": "GA",
+              "cntry": "United States",
+              "postlCd": "30309"
+            }
+          ]
+        },
+        "Exms": {
+          "Exm": [
+            {
+              "exmCd": "S65",
+              "exmNm": "Uniform Investment Adviser Law Examination",
+              "exmDt": "2026-07-20"
+            }
+          ]
+        },
+        "Dsgntns": {},
+        "PrevRgstns": {},
+        "EmpHss": {
+          "EmpHs": [
+            {
+              "fromDt": "08/2026",
+              "orgNm": "FIRST ADVISORS NATIONAL, LLC",
+              "city": "Atlanta",
+              "state": "GA"
+            },
+            {
+              "fromDt": "07/2023",
+              "toDt": "09/2024",
+              "orgNm": "Universal Retirement",
+              "city": "Las Vegas",
+              "state": "NV"
+            },
+            "... 4 more rows trimmed"
+          ]
+        },
+        "OthrBuss": {
+          "OthrBus": {
+            "desc": "NAME OF BUSINESS: �Aaron Kim - Independent Insurance Agent (HI, CA, TX)|  INVESTMENT RELATED: NO |  ADDRESS: N/A|  NATURE OF BUSINESS: Life & Annuity - Independent Insurance Agent|  POSITION IN BUSINESS: Independent Insurance Agent|  TITLE: �Independent Insurance Agent |  START DATE: 09/2024 |  APPROX. # of HRS/MTH DEVOTED TO BUSINESS: 30 HOURS PER WEEK |  # OF HRS DURING SECURITIES TRADING HOURS: 30 HOURS PER WEEK |  BRIEF DESCRIPTION OF DUTIES: Life and annuity insurance sales"
+          }
+        },
+        "DRPs": {},
+        "id": 8328529
+      }
+    ]
+  }
+}

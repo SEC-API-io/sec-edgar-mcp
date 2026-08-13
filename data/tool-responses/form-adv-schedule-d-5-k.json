@@ -1,0 +1,17 @@
+{
+  "tool": "form-adv-schedule-d-5-k",
+  "request": {
+    "crd": "344073"
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 133,
+  "rawBytes": 112,
+  "truncated": false,
+  "text": "{\"1-separatelyManagedAccounts\":{},\"2-borrowingsAndDerivatives\":{},\"3-custodiansForSeparatelyManagedAccounts\":[]}",
+  "data": {
+    "1-separatelyManagedAccounts": {},
+    "2-borrowingsAndDerivatives": {},
+    "3-custodiansForSeparatelyManagedAccounts": []
+  }
+}

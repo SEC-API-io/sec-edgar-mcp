@@ -1,0 +1,31 @@
+{
+  "tool": "compensation",
+  "request": {
+    "query": "ticker:AAPL",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 172,
+  "rawBytes": 362,
+  "truncated": false,
+  "text": "[{\"id\":\"ee1e721445cba2376db6912e7c52387d\",\"cik\":\"320193\",\"ticker\":\"AAPL\",\"name\":\"Kevan Parekh\",\"position\":\"Senior Vice President, Chief Financial Officer\",\"year\":2025,\"salary\":891519,\"bonus\":0,\"stockAwards\":18433135,\"optionAwards\":0,\"nonEquityIncentiveCompensation\":3120317,\"changeInPensionValueAndDeferredEarnings\":0,\"otherCompensation\":22338,\"total\":22467309}]",
+  "data": [
+    {
+      "id": "ee1e721445cba2376db6912e7c52387d",
+      "cik": "320193",
+      "ticker": "AAPL",
+      "name": "Kevan Parekh",
+      "position": "Senior Vice President, Chief Financial Officer",
+      "year": 2025,
+      "salary": 891519,
+      "bonus": 0,
+      "stockAwards": 18433135,
+      "optionAwards": 0,
+      "nonEquityIncentiveCompensation": 3120317,
+      "changeInPensionValueAndDeferredEarnings": 0,
+      "otherCompensation": 22338,
+      "total": 22467309
+    }
+  ]
+}

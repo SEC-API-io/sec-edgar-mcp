@@ -1,0 +1,141 @@
+# SEC EDGAR MCP
+
+> A hosted Model Context Protocol server that gives AI agents access to SEC
+> EDGAR filings and structured filing data through 49 tools. Remote
+> Streamable HTTP, no install, no local process.
+
+Server URL: https://api.sec-api.io/mcp?apiKey=YOUR_API_KEY
+Get a key: https://sec-api.io/profile
+
+Key facts an agent should know before calling a tool:
+
+- Results arrive as one text block. JSON is stringified. No tool declares an output schema.
+- Response envelopes differ per tool. Do not assume `data[]`. Check the tool page.
+- Some tools accept no pagination and return their whole result set. `float` and `form-npx-file` are the ones to watch.
+- A total of exactly 10000 means "10000 or more". Check the `relation` field.
+- Errors come back as `isError: true` with text `sec-api error: <message>`.
+
+## Documentation
+
+- [getting-started](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/getting-started.md): Key, config, and first query in five minutes
+- [authentication](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/authentication.md): Where to put the key, rotation, and revocation
+- [transport](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/transport.md): Streamable HTTP, the stateless model, and the stdio bridge
+- [response-format](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/response-format.md): Text blocks, the ten response envelopes, and raw documents
+- [query-language](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/query-language.md): Lucene syntax and the confirmed field vocabulary per tool
+- [limits-and-errors](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/limits-and-errors.md): Payload sizes, pagination, and every error message
+- [use-cases](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/use-cases.md): Ten worked chains, with the tool calls behind them
+
+## Tools
+
+- [filing-search](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/filing-search.md): Search SEC EDGAR filings from 1993 to present to retrieve metadata
+- [edgar-ingestion-log](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/edgar-ingestion-log.md): Get all SEC filings ingested at a date
+- [full-text-search](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/full-text-search.md): Full-text search over SEC EDGAR filings
+- [filing-to-pdf](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/filing-to-pdf.md): Fetch any SEC EDGAR filing and exhibit as PDF
+- [get-edgar-file](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/get-edgar-file.md): Download any SEC EDGAR filing or exhibit in its original format
+- [extractor](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/extractor.md): Extract a section from a 10-K/10-Q/8-K filing
+- [xbrl-to-json](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/xbrl-to-json.md): Convert XBRL financials to normalized JSON
+- [form-13f-holdings](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-13f-holdings.md): Search Form 13F institutional holdings
+- [form-13f-cover-pages](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-13f-cover-pages.md): Search Form 13F cover pages
+- [form-13d-13g](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-13d-13g.md): Search Schedule 13D/13G beneficial-ownership filings
+- [insider-trading](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/insider-trading.md): Search insider trading disclosures (Form 3/4/5)
+- [form-144](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-144.md): Search Form 144 intent-to-sell filings
+- [form-nport](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-nport.md): Search Form N-PORT fund portfolio holdings
+- [form-npx](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-npx.md): Search Form N-PX proxy voting records
+- [form-ncen](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-ncen.md): Search Form N-CEN investment company census
+- [form-adv-firms](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-adv-firms.md): Search Form ADV firm registrations
+- [form-adv-individuals](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-adv-individuals.md): Search Form ADV individual registrations
+- [form-adv-brochures](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-adv-brochures.md): Get Form ADV Part 2 brochures for an adviser
+- [form-adv-schedule-a-direct-owners](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-adv-schedule-a-direct-owners.md): Get Form ADV Schedule A, direct owners of an adviser
+- [form-adv-schedule-b-indirect-owners](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-adv-schedule-b-indirect-owners.md): Get Form ADV Schedule B, indirect owners of an adviser
+- [form-adv-schedule-d-1-b](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-adv-schedule-d-1-b.md): Get Form ADV Schedule D-1-B, other business names
+- [form-adv-schedule-d-5-k](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-adv-schedule-d-5-k.md): Get Form ADV Schedule D-5-K, separately managed accounts
+- [form-adv-schedule-d-7-a](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-adv-schedule-d-7-a.md): Get Form ADV Schedule D-7-A, financial industry affiliations
+- [form-adv-schedule-d-7-b-1](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-adv-schedule-d-7-b-1.md): Get Form ADV Schedule D-7-B-1, private funds advised
+- [form-s1-424b4](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-s1-424b4.md): Search S-1 / 424B4 registration filings
+- [form-d](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-d.md): Search Form D private-placement filings
+- [form-c](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-c.md): Search Form C Regulation Crowdfunding offerings
+- [form-8k](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-8k.md): Search structured 8-K material-event filings
+- [reg-a-search](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/reg-a-search.md): Search Regulation A / A+ offerings
+- [compensation](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/compensation.md): Search executive compensation data
+- [compensation-by-key](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/compensation-by-key.md): Get executive compensation by CIK or ticker
+- [audit-fees](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/audit-fees.md): Search auditor / audit-fee disclosures
+- [directors-and-board-members](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/directors-and-board-members.md): Search directors and board members
+- [float](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/float.md): Fetch public float and share count
+- [subsidiaries](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/subsidiaries.md): Search Exhibit 21 subsidiary disclosures
+- [edgar-entities](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/edgar-entities.md): Search EDGAR entity master
+- [mapping](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/mapping.md): Company identifier mapping (CIK/ticker/CUSIP/name)
+- [sec-enforcement-actions](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/sec-enforcement-actions.md): Search SEC enforcement actions
+- [form-npx-file](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-npx-file.md): Get a Form N-PX file by accession number
+- [reg-a-form-1a](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/reg-a-form-1a.md): Search structured Reg A Form 1-A filings
+- [reg-a-form-1k](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/reg-a-form-1k.md): Search structured Reg A Form 1-K filings
+- [reg-a-form-1z](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/reg-a-form-1z.md): Search structured Reg A Form 1-Z filings
+- [sec-litigation-releases](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/sec-litigation-releases.md): Search SEC litigation releases
+- [sec-administrative-proceedings](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/sec-administrative-proceedings.md): Search SEC administrative proceedings
+- [aaers](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/aaers.md): Search Accounting and Auditing Enforcement Releases (AAER)
+- [aaer-file](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/aaer-file.md): Fetch an AAER document file
+- [sro](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/sro.md): Search SRO (self-regulatory organization) rule filings
+- [form-x-17a-5](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/form-x-17a-5.md): Search Form X-17A-5 (broker-dealer FOCUS reports)
+- [api-key-usage](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/api-key-usage.md): Get sec-api API key monthly bandwidth usage
+
+## Client setup
+
+- [Aider](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/aider.md): MCP setup for Aider
+- [Amazon Q Developer CLI](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/amazon-q-developer-cli.md): MCP setup for Amazon Q Developer CLI
+- [the Anthropic Messages API](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/anthropic-messages-api.md): MCP setup for the Anthropic Messages API
+- [AnythingLLM](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/anythingllm.md): MCP setup for AnythingLLM
+- [AWS Bedrock AgentCore Gateway](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/aws-bedrock-agentcore-gateway.md): MCP setup for AWS Bedrock AgentCore Gateway
+- [ChatGPT](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/chatgpt-developer-mode.md): MCP setup for ChatGPT
+- [Cherry Studio](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/cherry-studio.md): MCP setup for Cherry Studio
+- [Claude Agent SDK](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/claude-agent-sdk.md): MCP setup for Claude Agent SDK
+- [Claude Code](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/claude-code.md): MCP setup for Claude Code
+- [Claude Desktop](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/claude-desktop.md): MCP setup for Claude Desktop
+- [Claude web and mobile](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/claude-web-and-mobile.md): MCP setup for Claude web and mobile
+- [Cline](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/cline.md): MCP setup for Cline
+- [OpenAI Codex CLI](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/codex-cli.md): MCP setup for OpenAI Codex CLI
+- [Continue](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/continue.md): MCP setup for Continue
+- [CrewAI](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/crewai.md): MCP setup for CrewAI
+- [Cursor](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/cursor.md): MCP setup for Cursor
+- [Dify](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/dify.md): MCP setup for Dify
+- [Docker MCP Toolkit](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/docker-mcp-toolkit.md): MCP setup for Docker MCP Toolkit
+- [Flowise](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/flowise.md): MCP setup for Flowise
+- [Google ADK](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/google-adk.md): MCP setup for Google ADK
+- [Google Gemini CLI](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/google-gemini-cli.md): MCP setup for Google Gemini CLI
+- [Goose](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/goose.md): MCP setup for Goose
+- [Hermes Agents](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/hermes-agents.md): MCP setup for Hermes Agents
+- [Jan](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/jan.md): MCP setup for Jan
+- [JetBrains AI Assistant](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/jetbrains-ai-assistant.md): MCP setup for JetBrains AI Assistant
+- [LangChain and LangGraph](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/langchain-and-langgraph.md): MCP setup for LangChain and LangGraph
+- [LibreChat](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/librechat.md): MCP setup for LibreChat
+- [LlamaIndex](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/llamaindex.md): MCP setup for LlamaIndex
+- [LM Studio](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/lm-studio.md): MCP setup for LM Studio
+- [Mastra](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/mastra.md): MCP setup for Mastra
+- [MCP Inspector](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/mcp-inspector.md): MCP setup for MCP Inspector
+- [any stdio-only client](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/mcp-remote-bridge.md): MCP setup for any stdio-only client
+- [Microsoft AutoGen](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/microsoft-autogen.md): MCP setup for Microsoft AutoGen
+- [Mistral Le Chat](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/mistral-le-chat.md): MCP setup for Mistral Le Chat
+- [Msty](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/msty.md): MCP setup for Msty
+- [n8n](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/n8n.md): MCP setup for n8n
+- [Open WebUI](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/open-webui.md): MCP setup for Open WebUI
+- [OpenAI Agents SDK](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/openai-agents-sdk.md): MCP setup for OpenAI Agents SDK
+- [the OpenAI Responses API](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/openai-responses-api.md): MCP setup for the OpenAI Responses API
+- [OpenClaw](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/openclaw.md): MCP setup for OpenClaw
+- [OpenHands](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/openhands.md): MCP setup for OpenHands
+- [Perplexity](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/perplexity.md): MCP setup for Perplexity
+- [Pydantic AI](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/pydantic-ai.md): MCP setup for Pydantic AI
+- [Qwen Code](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/qwen-code.md): MCP setup for Qwen Code
+- [Roo Code](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/roo-code.md): MCP setup for Roo Code
+- [Semantic Kernel](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/semantic-kernel.md): MCP setup for Semantic Kernel
+- [Smithery](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/smithery.md): MCP setup for Smithery
+- [Spring AI](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/spring-ai.md): MCP setup for Spring AI
+- [Strands Agents](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/strands-agents.md): MCP setup for Strands Agents
+- [Vercel AI SDK](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/vercel-ai-sdk.md): MCP setup for Vercel AI SDK
+- [VS Code](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/vs-code-copilot.md): MCP setup for VS Code
+- [Warp](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/warp.md): MCP setup for Warp
+- [Windsurf](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/windsurf.md): MCP setup for Windsurf
+- [Zapier](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/zapier.md): MCP setup for Zapier
+- [Zed](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/zed.md): MCP setup for Zed
+
+## Optional
+
+- [Tool reference index](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/tools/README.md): all 49 tools grouped by category, with a disambiguation table
+- [Setup matrix](https://github.com/sec-api/sec-edgar-mcp/blob/main/docs/setup/README.md): every client, its transport support, and its config style

@@ -1,0 +1,118 @@
+{
+  "tool": "form-s1-424b4",
+  "request": {
+    "query": "cik:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 275,
+  "rawBytes": 2212,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":10000,\"relation\":\"gte\"},\"data\":[{\"id\":\"936bcafb9b9d9697b90862e305f9c03f\",\"filedAt\":\"2026-08-12T21:32:28-04:00\",\"accessionNo\":\"0001213900-26-088617\",\"formType\":\"424B4\",\"cik\":\"2101240\",\"ticker\":\"SNSC\",\"entityName\":\"SunScout Holding Ltd\",\"filingUrl\":\"https://www.sec.gov/Archives/edgar/data/2101240/000121390026088617/ea0268485-18.htm\",\"tickers\":[{\"ticker\":\"SNSC\",\"type\":\"Class A Ordinary Shares\",\"exchange\":\"NYSE American\"}],\"securities\":[{\"name\":\"3,100,000 Class A Ordinary Shares\"},{\"name\":\"450,000,000 Class A Ordinary Shares\"},{\"name\":\"50,000,000 Class B Ordinary Shares\"},{\"name\":\"20,000,000 Class A Ordinary Shares\"},{\"name\":\"15,000,000 Class B Ordinary Shares\"},{\"name\":\"23,100,000 Class A Ordinary Shares\"},{\"name\":\"600,000 Class A Ordinary Shares\"},{\"name\":\"23,700,000 Class A Ordinary Shares\"}],\"publicOfferingPrice\":{\"perShare\":5,\"perShareText\":\"US$5.00\",\"total\":15500000,\"totalText\":\"US$15,500,000\"},\"underwritingDiscount\":{\"perShare\":0.35,\"perShareText\":\"US$0.35\",\"total\":1085000,\"totalText\":\"US$1,085,000\"},\"proceedsBeforeExpenses\":{\"perShare\":4.65,\"perShareText\":\"US$4.65\",\"total\":14415000,\"totalText\":\"US$14,415,000\"},\"underwriters\":[{\"name\":\"Dominari Securities LLC\"},{\"name\":\"Revere Securities LLC\"}],\"lawFirms\":[{\"name\":\"Ortoli Rosenstadt LLP\",\"location\":\"U.S., United States\"},{\"name\":\"Harney Westwood & Riegels\",\"location\":\"\"},{\"name\":\"Hunter Taubman Fischer & Li LLC\",\"location\":\"U.S., United States\"},{\"name\":\"Mallett Partners\",\"location\":\"New Zealand\"}],\"auditors\":[{\"name\":\"Fruci & Associates II, PLLC\"}],\"management\":[{\"name\":\"Mr. Edwin Cywinski\",\"age\":66,\"position\":\"Chief Executive Officer, Chairman and Executive Director\"},{\"name\":\"Mr. Marc Cywinski\",\"age\":34,\"position\":\"Chief Operations Officer\"},{\"name\":\"Mr. Joshua Marotske\",\"age\":34,\"position\":\"Chief Technical Officer\"},{\"name\":\"Mr. Jamie Parent\",\"age\":55,\"position\":\"Chief Financial Officer\"}],\"employees\":{\"total\":26,\"asOfDate\":null,\"perDivision\":[{\"division\":\"Management\",\"employees\":4},{\"division\":\"Finance\",\"employees\":2},{\"division\":\"Human Resource\",\"employees\":2},{\"division\":\"IT\",\"employees\":2},{\"division\":\"Sales & Marketing\",\"employees\":4},{\"division\":\"Operations\",\"employees\":12}],\"perRegion\":[]}}]}",
+  "data": {
+    "total": {
+      "value": 10000,
+      "relation": "gte"
+    },
+    "data": [
+      {
+        "id": "936bcafb9b9d9697b90862e305f9c03f",
+        "filedAt": "2026-08-12T21:32:28-04:00",
+        "accessionNo": "0001213900-26-088617",
+        "formType": "424B4",
+        "cik": "2101240",
+        "ticker": "SNSC",
+        "entityName": "SunScout Holding Ltd",
+        "filingUrl": "https://www.sec.gov/Archives/edgar/data/2101240/000121390026088617/ea0268485-18.htm",
+        "tickers": [
+          {
+            "ticker": "SNSC",
+            "type": "Class A Ordinary Shares",
+            "exchange": "NYSE American"
+          }
+        ],
+        "securities": [
+          {
+            "name": "3,100,000 Class A Ordinary Shares"
+          },
+          {
+            "name": "450,000,000 Class A Ordinary Shares"
+          },
+          "... 6 more rows trimmed"
+        ],
+        "publicOfferingPrice": {
+          "perShare": 5,
+          "perShareText": "US$5.00",
+          "total": 15500000,
+          "totalText": "US$15,500,000"
+        },
+        "underwritingDiscount": {
+          "perShare": 0.35,
+          "perShareText": "US$0.35",
+          "total": 1085000,
+          "totalText": "US$1,085,000"
+        },
+        "proceedsBeforeExpenses": {
+          "perShare": 4.65,
+          "perShareText": "US$4.65",
+          "total": 14415000,
+          "totalText": "US$14,415,000"
+        },
+        "underwriters": [
+          {
+            "name": "Dominari Securities LLC"
+          },
+          {
+            "name": "Revere Securities LLC"
+          }
+        ],
+        "lawFirms": [
+          {
+            "name": "Ortoli Rosenstadt LLP",
+            "location": "U.S., United States"
+          },
+          {
+            "name": "Harney Westwood & Riegels",
+            "location": ""
+          },
+          "... 2 more rows trimmed"
+        ],
+        "auditors": [
+          {
+            "name": "Fruci & Associates II, PLLC"
+          }
+        ],
+        "management": [
+          {
+            "name": "Mr. Edwin Cywinski",
+            "age": 66,
+            "position": "Chief Executive Officer, Chairman and Executive Director"
+          },
+          {
+            "name": "Mr. Marc Cywinski",
+            "age": 34,
+            "position": "Chief Operations Officer"
+          },
+          "... 2 more rows trimmed"
+        ],
+        "employees": {
+          "total": 26,
+          "asOfDate": null,
+          "perDivision": [
+            {
+              "division": "Management",
+              "employees": 4
+            },
+            {
+              "division": "Finance",
+              "employees": 2
+            },
+            "... 4 more rows trimmed"
+          ],
+          "perRegion": []
+        }
+      }
+    ]
+  }
+}

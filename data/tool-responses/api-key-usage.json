@@ -1,0 +1,16 @@
+{
+  "tool": "api-key-usage",
+  "request": {
+    "date": "2026-08"
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 142,
+  "rawBytes": 51,
+  "truncated": false,
+  "text": "{\"date\":\"2026-08\",\"monthlyBandwidthUsedInMb\":37.58}",
+  "data": {
+    "date": "2026-08",
+    "monthlyBandwidthUsedInMb": 37.58
+  }
+}

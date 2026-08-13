@@ -1,0 +1,146 @@
+{
+  "tool": "reg-a-form-1a",
+  "request": {
+    "query": "cik:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 132,
+  "rawBytes": 3414,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":10000,\"relation\":\"gte\"},\"data\":[{\"id\":\"7d83a0661e42e659f1e1650c12ec049f\",\"accessionNo\":\"0001493152-26-037452\",\"fileNo\":\"024-12712\",\"formType\":\"1-A/A\",\"filedAt\":\"2026-08-12T17:24:40-04:00\",\"cik\":\"1730773\",\"ticker\":\"BSFC\",\"companyName\":\"Blue Star Foods Corp.\",\"employeesInfo\":[{\"issuerName\":\"Blue Star Foods Corp.\",\"jurisdictionOrganization\":\"DE\",\"yearIncorporation\":\"2017\",\"cik\":\"0001730773\",\"sicCode\":3510,\"irsNum\":\"82-4270040\",\"fullTimeEmployees\":6,\"partTimeEmployees\":0}],\"issuerInfo\":{\"street1\":\"3000 NW 109th Avenue\",\"city\":\"Miami\",\"stateOrCountry\":\"FL\",\"zipCode\":\"33172\",\"phoneNumber\":\"305-836-6858\",\"connectionName\":\"Capital Markets Law Group, LLP\",\"industryGroup\":\"Other\",\"cashEquivalents\":11119,\"investmentSecurities\":0,\"accountsReceivable\":31561,\"propertyPlantEquipment\":93241,\"totalAssets\":1288041,\"accountsPayable\":1833948,\"longTermDebt\":34631,\"totalLiabilities\":4261146,\"totalStockholderEquity\":-2973105,\"totalLiabilitiesAndEquity\":1288041,\"totalRevenues\":782676,\"costAndExpensesApplToRevenues\":476864,\"depreciationAndAmortization\":12771,\"netIncome\":-800438,\"earningsPerShareBasic\":-0.01,\"earningsPerShareDiluted\":-0.01,\"nameAuditor\":\"GreenGrowth CPAs\"},\"commonEquity\":[{\"commonEquityClassName\":\"Common shares\",\"outstandingCommonEquity\":171980101,\"commonCusipEquity\":\"09606H309\",\"publiclyTradedCommonEquity\":\"OTCID\"}],\"preferredEquity\":[{\"preferredEquityClassName\":\"Series A Super Voting\",\"outstandingPreferredEquity\":1550000,\"preferredCusipEquity\":\"000000000\",\"publiclyTradedPreferredEquity\":\"N/A\"}],\"debtSecurities\":[{\"debtSecuritiesClassName\":\"N/A\",\"outstandingDebtSecurities\":0,\"cusipDebtSecurities\":\"000000000\",\"publiclyTradedDebtSecurities\":\"N/A\"}],\"issuerEligibility\":{\"certifyIfTrue\":true},\"applicationRule262\":{\"certifyIfNotDisqualified\":true},\"summaryInfo\":{\"indicateTier1Tier2Offering\":\"Tier2\",\"financialStatementAuditStatus\":\"Audited\",\"securitiesOfferedTypes\":[\"Equity (common or preferred stock)\"],\"offerDelayedContinuousFlag\":true,\"offeringYearFlag\":false,\"offeringAfterQualifFlag\":false,\"offeringBestEffortsFlag\":true,\"solicitationProposedOfferingFlag\":false,\"resaleSecuritiesAffiliatesFlag\":false,\"securitiesOffered\":500000000,\"outstandingSecurities\":171980101,\"pricePerSecurity\":0.001,\"issuerAggregateOffering\":500000,\"securityHolderAggegate\":0,\"qualificationOfferingAggregate\":0,\"concurrentOfferingAggregate\":0,\"totalAggregateOffering\":500000,\"auditorServiceProviderName\":\"GreenGrowth CPAs\",\"auditorFees\":25000,\"legalServiceProviderName\":\"Capital Markets Law Group, LLP\",\"legalFees\":15000,\"blueSkyServiceProviderName\":\"Various State Filing Fees\",\"blueSkyFees\":5000},\"juridictionSecuritiesOffered\":{\"jurisdictionsOfSecOfferedNone\":true,\"issueJuridicationSecuritiesOffering\":[\"DE\",\"NV\",\"WY\"]},\"securitiesIssued\":[{\"securitiesIssuerName\":\"Blue Star Foods Corp.\",\"securitiesIssuerTitle\":\"Common Shares and Series A Preferred Shares\",\"securitiesIssuedTotalAmount\":146318239,\"securitiesPrincipalHolderAmount\":0,\"securitiesIssuedAggregateAmount\":\"The aggregate consideration for the common stock issued was $406,671 This consists of $340,671 in extinguished principal and interest of outstanding debt, and $66,000 representing the fair market value of professional services rendered to the Company.\"}],\"unregisteredSecuritiesAct\":{\"securitiesActExcemption\":\"Section 4(a)(2) of the Securities Act of 1933 for transactions by an issuer not involving any public offering.\"}}]}",
+  "data": {
+    "total": {
+      "value": 10000,
+      "relation": "gte"
+    },
+    "data": [
+      {
+        "id": "7d83a0661e42e659f1e1650c12ec049f",
+        "accessionNo": "0001493152-26-037452",
+        "fileNo": "024-12712",
+        "formType": "1-A/A",
+        "filedAt": "2026-08-12T17:24:40-04:00",
+        "cik": "1730773",
+        "ticker": "BSFC",
+        "companyName": "Blue Star Foods Corp.",
+        "employeesInfo": [
+          {
+            "issuerName": "Blue Star Foods Corp.",
+            "jurisdictionOrganization": "DE",
+            "yearIncorporation": "2017",
+            "cik": "0001730773",
+            "sicCode": 3510,
+            "irsNum": "82-4270040",
+            "fullTimeEmployees": 6,
+            "partTimeEmployees": 0
+          }
+        ],
+        "issuerInfo": {
+          "street1": "3000 NW 109th Avenue",
+          "city": "Miami",
+          "stateOrCountry": "FL",
+          "zipCode": "33172",
+          "phoneNumber": "305-836-6858",
+          "connectionName": "Capital Markets Law Group, LLP",
+          "industryGroup": "Other",
+          "cashEquivalents": 11119,
+          "investmentSecurities": 0,
+          "accountsReceivable": 31561,
+          "propertyPlantEquipment": 93241,
+          "totalAssets": 1288041,
+          "accountsPayable": 1833948,
+          "longTermDebt": 34631,
+          "totalLiabilities": 4261146,
+          "totalStockholderEquity": -2973105,
+          "totalLiabilitiesAndEquity": 1288041,
+          "totalRevenues": 782676,
+          "costAndExpensesApplToRevenues": 476864,
+          "depreciationAndAmortization": 12771,
+          "netIncome": -800438,
+          "earningsPerShareBasic": -0.01,
+          "earningsPerShareDiluted": -0.01,
+          "nameAuditor": "GreenGrowth CPAs"
+        },
+        "commonEquity": [
+          {
+            "commonEquityClassName": "Common shares",
+            "outstandingCommonEquity": 171980101,
+            "commonCusipEquity": "09606H309",
+            "publiclyTradedCommonEquity": "OTCID"
+          }
+        ],
+        "preferredEquity": [
+          {
+            "preferredEquityClassName": "Series A Super Voting",
+            "outstandingPreferredEquity": 1550000,
+            "preferredCusipEquity": "000000000",
+            "publiclyTradedPreferredEquity": "N/A"
+          }
+        ],
+        "debtSecurities": [
+          {
+            "debtSecuritiesClassName": "N/A",
+            "outstandingDebtSecurities": 0,
+            "cusipDebtSecurities": "000000000",
+            "publiclyTradedDebtSecurities": "N/A"
+          }
+        ],
+        "issuerEligibility": {
+          "certifyIfTrue": true
+        },
+        "applicationRule262": {
+          "certifyIfNotDisqualified": true
+        },
+        "summaryInfo": {
+          "indicateTier1Tier2Offering": "Tier2",
+          "financialStatementAuditStatus": "Audited",
+          "securitiesOfferedTypes": [
+            "Equity (common or preferred stock)"
+          ],
+          "offerDelayedContinuousFlag": true,
+          "offeringYearFlag": false,
+          "offeringAfterQualifFlag": false,
+          "offeringBestEffortsFlag": true,
+          "solicitationProposedOfferingFlag": false,
+          "resaleSecuritiesAffiliatesFlag": false,
+          "securitiesOffered": 500000000,
+          "outstandingSecurities": 171980101,
+          "pricePerSecurity": 0.001,
+          "issuerAggregateOffering": 500000,
+          "securityHolderAggegate": 0,
+          "qualificationOfferingAggregate": 0,
+          "concurrentOfferingAggregate": 0,
+          "totalAggregateOffering": 500000,
+          "auditorServiceProviderName": "GreenGrowth CPAs",
+          "auditorFees": 25000,
+          "legalServiceProviderName": "Capital Markets Law Group, LLP",
+          "legalFees": 15000,
+          "blueSkyServiceProviderName": "Various State Filing Fees",
+          "blueSkyFees": 5000
+        },
+        "juridictionSecuritiesOffered": {
+          "jurisdictionsOfSecOfferedNone": true,
+          "issueJuridicationSecuritiesOffering": [
+            "DE",
+            "NV",
+            "... 1 more rows trimmed"
+          ]
+        },
+        "securitiesIssued": [
+          {
+            "securitiesIssuerName": "Blue Star Foods Corp.",
+            "securitiesIssuerTitle": "Common Shares and Series A Preferred Shares",
+            "securitiesIssuedTotalAmount": 146318239,
+            "securitiesPrincipalHolderAmount": 0,
+            "securitiesIssuedAggregateAmount": "The aggregate consideration for the common stock issued was $406,671 This consists of $340,671 in extinguished principal and interest of outstanding debt, and $66,000 representing the fair market value of professional services rendered to the Company."
+          }
+        ],
+        "unregisteredSecuritiesAct": {
+          "securitiesActExcemption": "Section 4(a)(2) of the Securities Act of 1933 for transactions by an issuer not involving any public offering."
+        }
+      }
+    ]
+  }
+}

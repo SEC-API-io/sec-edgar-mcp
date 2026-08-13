@@ -1,0 +1,24 @@
+{
+  "tool": "form-adv-schedule-a-direct-owners",
+  "request": {
+    "crd": "344073"
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 362,
+  "rawBytes": 194,
+  "truncated": false,
+  "text": "[{\"name\":\"GRAVES, DAVID GAVIN\",\"ownerType\":\"I\",\"titleStatus\":\"DIRECTOR\",\"dateTitleStatusAcquired\":\"2026-07\",\"ownershipCode\":\"E\",\"isControlPerson\":true,\"isPublicReporting\":false,\"crd\":\"8326994\"}]",
+  "data": [
+    {
+      "name": "GRAVES, DAVID GAVIN",
+      "ownerType": "I",
+      "titleStatus": "DIRECTOR",
+      "dateTitleStatusAcquired": "2026-07",
+      "ownershipCode": "E",
+      "isControlPerson": true,
+      "isPublicReporting": false,
+      "crd": "8326994"
+    }
+  ]
+}

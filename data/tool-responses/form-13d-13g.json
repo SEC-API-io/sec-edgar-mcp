@@ -1,0 +1,90 @@
+{
+  "tool": "form-13d-13g",
+  "request": {
+    "query": "owners.name:Point72 AND owners.amountAsPercent:[10 TO *]",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 181,
+  "rawBytes": 1319,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":8,\"relation\":\"eq\"},\"filings\":[{\"id\":\"bbb1ef1892bfc12a2e398c903871e3ae\",\"accessionNo\":\"0000902664-22-005029\",\"formType\":\"SC 13D\",\"filedAt\":\"2022-12-05T16:00:20-05:00\",\"filers\":[{\"cik\":\"1813658\",\"name\":\"Tempo Automation Holdings, Inc. (Subject)\"},{\"cik\":\"1954961\",\"name\":\"Point72 Private Investments, LLC (Filed by)\"}],\"nameOfIssuer\":\"Tempo Automation Holdings, Inc.\",\"titleOfSecurities\":\"Common Stock, par value $0.0001 per share\",\"cusip\":[\"88024M108\"],\"eventDate\":\"2022-11-22\",\"schedule13GFiledPreviously\":false,\"owners\":[{\"name\":\"Point72 Private Investments, LLC\",\"memberOfGroup\":{\"a\":false,\"b\":false},\"sourceOfFunds\":[\"OO\"],\"legalProceedingsDisclosureRequired\":false,\"place\":\"Delaware\",\"soleVotingPower\":0,\"sharedVotingPower\":5351000,\"soleDispositivePower\":0,\"sharedDispositivePower\":5351000,\"aggregateAmountOwned\":5351000,\"amountExcludesCertainShares\":false,\"amountAsPercent\":20.3,\"typeOfReportingPerson\":[\"OO\"]},{\"name\":\"Steven A. Cohen\",\"memberOfGroup\":{\"a\":false,\"b\":false},\"sourceOfFunds\":[\"OO\"],\"legalProceedingsDisclosureRequired\":false,\"place\":\"United States\",\"soleVotingPower\":0,\"sharedVotingPower\":5351000,\"soleDispositivePower\":0,\"sharedDispositivePower\":5351000,\"aggregateAmountOwned\":5351000,\"amountExcludesCertainShares\":false,\"amountAsPercent\":20.3,\"typeOfReportingPerson\":[\"IN\"]}]}]}",
+  "data": {
+    "total": {
+      "value": 8,
+      "relation": "eq"
+    },
+    "filings": [
+      {
+        "id": "bbb1ef1892bfc12a2e398c903871e3ae",
+        "accessionNo": "0000902664-22-005029",
+        "formType": "SC 13D",
+        "filedAt": "2022-12-05T16:00:20-05:00",
+        "filers": [
+          {
+            "cik": "1813658",
+            "name": "Tempo Automation Holdings, Inc. (Subject)"
+          },
+          {
+            "cik": "1954961",
+            "name": "Point72 Private Investments, LLC (Filed by)"
+          }
+        ],
+        "nameOfIssuer": "Tempo Automation Holdings, Inc.",
+        "titleOfSecurities": "Common Stock, par value $0.0001 per share",
+        "cusip": [
+          "88024M108"
+        ],
+        "eventDate": "2022-11-22",
+        "schedule13GFiledPreviously": false,
+        "owners": [
+          {
+            "name": "Point72 Private Investments, LLC",
+            "memberOfGroup": {
+              "a": false,
+              "b": false
+            },
+            "sourceOfFunds": [
+              "OO"
+            ],
+            "legalProceedingsDisclosureRequired": false,
+            "place": "Delaware",
+            "soleVotingPower": 0,
+            "sharedVotingPower": 5351000,
+            "soleDispositivePower": 0,
+            "sharedDispositivePower": 5351000,
+            "aggregateAmountOwned": 5351000,
+            "amountExcludesCertainShares": false,
+            "amountAsPercent": 20.3,
+            "typeOfReportingPerson": [
+              "OO"
+            ]
+          },
+          {
+            "name": "Steven A. Cohen",
+            "memberOfGroup": {
+              "a": false,
+              "b": false
+            },
+            "sourceOfFunds": [
+              "OO"
+            ],
+            "legalProceedingsDisclosureRequired": false,
+            "place": "United States",
+            "soleVotingPower": 0,
+            "sharedVotingPower": 5351000,
+            "soleDispositivePower": 0,
+            "sharedDispositivePower": 5351000,
+            "aggregateAmountOwned": 5351000,
+            "amountExcludesCertainShares": false,
+            "amountAsPercent": 20.3,
+            "typeOfReportingPerson": [
+              "IN"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

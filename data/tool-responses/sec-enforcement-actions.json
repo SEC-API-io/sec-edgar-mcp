@@ -1,0 +1,75 @@
+{
+  "tool": "sec-enforcement-actions",
+  "request": {
+    "query": "releaseNo:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 125,
+  "rawBytes": 2550,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":2768,\"relation\":\"eq\"},\"data\":[{\"id\":\"5073839b9836042a9652763db93a3ab0\",\"releaseNo\":\"2026-73\",\"releasedAt\":\"2026-08-10T14:00:00Z\",\"url\":\"https://www.sec.gov/newsroom/press-releases/2026-73-sec-charges-private-fund-adviser-adit-ventures-management-its-ceo-affiliated-general-partners\",\"title\":\"SEC Charges Private Fund Adviser Adit Ventures Management, Its CEO and Affiliated General Partners in Alleged Fraud\",\"resources\":[{\"label\":\"SEC Complaint\",\"url\":\"https://www.sec.gov/files/litigation/complaints/2026/comp-pr2026-73.pdf\"}],\"summary\":\"The SEC has charged Adit Ventures Management, its CEO Eric Munson, and affiliated general partners with defrauding investors by misappropriating funds, charging undisclosed fees, and violating fiduciary duties in connection with pre-IPO investments.\",\"tags\":[\"fraud\",\"investment advisory\",\"misappropriation\",\"undisclosed fees\"],\"entities\":[{\"name\":\"Adit Ventures Management LLC\",\"type\":\"company\",\"role\":\"defendant\",\"cik\":\"1852894\",\"ticker\":\"UPFRON\"},{\"name\":\"Eric Munson\",\"type\":\"individual\",\"role\":\"defendant\"},{\"name\":\"Adit Ventures LLC\",\"type\":\"company\",\"role\":\"defendant\",\"cik\":\"1885404\",\"ticker\":\"HSTVEN\"},{\"name\":\"Adit Ventures II LLC\",\"type\":\"company\",\"role\":\"defendant\"},{\"name\":\"Adit Ventures III LLC\",\"type\":\"company\",\"role\":\"defendant\"}],\"complaints\":[\"Defendants used false claims and promises to persuade investors to contribute capital to Adit-managed funds.\",\"Munson solicited an investor by falsely claiming that a fund owned shares of stock of a private, pre-IPO company.\",\"Defendants used client capital for their own benefit, including by taking unsecured loans from funds on favorable terms.\",\"Defendants violated their fiduciary duties by buying pre-IPO shares and causing client funds to buy those shares at a higher price.\",\"Defendants overcharged their client funds millions in unauthorized 'acquisition fees'.\",\"Defendants improperly pledged client assets as collateral for a $10 million line of credit.\",\"Adit Ventures Management failed to register as an investment adviser.\"],\"parallelActionsTakenBy\":[],\"hasAgreedToSettlement\":false,\"hasAgreedToPayPenalty\":false,\"penaltyAmounts\":[],\"requestedRelief\":[],\"violatedSections\":[\"antifraud provisions of the Securities Act of 1933\",\"antifraud provisions of the Securities Exchange Act of 1934\",\"antifraud provisions of the Investment Advisers Act of 1940\",\"registration provisions of the Investment Advisers Act\"],\"investigationConductedBy\":[\"Division of Enforcement\"],\"litigationLedBy\":[],\"otherAgenciesInvolved\":[]}]}",
+  "data": {
+    "total": {
+      "value": 2768,
+      "relation": "eq"
+    },
+    "data": [
+      {
+        "id": "5073839b9836042a9652763db93a3ab0",
+        "releaseNo": "2026-73",
+        "releasedAt": "2026-08-10T14:00:00Z",
+        "url": "https://www.sec.gov/newsroom/press-releases/2026-73-sec-charges-private-fund-adviser-adit-ventures-management-its-ceo-affiliated-general-partners",
+        "title": "SEC Charges Private Fund Adviser Adit Ventures Management, Its CEO and Affiliated General Partners in Alleged Fraud",
+        "resources": [
+          {
+            "label": "SEC Complaint",
+            "url": "https://www.sec.gov/files/litigation/complaints/2026/comp-pr2026-73.pdf"
+          }
+        ],
+        "summary": "The SEC has charged Adit Ventures Management, its CEO Eric Munson, and affiliated general partners with defrauding investors by misappropriating funds, charging undisclosed fees, and violating fiduciary duties in connection with pre-IPO investments.",
+        "tags": [
+          "fraud",
+          "investment advisory",
+          "... 2 more rows trimmed"
+        ],
+        "entities": [
+          {
+            "name": "Adit Ventures Management LLC",
+            "type": "company",
+            "role": "defendant",
+            "cik": "1852894",
+            "ticker": "UPFRON"
+          },
+          {
+            "name": "Eric Munson",
+            "type": "individual",
+            "role": "defendant"
+          },
+          "... 3 more rows trimmed"
+        ],
+        "complaints": [
+          "Defendants used false claims and promises to persuade investors to contribute capital to Adit-managed funds.",
+          "Munson solicited an investor by falsely claiming that a fund owned shares of stock of a private, pre-IPO company.",
+          "... 5 more rows trimmed"
+        ],
+        "parallelActionsTakenBy": [],
+        "hasAgreedToSettlement": false,
+        "hasAgreedToPayPenalty": false,
+        "penaltyAmounts": [],
+        "requestedRelief": [],
+        "violatedSections": [
+          "antifraud provisions of the Securities Act of 1933",
+          "antifraud provisions of the Securities Exchange Act of 1934",
+          "... 2 more rows trimmed"
+        ],
+        "investigationConductedBy": [
+          "Division of Enforcement"
+        ],
+        "litigationLedBy": [],
+        "otherAgenciesInvolved": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "tool": "form-nport",
+  "request": {
+    "query": "genInfo.regName:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 149,
+  "rawBytes": 45131,
+  "truncated": true,
+  "text": "{\"total\":{\"value\":10000,\"relation\":\"gte\"},\"filings\":[{\"submissionType\":\"NPORT-P\",\"filerInfo\":{\"filer\":{\"issuerCredentials\":{\"cik\":\"0002007649\",\"ccc\":\"XXXXXXXX\"}}},\"genInfo\":{\"regName\":\"Catalyst/Perini Strategic Income Fund\",\"regFileNumber\":\"811-23928\",\"regCik\":\"0002007649\",\"regLei\":\"529900TOB3V09W4JX713\",\"regStreet1\":\"36 N. New York Avenue\",\"regStreet2\":\"Floor 3\",\"regCity\":\"Huntington\",\"regStateConditional\":{\"regCountry\":\"US\",\"regState\":\"US-NY\"},\"regZipOrPostalCode\":\"11743\",\"regPhone\":\"646-872-2761\",\"seriesName\":\"Catalyst/Perini Strategic Income Fund\",\"seriesLei\":\"529900TOB3V09W4JX713\",\"repPdEnd\":\"2026-09-30\",\"repPdDate\":\"2026-06-30\",\"isFinalFiling\":\"N\"},\"fundInfo\":{\"totAssets\":52966273.23,\"totLiabs\":133093.02,\"netAssets\":52833180.21,\"assetsAttrMiscSec\":0,\"assetsInvested\":0,\"amtPayOneYrBanksBorr\":0,\"amtPayOneYrCtrldComp\":0,\"amtPayOneYrOthAffil\":0,\"amtPayOneYrOther\":0,\"amtPayAftOneYrBanksBorr\":0,\"amtPayAftOneYrCtrldComp\":0,\"amtPayAftOneYrOthAffil\":0,\"amtPayAftOneYrOther\":0,\"delayDeliv\":0,\"standByCommit\":0,\"liquidPref\":0,\"cshNotRptdInCorD\":16613.18,\"curMetrics\":{\"curMetric\":[{\"curCd\":\"USD\",\"intrstRtRiskdv01\":{\"period10Yr\":204.867815,\"period1Yr\":1421.874091,\"period30Yr\":315.858734,\"period3Mon\":648.481629,\"period5Yr\":214.164469},\"intrstRtRiskdv100\":{\"period10Yr\":20486.781762,\"period1Yr\":142187.409232,\"period30Yr\":31585.873616,\"period3Mon\":64848.162877,\"period5Yr\":21416.447212}}]},\"creditSprdRiskInvstGrade\":{\"period10Yr\":77.359699,\"period1Yr\":0.848679,\"period30Yr\":0,\"period3Mon\":0,\"period5Yr\":96.995735},\"creditSprdRiskNonInvstGrade\":{\"period10Yr\":1096.6978,\"period1Yr\":2171.321362,\"period30Yr\":309.513814,\"period3Mon\":11336.266859,\"period5Yr\":1478.110619},\"isNonCashCollateral\":\"N\",\"returnInfo\":{\"monthlyTotReturns\":{\"monthlyTotReturn\":[{\"rtn1\":3.14,\"rtn2\":1.02,\"rtn3\":1.18}]},\"othMon1\":{\"netRealizedGain\":361209.8,\"netUnrealizedAppr\":990977.08},\"othMon2\":{\"netRealizedGain\":0,\"netUnrealizedAppr\":31526.08},\"othMon3\":{\"netRealizedGain\":-42106.97,\"netUnrealizedAppr\":-43873.34}},\"mon1Flow\":{\"redemption\":0,\"reinvestment\":18445.76,\"sales\":1597178},\"mon2Flow\":{\"redemption\":0,\"reinvestment\":31567.2,\"sales\":1437041.24},\"mon3Flow\":{\"redemption\":2905092.73,\"reinvestment\":43007.26,\"sales\":1180087.72},\"varInfo\":{\"fundsDesignatedInfo\":{\"nameDesignatedIndex\":\"N/A\",\"indexIdentifier\":\"N/A\"}}},\"invstOrSecs\":[{\"name\":\"Banc of America Mortgage Secur\",\"lei\":\"N/A\",\"title\":\"Banc of America Mortgage 2008-A Trust\",\"cusip\":\"05955BAG4\",\"identifiers\":{\"isin\":{\"value\":\"US05955BAG41\"}},\"balance\":20223128.61,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":252789.11,\"pctVal\":0.4784665791,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2038-01-20\",\"couponKind\":\"Fixed\",\"annualizedRt\":0.3,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Saxon Asset Securities Trust\",\"lei\":\"N/A\",\"title\":\"Saxon Asset Securities Trust 2005-3\",\"cusip\":\"80557UAA0\",\"identifiers\":{\"isin\":{\"value\":\"US80557UAA07\"}},\"balance\":34580803.14,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":432260.04,\"pctVal\":0.8181601756,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2035-11-25\",\"couponKind\":\"Variable\",\"annualizedRt\":0.3,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Credit Suisse Mortgage Trust\",\"lei\":\"N/A\",\"title\":\"CSMC Mortgage-Backed Trust 2006-5\",\"cusip\":\"12637VAG2\",\"identifiers\":{\"isin\":{\"value\":\"US12637VAG23\"}},\"balance\":6103082.81,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":999379.81,\"pctVal\":1.8915761005,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2036-06-25\",\"couponKind\":\"Fixed\",\"annualizedRt\":6.5,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Countrywide Alternative Loan T\",\"lei\":\"N/A\",\"title\":\"Alternative Loan Trust 2005-27\",\"cusip\":\"12667GM83\",\"identifiers\":{\"isin\":{\"value\":\"US12667GM830\"}},\"balance\":3020596.67,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":120823.87,\"pctVal\":0.2286893757,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2035-08-25\",\"couponKind\":\"Variable\",\"annualizedRt\":1.236399,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"First American Treasury Obliga\",\"lei\":\"549300UU586IAH2B8H03\",\"title\":\"First American Treasury Obligations Fund\",\"cusip\":\"31846V328\",\"identifiers\":{\"isin\":{\"value\":\"US31846V3289\"},\"ticker\":{\"value\":\"FXFXX\"}},\"balance\":697701.87,\"units\":\"NS\",\"curCd\":\"USD\",\"valUSD\":697701.87,\"pctVal\":1.3205751901,\"payoffProfile\":\"Long\",\"assetCat\":\"STIV\",\"issuerCat\":\"RF\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"1\",\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"GSAA Home Equity Trust\",\"lei\":\"N/A\",\"title\":\"GSAA Home Equity Trust 2006-14\",\"cusip\":\"36298YAD2\",\"identifiers\":{\"isin\":{\"value\":\"US36298YAD22\"}},\"balance\":7488000,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":318240,\"pctVal\":0.6023487489,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2036-09-25\",\"couponKind\":\"Floating\",\"annualizedRt\":1.1,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"JP Morgan Mortgage Trust\",\"lei\":\"N/A\",\"title\":\"JP Morgan Mortgage Trust 2019-8\",\"cusip\":\"46591KBP7\",\"identifiers\":{\"isin\":{\"value\":\"US46591KBP75\"}},\"balance\":6692279.77,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":342979.34,\"pctVal\":0.6491741338,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2050-03-25\",\"couponKind\":\"Variable\",\"annualizedRt\":1.25,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"JP Morgan Mortgage Trust\",\"lei\":\"N/A\",\"title\":\"JP Morgan Mortgage Trust 2019-7\",\"cusip\":\"46651GBD0\",\"identifiers\":{\"isin\":{\"value\":\"US46651GBD07\"}},\"balance\":6782267.32,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":288246.36,\"pctVal\":0.5455782878,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2050-02-25\",\"couponKind\":\"Variable\",\"annualizedRt\":1,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Mill City Mortgage Trust\",\"lei\":\"N/A\",\"title\":\"Mill City Mortgage Loan Trust 2018-2\",\"cusip\":\"59980MAR2\",\"identifiers\":{\"isin\":{\"value\":\"US59980MAR25\"}},\"balance\":90908193.25,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":454540.97,\"pctVal\":0.8603324051,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2058-05-25\",\"couponKind\":\"Fixed\",\"annualizedRt\":0,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"New Residential Mortgage Loan\",\"lei\":\"N/A\",\"title\":\"New Residential Mortgage Loan Trust 2019-6\",\"cusip\":\"64828GAH3\",\"identifiers\":{\"isin\":{\"value\":\"US64828GAH39\"}},\"balance\":23277928.45,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":320071.52,\"pctVal\":0.6058153583,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2059-09-25\",\"couponKind\":\"Variable\",\"annualizedRt\":0.5,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"New Residential Mortgage Loan\",\"lei\":\"N/A\",\"title\":\"New Residential Mortgage Loan Trust 2020-2A\",\"cusip\":\"64830XCB3\",\"identifiers\":{\"isin\":{\"value\":\"US64830XCB38\"}},\"balance\":6049010.23,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":196592.83,\"pctVal\":0.3721010721,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2046-10-25\",\"couponKind\":\"Variable\",\"annualizedRt\":1.658551,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"FV Redlands, LLC\",\"lei\":\"N/A\",\"title\":\"FV Redlands, LLC\",\"cusip\":\"N/A\",\"identifiers\":{\"other\":{\"otherDesc\":\"USER DEFINED\",\"value\":\"9AMBDMKP2\"}},\"balance\":2000000,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":2308400,\"pctVal\":4.3692240195,\"payoffProfile\":\"Long\",\"assetCat\":\"STIV\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"3\",\"debtSec\":{\"maturityDt\":\"2026-08-15\",\"couponKind\":\"Fixed\",\"annualizedRt\":14,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Countrywide Alternative Loan T\",\"lei\":\"N/A\",\"title\":\"Alternative Loan Trust 2007-12T1\",\"cusip\":\"02150LAS6\",\"identifiers\":{\"isin\":{\"value\":\"US02150LAS60\"}},\"balance\":606897.59,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":218483.13,\"pctVal\":0.4135339367,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2037-06-25\",\"couponKind\":\"Fixed\",\"annualizedRt\":6,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"JP Morgan Mortgage Trust\",\"lei\":\"N/A\",\"title\":\"JP Morgan Mortgage Trust 2019-7\",\"cusip\":\"46651GBA6\",\"identifiers\":{\"isin\":{\"value\":\"US46651GBA67\"}},\"balance\":4036871.46,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":211935.75,\"pctVal\":0.4011413834,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2050-02-25\",\"couponKind\":\"Variable\",\"annualizedRt\":1.25,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Mill City Mortgage Trust\",\"lei\":\"N/A\",\"title\":\"Mill City Mortgage Loan Trust 2018-3\",\"cusip\":\"59980XAR8\",\"identifiers\":{\"isin\":{\"value\":\"US59980XAR89\"}},\"balance\":116515034.02,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":582575.17,\"pctVal\":1.1026691327,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2058-08-25\",\"couponKind\":\"Variable\",\"annualizedRt\":0,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"New Century Alternative Mortga\",\"lei\":\"N/A\",\"title\":\"New Century Alternative Mortgage Loan Trust 2006-ALT2\",\"cusip\":\"643529AU4\",\"identifiers\":{\"isin\":{\"value\":\"US643529AU45\"}},\"balance\":3171000,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":110985,\"pctVal\":0.2100668549,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2036-10-25\",\"couponKind\":\"Variable\",\"annualizedRt\":4.45995,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"New Residential Mortgage Loan\",\"lei\":\"N/A\",\"title\":\"New Residential Mortgage Loan Trust 2019-1\",\"cusip\":\"64830CAJ4\",\"identifiers\":{\"isin\":{\"value\":\"US64830CAJ45\"}},\"balance\":25958426.84,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":129792.13,\"pctVal\":0.2456640495,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2057-09-25\",\"couponKind\":\"Fixed\",\"annualizedRt\":0.101315,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"New Residential Mortgage Loan\",\"lei\":\"N/A\",\"title\":\"New Residential Mortgage Loan Trust 2020-1\",\"cusip\":\"64830TAP3\",\"identifiers\":{\"isin\":{\"value\":\"US64830TAP30\"}},\"balance\":26785019.15,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":100443.82,\"pctVal\":0.1901150368,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2059-10-25\",\"couponKind\":\"Variable\",\"annualizedRt\":0.10675,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Bear Stearns Asset Backed Secu\",\"lei\":\"N/A\",\"title\":\"Bear Stearns Asset Backed Securities I Trust 2006-AC2\",\"cusip\":\"07387UGX3\",\"identifiers\":{\"isin\":{\"value\":\"US07387UGX37\"}},\"balance\":4286820.26,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":401889.4,\"pctVal\":0.7606761478,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2036-03-25\",\"couponKind\":\"Floating\",\"annualizedRt\":4.11282,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Residential Asset Securities C\",\"lei\":\"N/A\",\"title\":\"RASC Series 2007-KS3 Trust\",\"cusip\":\"74924YAG8\",\"identifiers\":{\"isin\":{\"value\":\"US74924YAG89\"}},\"balance\":617223.8,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":851768.84,\"pctVal\":1.6121854422,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2037-04-25\",\"couponKind\":\"Floating\",\"annualizedRt\":4.49782,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Residential Accredit Loans, In\",\"lei\":\"N/A\",\"title\":\"RALI Series 2006-QO7 Trust\",\"cusip\":\"751150AP8\",\"identifiers\":{\"isin\":{\"value\":\"US751150AP80\"}},\"balance\":16754646.3,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":753959.08,\"pctVal\":1.4270560224,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2046-09-25\",\"couponKind\":\"Fixed\",\"annualizedRt\":0.9,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Mill City Mortgage Trust\",\"lei\":\"N/A\",\"title\":\"Mill City Mortgage Loan Trust 2019-GS1\",\"cusip\":\"59981BAR5\",\"identifiers\":{\"isin\":{\"value\":\"US59981BAR50\"}},\"balance\":163636653.86,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":818183.27,\"pctVal\":1.5486163558,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2059-07-25\",\"couponKind\":\"Fixed\",\"annualizedRt\":0.08,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Residential Asset Securitizati\",\"lei\":\"N/A\",\"title\":\"Residential Asset Securitization Trust 2007-A9\",\"cusip\":\"761143AM8\",\"identifiers\":{\"isin\":{\"value\":\"US761143AM82\"}},\"balance\":1621524.06,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":389165.77,\"pctVal\":0.7365934976,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2037-09-25\",\"couponKind\":\"Variable\",\"annualizedRt\":7,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"TBW Mortgage Backed Pass Throu\",\"lei\":\"N/A\",\"title\":\"TBW Mortgage-Backed Trust 2007-2\",\"cusip\":\"872227AD5\",\"identifiers\":{\"isin\":{\"value\":\"US872227AD53\"}},\"balance\":1963000,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":80973.75,\"pctVal\":0.1532630625,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2037-07-25\",\"couponKind\":\"Variable\",\"annualizedRt\":5.9102,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"TBW Mortgage Backed Pass Throu\",\"lei\":\"N/A\",\"title\":\"TBW Mortgage-Backed Trust 2007-2\",\"cusip\":\"872227AL7\",\"identifiers\":{\"isin\":{\"value\":\"US872227AL79\"}},\"balance\":3295120,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":131804.8,\"pctVal\":0.2494735306,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2037-07-25\",\"couponKind\":\"Variable\",\"annualizedRt\":6.6533,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Residential Accredit Loans, In\",\"lei\":\"N/A\",\"title\":\"RALI Series 2005-QO5 Trust\",\"cusip\":\"761118QQ4\",\"identifiers\":{\"isin\":{\"value\":\"US761118QQ40\"}},\"balance\":4037457.79,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":348230.73,\"pctVal\":0.6591137021,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2046-01-25\",\"couponKind\":\"Variable\",\"annualizedRt\":1.679099,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Saluda Grade Alternative Mortg\",\"lei\":\"N/A\",\"title\":\"Saluda Grade Alternative Mortgage Trust 2024-RTL6\",\"cusip\":\"79585UAC4\",\"identifiers\":{\"isin\":{\"value\":\"US79585UAC45\"}},\"balance\":1500000,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":1492500,\"pctVal\":2.824929323,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2030-07-25\",\"couponKind\":\"Variable\",\"annualizedRt\":10.5,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Saxon Asset Securities Trust\",\"lei\":\"N/A\",\"title\":\"Saxon Asset Securities Trust 2005-1\",\"cusip\":\"80557DAA8\",\"identifiers\":{\"isin\":{\"value\":\"US80557DAA81\"}},\"balance\":18707650.9,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":233845.64,\"pctVal\":0.442611327,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2035-05-25\",\"couponKind\":\"Variable\",\"annualizedRt\":0.3,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Structured Asset Mortgage Inve\",\"lei\":\"N/A\",\"title\":\"Structured Asset Mortgage Investments II Trust 2006-AR8\",\"cusip\":\"86361WAL5\",\"identifiers\":{\"isin\":{\"value\":\"US86361WAL54\"}},\"balance\":44337673.2,\"units\":\"PA\",\"curCd\":\"USD\",\"valUSD\":775909.28,\"pctVal\":1.4686022627,\"payoffProfile\":\"Long\",\"assetCat\":\"ABS-MBS\",\"issuerCat\":\"CORP\",\"invCountry\":\"US\",\"isRestrictedSec\":\"N\",\"fairValLevel\":\"2\",\"debtSec\":{\"maturityDt\":\"2036-10-25\",\"couponKind\":\"Fixed\",\"annualizedRt\":0.4,\"isDefault\":\"N\",\"areIntrstPmntsInArrs\":\"N\",\"isPaidKind\":\"N\"},\"securityLending\":{\"isCashCollateral\":\"N\",\"isNonCashCollateral\":\"N\",\"isLoanByFund\":\"N\"}},{\"name\":\"Washington Mutual Mortgage Pas\",\"lei\":\"N/A\",\"title\":\"Washington Mutual Mortgage Pass-Through Certificates WMALT Series 2007-HY1 Trust\",\"cusip\":\"93936AAC5\",\"identifiers\"",
+  "data": {
+    "total": {
+      "value": 10000,
+      "relation": "gte"
+    },
+    "filings": [
+      {
+        "submissionType": "NPORT-P",
+        "filerInfo": {
+          "filer": {
+            "issuerCredentials": {
+              "cik": "0002007649",
+              "ccc": "XXXXXXXX"
+            }
+          }
+        },
+        "genInfo": {
+          "regName": "Catalyst/Perini Strategic Income Fund",
+          "regFileNumber": "811-23928",
+          "regCik": "0002007649",
+          "regLei": "529900TOB3V09W4JX713",
+          "regStreet1": "36 N. New York Avenue",
+          "regStreet2": "Floor 3",
+          "regCity": "Huntington",
+          "regStateConditional": {
+            "regCountry": "US",
+            "regState": "US-NY"
+          },
+          "regZipOrPostalCode": "11743",
+          "regPhone": "646-872-2761",
+          "seriesName": "Catalyst/Perini Strategic Income Fund",
+          "seriesLei": "529900TOB3V09W4JX713",
+          "repPdEnd": "2026-09-30",
+          "repPdDate": "2026-06-30",
+          "isFinalFiling": "N"
+        },
+        "fundInfo": {
+          "totAssets": 52966273.23,
+          "totLiabs": 133093.02,
+          "netAssets": 52833180.21,
+          "assetsAttrMiscSec": 0,
+          "assetsInvested": 0,
+          "amtPayOneYrBanksBorr": 0,
+          "amtPayOneYrCtrldComp": 0,
+          "amtPayOneYrOthAffil": 0,
+          "amtPayOneYrOther": 0,
+          "amtPayAftOneYrBanksBorr": 0,
+          "amtPayAftOneYrCtrldComp": 0,
+          "amtPayAftOneYrOthAffil": 0,
+          "amtPayAftOneYrOther": 0,
+          "delayDeliv": 0,
+          "standByCommit": 0,
+          "liquidPref": 0,
+          "cshNotRptdInCorD": 16613.18,
+          "curMetrics": {
+            "curMetric": [
+              {
+                "curCd": "USD",
+                "intrstRtRiskdv01": {
+                  "period10Yr": 204.867815,
+                  "period1Yr": 1421.874091,
+                  "period30Yr": 315.858734,
+                  "period3Mon": 648.481629,
+                  "period5Yr": 214.164469
+                },
+                "intrstRtRiskdv100": {
+                  "period10Yr": 20486.781762,
+                  "period1Yr": 142187.409232,
+                  "period30Yr": 31585.873616,
+                  "period3Mon": 64848.162877,
+                  "period5Yr": 21416.447212
+                }
+              }
+            ]
+          },
+          "creditSprdRiskInvstGrade": {
+            "period10Yr": 77.359699,
+            "period1Yr": 0.848679,
+            "period30Yr": 0,
+            "period3Mon": 0,
+            "period5Yr": 96.995735
+          },
+          "creditSprdRiskNonInvstGrade": {
+            "period10Yr": 1096.6978,
+            "period1Yr": 2171.321362,
+            "period30Yr": 309.513814,
+            "period3Mon": 11336.266859,
+            "period5Yr": 1478.110619
+          },
+          "isNonCashCollateral": "N",
+          "returnInfo": {
+            "monthlyTotReturns": {
+              "monthlyTotReturn": [
+                {
+                  "rtn1": 3.14,
+                  "rtn2": 1.02,
+                  "rtn3": 1.18
+                }
+              ]
+            },
+            "othMon1": {
+              "netRealizedGain": 361209.8,
+              "netUnrealizedAppr": 990977.08
+            },
+            "othMon2": {
+              "netRealizedGain": 0,
+              "netUnrealizedAppr": 31526.08
+            },
+            "othMon3": {
+              "netRealizedGain": -42106.97,
+              "netUnrealizedAppr": -43873.34
+            }
+          },
+          "mon1Flow": {
+            "redemption": 0,
+            "reinvestment": 18445.76,
+            "sales": 1597178
+          },
+          "mon2Flow": {
+            "redemption": 0,
+            "reinvestment": 31567.2,
+            "sales": 1437041.24
+          },
+          "mon3Flow": {
+            "redemption": 2905092.73,
+            "reinvestment": 43007.26,
+            "sales": 1180087.72
+          },
+          "varInfo": {
+            "fundsDesignatedInfo": {
+              "nameDesignatedIndex": "N/A",
+              "indexIdentifier": "N/A"
+            }
+          }
+        },
+        "invstOrSecs": [
+          {
+            "name": "Banc of America Mortgage Secur",
+            "lei": "N/A",
+            "title": "Banc of America Mortgage 2008-A Trust",
+            "cusip": "05955BAG4",
+            "identifiers": {
+              "isin": {
+                "value": "US05955BAG41"
+              }
+            },
+            "balance": 20223128.61,
+            "units": "PA",
+            "curCd": "USD",
+            "valUSD": 252789.11,
+            "pctVal": 0.4784665791,
+            "payoffProfile": "Long",
+            "assetCat": "ABS-MBS",
+            "issuerCat": "CORP",
+            "invCountry": "US",
+            "isRestrictedSec": "N",
+            "fairValLevel": "2",
+            "debtSec": {
+              "maturityDt": "2038-01-20",
+              "couponKind": "Fixed",
+              "annualizedRt": 0.3,
+              "isDefault": "N",
+              "areIntrstPmntsInArrs": "N",
+              "isPaidKind": "N"
+            },
+            "securityLending": {
+              "isCashCollateral": "N",
+              "isNonCashCollateral": "N",
+              "isLoanByFund": "N"
+            }
+          },
+          {
+            "name": "Saxon Asset Securities Trust",
+            "lei": "N/A",
+            "title": "Saxon Asset Securities Trust 2005-3",
+            "cusip": "80557UAA0",
+            "identifiers": {
+              "isin": {
+                "value": "US80557UAA07"
+              }
+            },
+            "balance": 34580803.14,
+            "units": "PA",
+            "curCd": "USD",
+            "valUSD": 432260.04,
+            "pctVal": 0.8181601756,
+            "payoffProfile": "Long",
+            "assetCat": "ABS-MBS",
+            "issuerCat": "CORP",
+            "invCountry": "US",
+            "isRestrictedSec": "N",
+            "fairValLevel": "2",
+            "debtSec": {
+              "maturityDt": "2035-11-25",
+              "couponKind": "Variable",
+              "annualizedRt": 0.3,
+              "isDefault": "N",
+              "areIntrstPmntsInArrs": "N",
+              "isPaidKind": "N"
+            },
+            "securityLending": {
+              "isCashCollateral": "N",
+              "isNonCashCollateral": "N",
+              "isLoanByFund": "N"
+            }
+          },
+          "... 68 more rows trimmed"
+        ],
+        "signature": {
+          "dateSigned": "2026-08-11",
+          "nameOfApplicant": "Catalyst/Perini Strategic Income Fund",
+          "signature": "/s/ Michael Schoonover",
+          "signerName": "Michael Schoonover",
+          "title": "President"
+        },
+        "accessionNo": "0000894189-26-022150",
+        "filedAt": "2026-08-11T15:55:06-04:00",
+        "id": "4456657b10405cfcafb13ef56566ea6f"
+      }
+    ]
+  }
+}

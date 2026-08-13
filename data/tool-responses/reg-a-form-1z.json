@@ -1,0 +1,101 @@
+{
+  "tool": "reg-a-form-1z",
+  "request": {
+    "query": "cik:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 127,
+  "rawBytes": 1494,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":648,\"relation\":\"eq\"},\"data\":[{\"id\":\"df8a55ecc5caa1fd32be00f615d80ce1\",\"accessionNo\":\"0001096906-26-001033\",\"fileNo\":\"24R-00955\",\"formType\":\"1-Z\",\"filedAt\":\"2026-07-01T18:34:16-04:00\",\"cik\":\"2000719\",\"ticker\":\"\",\"companyName\":\"PARADYME FUND A II, LLC\",\"item1\":{\"issuerName\":\"PARADYME FUND A II, LLC\",\"street1\":\"1580 Dover Ave\",\"city\":\"Lake Havasu City\",\"stateOrCountry\":\"AZ\",\"zipCode\":\"86404\",\"phone\":\"800-560-5215\",\"commissionFileNumber\":[\"024-12449\"]},\"summaryInfoOffering\":[{\"offeringQualificationDate\":\"08-12-2024\",\"offeringCommenceDate\":\"08-14-2024\",\"offeringSecuritiesQualifiedSold\":15000,\"offeringSecuritiesSold\":2382,\"pricePerSecurity\":1000,\"portionSecuritiesSoldIssuer\":0,\"portionSecuritiesSoldSecurityholders\":0,\"underwrittenSpName\":[\"None\"],\"underwriterFees\":0,\"salesCommissionsSpName\":[\"None\"],\"salesCommissionsFee\":0,\"findersSpName\":[\"None\"],\"findersFees\":0,\"auditorSpName\":[\"IndigoSpire\"],\"auditorFees\":12500,\"legalSpName\":[\"PLLC\"],\"legalFees\":50000,\"promoterSpName\":[\"None\"],\"promotersFees\":0,\"blueSkySpName\":[\"Colonial Stock Transfer\"],\"blueSkyFees\":12000,\"issuerNetProceeds\":2382000}],\"certificationSuspension\":[{\"securitiesClassTitle\":\"Class A Series Interests\",\"certificationFileNumber\":[\"024-12449\"],\"approxRecordHolders\":124}],\"signatureTab\":[{\"cik\":\"0002000719\",\"regulationIssuerName1\":\"PARADYME FUND A II, LLC\",\"regulationIssuerName2\":\"PARADYME FUND A II, LLC\",\"signatureBy\":\"/s/ Michael Revely\",\"date\":\"07-01-2026\",\"title\":\"Chief Executive Officer\"}]}]}",
+  "data": {
+    "total": {
+      "value": 648,
+      "relation": "eq"
+    },
+    "data": [
+      {
+        "id": "df8a55ecc5caa1fd32be00f615d80ce1",
+        "accessionNo": "0001096906-26-001033",
+        "fileNo": "24R-00955",
+        "formType": "1-Z",
+        "filedAt": "2026-07-01T18:34:16-04:00",
+        "cik": "2000719",
+        "ticker": "",
+        "companyName": "PARADYME FUND A II, LLC",
+        "item1": {
+          "issuerName": "PARADYME FUND A II, LLC",
+          "street1": "1580 Dover Ave",
+          "city": "Lake Havasu City",
+          "stateOrCountry": "AZ",
+          "zipCode": "86404",
+          "phone": "800-560-5215",
+          "commissionFileNumber": [
+            "024-12449"
+          ]
+        },
+        "summaryInfoOffering": [
+          {
+            "offeringQualificationDate": "08-12-2024",
+            "offeringCommenceDate": "08-14-2024",
+            "offeringSecuritiesQualifiedSold": 15000,
+            "offeringSecuritiesSold": 2382,
+            "pricePerSecurity": 1000,
+            "portionSecuritiesSoldIssuer": 0,
+            "portionSecuritiesSoldSecurityholders": 0,
+            "underwrittenSpName": [
+              "None"
+            ],
+            "underwriterFees": 0,
+            "salesCommissionsSpName": [
+              "None"
+            ],
+            "salesCommissionsFee": 0,
+            "findersSpName": [
+              "None"
+            ],
+            "findersFees": 0,
+            "auditorSpName": [
+              "IndigoSpire"
+            ],
+            "auditorFees": 12500,
+            "legalSpName": [
+              "PLLC"
+            ],
+            "legalFees": 50000,
+            "promoterSpName": [
+              "None"
+            ],
+            "promotersFees": 0,
+            "blueSkySpName": [
+              "Colonial Stock Transfer"
+            ],
+            "blueSkyFees": 12000,
+            "issuerNetProceeds": 2382000
+          }
+        ],
+        "certificationSuspension": [
+          {
+            "securitiesClassTitle": "Class A Series Interests",
+            "certificationFileNumber": [
+              "024-12449"
+            ],
+            "approxRecordHolders": 124
+          }
+        ],
+        "signatureTab": [
+          {
+            "cik": "0002000719",
+            "regulationIssuerName1": "PARADYME FUND A II, LLC",
+            "regulationIssuerName2": "PARADYME FUND A II, LLC",
+            "signatureBy": "/s/ Michael Revely",
+            "date": "07-01-2026",
+            "title": "Chief Executive Officer"
+          }
+        ]
+      }
+    ]
+  }
+}

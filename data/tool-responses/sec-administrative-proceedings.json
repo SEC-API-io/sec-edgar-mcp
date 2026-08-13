@@ -1,0 +1,82 @@
+{
+  "tool": "sec-administrative-proceedings",
+  "request": {
+    "query": "releaseNo:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 127,
+  "rawBytes": 1824,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":10000,\"relation\":\"gte\"},\"data\":[{\"id\":\"a991dbc7365cad2b152b7fb8498f04b9\",\"releasedAt\":\"2026-08-12T20:20:38-04:00\",\"releaseNo\":[\"34-106124\"],\"fileNumbers\":[\"3-19038\"],\"respondents\":[{\"name\":\"Investmark Advisory Group LLC\",\"type\":\"company\",\"role\":\"respondent\",\"cik\":\"1926349\",\"ticker\":\"INVES6\"}],\"respondentsText\":\"Investmark Advisory Group LLC\",\"resources\":[{\"label\":\"primary\",\"url\":\"https://www.sec.gov/files/litigation/admin/2023/34-106124.pdf\"}],\"title\":\"ORDER AUTHORIZING THE TRANSFER OF ANY REMAINING FUNDS IN THE DISTRIBUTION FUND AND ANY FUNDS RETURNED IN THE FUTURE TO THE U.S. TREASURY AND TERMINATING THE DISTRIBUTION FUND\",\"summary\":\"The SEC has ordered the transfer of remaining and future infeasible-to-return funds from the Distribution Fund to the U.S. Treasury and terminated the Distribution Fund concerning Investmark Advisory Group LLC.\",\"tags\":[\"disclosure failures\",\"conflicts of interest\"],\"entities\":[{\"name\":\"Investmark Advisory Group LLC\",\"type\":\"company\",\"role\":\"respondent\",\"cik\":\"1926349\",\"ticker\":\"INVES6\"}],\"complaints\":[\"Disclosure failures concerning conflicts of interest from the receipt of 12b-1 fees and selecting share classes that paid the firm when lower-cost shares were available.\"],\"parallelActionsTakenBy\":[],\"hasAgreedToSettlement\":false,\"hasAgreedToPayPenalty\":false,\"penaltyAmounts\":[],\"requestedRelief\":[\"disgorgement of profits\"],\"violatedSections\":[\"Sections 203(e) and 203(k) of the Investment Advisers Act of 1940\"],\"orders\":[\"The remaining funds in the Distribution Fund that are infeasible to return to investors, and any funds returned in the future that are infeasible to return to investors, shall be transferred to the Treasury.\",\"The Distribution Fund is terminated.\"],\"investigationConductedBy\":[],\"litigationLedBy\":[],\"otherAgenciesInvolved\":[]}]}",
+  "data": {
+    "total": {
+      "value": 10000,
+      "relation": "gte"
+    },
+    "data": [
+      {
+        "id": "a991dbc7365cad2b152b7fb8498f04b9",
+        "releasedAt": "2026-08-12T20:20:38-04:00",
+        "releaseNo": [
+          "34-106124"
+        ],
+        "fileNumbers": [
+          "3-19038"
+        ],
+        "respondents": [
+          {
+            "name": "Investmark Advisory Group LLC",
+            "type": "company",
+            "role": "respondent",
+            "cik": "1926349",
+            "ticker": "INVES6"
+          }
+        ],
+        "respondentsText": "Investmark Advisory Group LLC",
+        "resources": [
+          {
+            "label": "primary",
+            "url": "https://www.sec.gov/files/litigation/admin/2023/34-106124.pdf"
+          }
+        ],
+        "title": "ORDER AUTHORIZING THE TRANSFER OF ANY REMAINING FUNDS IN THE DISTRIBUTION FUND AND ANY FUNDS RETURNED IN THE FUTURE TO THE U.S. TREASURY AND TERMINATING THE DISTRIBUTION FUND",
+        "summary": "The SEC has ordered the transfer of remaining and future infeasible-to-return funds from the Distribution Fund to the U.S. Treasury and terminated the Distribution Fund concerning Investmark Advisory Group LLC.",
+        "tags": [
+          "disclosure failures",
+          "conflicts of interest"
+        ],
+        "entities": [
+          {
+            "name": "Investmark Advisory Group LLC",
+            "type": "company",
+            "role": "respondent",
+            "cik": "1926349",
+            "ticker": "INVES6"
+          }
+        ],
+        "complaints": [
+          "Disclosure failures concerning conflicts of interest from the receipt of 12b-1 fees and selecting share classes that paid the firm when lower-cost shares were available."
+        ],
+        "parallelActionsTakenBy": [],
+        "hasAgreedToSettlement": false,
+        "hasAgreedToPayPenalty": false,
+        "penaltyAmounts": [],
+        "requestedRelief": [
+          "disgorgement of profits"
+        ],
+        "violatedSections": [
+          "Sections 203(e) and 203(k) of the Investment Advisers Act of 1940"
+        ],
+        "orders": [
+          "The remaining funds in the Distribution Fund that are infeasible to return to investors, and any funds returned in the future that are infeasible to return to investors, shall be transferred to the Treasury.",
+          "The Distribution Fund is terminated."
+        ],
+        "investigationConductedBy": [],
+        "litigationLedBy": [],
+        "otherAgenciesInvolved": []
+      }
+    ]
+  }
+}

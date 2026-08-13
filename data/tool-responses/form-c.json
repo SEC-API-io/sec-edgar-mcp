@@ -1,0 +1,109 @@
+{
+  "tool": "form-c",
+  "request": {
+    "query": "cik:*",
+    "size": 1
+  },
+  "httpStatus": 200,
+  "isError": false,
+  "durationMs": 132,
+  "rawBytes": 2857,
+  "truncated": false,
+  "text": "{\"total\":{\"value\":10000,\"relation\":\"gte\"},\"data\":[{\"id\":\"15ffe73a6749ad9f904d580bc5c05534\",\"accessionNo\":\"0001493152-26-037428\",\"fileNo\":\"020-37290\",\"formType\":\"C/A\",\"filedAt\":\"2026-08-12T17:12:38-04:00\",\"cik\":\"1810055\",\"ticker\":\"\",\"companyName\":\"Rad Technologies Inc.\",\"issuerInformation\":{\"natureOfAmendment\":\"The purpose of this non-material amendment is to modify the equity perks.\",\"issuerInfo\":{\"nameOfIssuer\":\"Rad Technologies Inc.\",\"legalStatus\":{\"legalStatusForm\":\"Corporation\",\"jurisdictionOrganization\":\"DE\",\"dateIncorporation\":\"07-06-2018\"},\"issuerAddress\":{\"street1\":\"1501 Lincoln Blvd\",\"city\":\"Venice\",\"stateOrCountry\":\"CA\",\"zipCode\":\"90291\"},\"issuerWebsite\":\"www.radintel.ai\"},\"isCoIssuer\":false,\"companyName\":\"DEALMAKER SECURITIES LLC\",\"commissionCik\":\"0001872856\",\"commissionFileNumber\":\"008-70756\",\"crdNumber\":\"000315324\"},\"offeringInformation\":{\"compensationAmount\":\"DealMaker will receive cash compensation equal to 8.5% of amount raised which includes processing/transaction fees, AML searches, $10k set-up fee, and $4k month for platform and marketing services.\",\"financialInterest\":\"None.\",\"securityOfferedType\":\"Other\",\"securityOfferedOtherDesc\":\"Class B Common Stock\",\"noOfSecurityOffered\":9333,\"price\":1.05,\"priceDeterminationMethod\":\"(does not include the 2% investor processing fee)\",\"offeringAmount\":9995.64,\"overSubscriptionAccepted\":true,\"overSubscriptionAllocationType\":\"Other\",\"descOverSubscription\":\"At the Intermediary's discretion\",\"maximumOfferingAmount\":5000000,\"deadlineDate\":\"04-30-2027\"},\"annualReportDisclosureRequirements\":{\"currentEmployees\":59,\"totalAssetMostRecentFiscalYear\":9957365,\"totalAssetPriorFiscalYear\":2590425,\"cashEquiMostRecentFiscalYear\":7438572,\"cashEquiPriorFiscalYear\":277938,\"actReceivedMostRecentFiscalYear\":438841,\"actReceivedPriorFiscalYear\":92591,\"shortTermDebtMostRecentFiscalYear\":1596898,\"shortTermDebtPriorFiscalYear\":1491562,\"longTermDebtMostRecentFiscalYear\":500000,\"longTermDebtPriorFiscalYear\":1013135,\"revenueMostRecentFiscalYear\":2161000,\"revenuePriorFiscalYear\":1151637,\"costGoodsSoldMostRecentFiscalYear\":2386338,\"costGoodsSoldPriorFiscalYear\":1569483,\"taxPaidMostRecentFiscalYear\":0,\"taxPaidPriorFiscalYear\":0,\"netIncomeMostRecentFiscalYear\":-19952455,\"netIncomePriorFiscalYear\":-8626950,\"issueJurisdictionSecuritiesOffering\":[\"AL\",\"AK\",\"AZ\",\"AR\",\"CA\",\"CO\",\"CT\",\"DE\",\"FL\",\"GA\",\"HI\",\"ID\",\"IL\",\"IN\",\"IA\",\"KS\",\"KY\",\"LA\",\"ME\",\"MD\",\"MA\",\"MI\",\"MN\",\"MS\",\"MO\",\"MT\",\"NE\",\"NV\",\"NH\",\"NJ\",\"NM\",\"NY\",\"NC\",\"ND\",\"OH\",\"OK\",\"OR\",\"PA\",\"RI\",\"SC\",\"SD\",\"TN\",\"TX\",\"UT\",\"VT\",\"VA\",\"WA\",\"WV\",\"WI\",\"WY\",\"DC\",\"B5\",\"GU\",\"PR\",\"1V\",\"VI\"]},\"signatureInfo\":{\"issuerSignature\":{\"issuer\":\"Rad Technologies Inc.\",\"issuerSignature\":\"/s/ Jeremy Barnett\",\"issuerTitle\":\"Chief Executive Officer\"},\"signaturePersons\":[{\"personSignature\":\"/s/ Jeremy Barnett\",\"personTitle\":\"Director\",\"signatureDate\":\"08-12-2026\"}]}}]}",
+  "data": {
+    "total": {
+      "value": 10000,
+      "relation": "gte"
+    },
+    "data": [
+      {
+        "id": "15ffe73a6749ad9f904d580bc5c05534",
+        "accessionNo": "0001493152-26-037428",
+        "fileNo": "020-37290",
+        "formType": "C/A",
+        "filedAt": "2026-08-12T17:12:38-04:00",
+        "cik": "1810055",
+        "ticker": "",
+        "companyName": "Rad Technologies Inc.",
+        "issuerInformation": {
+          "natureOfAmendment": "The purpose of this non-material amendment is to modify the equity perks.",
+          "issuerInfo": {
+            "nameOfIssuer": "Rad Technologies Inc.",
+            "legalStatus": {
+              "legalStatusForm": "Corporation",
+              "jurisdictionOrganization": "DE",
+              "dateIncorporation": "07-06-2018"
+            },
+            "issuerAddress": {
+              "street1": "1501 Lincoln Blvd",
+              "city": "Venice",
+              "stateOrCountry": "CA",
+              "zipCode": "90291"
+            },
+            "issuerWebsite": "www.radintel.ai"
+          },
+          "isCoIssuer": false,
+          "companyName": "DEALMAKER SECURITIES LLC",
+          "commissionCik": "0001872856",
+          "commissionFileNumber": "008-70756",
+          "crdNumber": "000315324"
+        },
+        "offeringInformation": {
+          "compensationAmount": "DealMaker will receive cash compensation equal to 8.5% of amount raised which includes processing/transaction fees, AML searches, $10k set-up fee, and $4k month for platform and marketing services.",
+          "financialInterest": "None.",
+          "securityOfferedType": "Other",
+          "securityOfferedOtherDesc": "Class B Common Stock",
+          "noOfSecurityOffered": 9333,
+          "price": 1.05,
+          "priceDeterminationMethod": "(does not include the 2% investor processing fee)",
+          "offeringAmount": 9995.64,
+          "overSubscriptionAccepted": true,
+          "overSubscriptionAllocationType": "Other",
+          "descOverSubscription": "At the Intermediary's discretion",
+          "maximumOfferingAmount": 5000000,
+          "deadlineDate": "04-30-2027"
+        },
+        "annualReportDisclosureRequirements": {
+          "currentEmployees": 59,
+          "totalAssetMostRecentFiscalYear": 9957365,
+          "totalAssetPriorFiscalYear": 2590425,
+          "cashEquiMostRecentFiscalYear": 7438572,
+          "cashEquiPriorFiscalYear": 277938,
+          "actReceivedMostRecentFiscalYear": 438841,
+          "actReceivedPriorFiscalYear": 92591,
+          "shortTermDebtMostRecentFiscalYear": 1596898,
+          "shortTermDebtPriorFiscalYear": 1491562,
+          "longTermDebtMostRecentFiscalYear": 500000,
+          "longTermDebtPriorFiscalYear": 1013135,
+          "revenueMostRecentFiscalYear": 2161000,
+          "revenuePriorFiscalYear": 1151637,
+          "costGoodsSoldMostRecentFiscalYear": 2386338,
+          "costGoodsSoldPriorFiscalYear": 1569483,
+          "taxPaidMostRecentFiscalYear": 0,
+          "taxPaidPriorFiscalYear": 0,
+          "netIncomeMostRecentFiscalYear": -19952455,
+          "netIncomePriorFiscalYear": -8626950,
+          "issueJurisdictionSecuritiesOffering": [
+            "AL",
+            "AK",
+            "... 54 more rows trimmed"
+          ]
+        },
+        "signatureInfo": {
+          "issuerSignature": {
+            "issuer": "Rad Technologies Inc.",
+            "issuerSignature": "/s/ Jeremy Barnett",
+            "issuerTitle": "Chief Executive Officer"
+          },
+          "signaturePersons": [
+            {
+              "personSignature": "/s/ Jeremy Barnett",
+              "personTitle": "Director",
+              "signatureDate": "08-12-2026"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
