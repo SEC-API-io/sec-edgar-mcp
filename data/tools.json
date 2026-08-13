@@ -1,0 +1,1313 @@
+{
+  "count": 49,
+  "tools": [
+    {
+      "name": "filing-search",
+      "title": "Search SEC EDGAR filings from 1993 to present to retrieve metadata",
+      "description": "Search all SEC EDGAR filings with a Lucene `query`. Returns filing metadata (accession number, form type, filed date, period-of-report, CIK, ticker, filer name, SIC, primary-document URL, exhibit URLs, and many more). Use for questions like \"find the last 10 10-K filings for AAPL\", \"list every 8-K filed by Tesla in Q1 2024\". Input `query` is Lucene syntax over the filing metadata index (e.g. `ticker:AAPL AND formType:\"10-K\"`). Also accepts `from`, `size` (max 50), and `sort`. Sort default: `[{\"filedAt\": {\"order\": \"desc\"}}]`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9999
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "edgar-ingestion-log",
+      "title": "Get all SEC filings ingested at a date",
+      "description": "Fetch the EDGAR ingestion log for a specific date. Returns the list of filings ingested on that UTC calendar day, with per-filing metadata (form type, accession, filed at). Use to reconcile whether a specific filing was ingested, or to enumerate a day's activity. Input `date` is YYYY-MM-DD.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "date"
+        ]
+      }
+    },
+    {
+      "name": "full-text-search",
+      "title": "Full-text search over SEC EDGAR filings",
+      "description": "Search the full text of SEC filings and their exhibits (10-K, 10-Q, 8-K, 20-F, S-1, and more) filed since 2001. Returns matching filings (accession number, form type, filed date, CIK, filer, document URL), sorted by relevance, not by date. Use when you need to find filings that MENTION a term rather than filter by metadata — e.g. \"which 8-Ks mention quantum computing\". `query` supports search operators (exact phrase in quotes, OR, wildcards). Optional filters: `formTypes`, `ciks`, `startDate`, `endDate` (YYYY-MM-DD). Results are paginated 100 per page via `page` (1-based); defaults to the last 12 months when no date range is given.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "formTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "ciks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "endDate": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "filing-to-pdf",
+      "title": "Fetch any SEC EDGAR filing and exhibit as PDF",
+      "description": "Fetch any SEC EDGAR filing (10-K, 10-Q, 8-K, etc) and exhibit (Ex-99, Ex-21, etc) and return as PDF. Use when the content of one specific filing or exhibit in PDF format is needed and the EDGAR file URL is known. Input `url` must be a `www.sec.gov` EDGAR file URL. Returns the file as PDF. Can be large (10+ MB for long 10-Ks).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "get-edgar-file",
+      "title": "Download any SEC EDGAR filing or exhibit in its original format",
+      "description": "Download any SEC EDGAR filing or exhibit from 1993 to present in its original filed format: HTML, XML, plain text, images, complete submission files, SGML headers, and so on. Input `url` must be a `www.sec.gov` EDGAR file of a filing or exhibit URL. Returns the file exactly as filed (raw source), not a converted or cleaned view. Use `filing-to-pdf` instead to get a rendered PDF.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "extractor",
+      "title": "Extract a section from a 10-K/10-Q/8-K filing",
+      "description": "Extract a single named section from a 10-K, 10-Q, or 8-K filing (e.g. Risk Factors, MD&A, Business). Returns the section as plain text (default) or original HTML. Prefer this over `get-edgar-file` when you only need one section. Input: `url` (must be a `www.sec.gov` filing URL), `item` (e.g. `1A` for 10-K Item 1.A Risk Factors, `part2item1a` for 10-Q Risk Factors section, `2-2` for Item 2.2 in 8-K), `type` (`text` or `html`, default `text`).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "item": {
+            "type": "string",
+            "enum": [
+              "1",
+              "1A",
+              "1B",
+              "1C",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "7A",
+              "8",
+              "9",
+              "9A",
+              "9B",
+              "9C",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15",
+              "part1item1",
+              "part1item2",
+              "part1item3",
+              "part1item4",
+              "part2item1",
+              "part2item1a",
+              "part2item2",
+              "part2item3",
+              "part2item4",
+              "part2item5",
+              "part2item6",
+              "1-1",
+              "1-2",
+              "1-3",
+              "1-4",
+              "1-5",
+              "2-1",
+              "2-2",
+              "2-3",
+              "2-4",
+              "2-5",
+              "2-6",
+              "3-1",
+              "3-2",
+              "3-3",
+              "4-1",
+              "4-2",
+              "5-1",
+              "5-2",
+              "5-3",
+              "5-4",
+              "5-5",
+              "5-6",
+              "5-7",
+              "5-8",
+              "6-1",
+              "6-2",
+              "6-3",
+              "6-4",
+              "6-5",
+              "6-6",
+              "6-10",
+              "7-1",
+              "8-1",
+              "9-1",
+              "signature"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "html"
+            ]
+          }
+        },
+        "required": [
+          "url",
+          "item"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "xbrl-to-json",
+      "title": "Convert XBRL financials to normalized JSON",
+      "description": "Convert the XBRL financial data embedded in a 10-K/10-Q filing into a normalized JSON representation of the financial statements (income statement, balance sheet, cash flow, plus disclosures). Use for structured numeric data — earnings, assets, liabilities, cash — rather than narrative. Accepts one of: `htm-url`, `xbrl-url`, `accession-no`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "htm-url": {
+            "type": "string"
+          },
+          "xbrl-url": {
+            "type": "string"
+          },
+          "accession-no": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-13f-holdings",
+      "title": "Search Form 13F institutional holdings",
+      "description": "Search institutional investment manager holdings from Form 13F filings. Returns individual holding rows (security name, CUSIP, shares, market value, investment discretion, voting authority) filed by hedge funds, mutual funds, and other large institutions. Use for \"what did Berkshire Hathaway hold at quarter end\", \"who owns AAPL among 13F filers\". Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-13f-cover-pages",
+      "title": "Search Form 13F cover pages",
+      "description": "Search 13F cover pages (the filing-level summary of each institutional manager's quarterly report). Returns filer name, CIK, CRD, filing date, period of report, and total portfolio value. Use for \"list every 13F filed for Q1 2024\", or to enumerate managers before drilling into holdings via `form-13f-holdings`. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-13d-13g",
+      "title": "Search Schedule 13D/13G beneficial-ownership filings",
+      "description": "Search Schedule 13D and 13G filings — beneficial-ownership disclosures triggered when an investor crosses 5% of a public company's shares. Returns filer, subject company, percent ownership, shares held, filing dates. Use for activist-investor tracking or major ownership changes. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "insider-trading",
+      "title": "Search insider trading disclosures (Form 3/4/5)",
+      "description": "Search Form 3, 4, and 5 filings — insider trading disclosures by officers, directors, and 10% beneficial owners. Returns transactions with insider name/role, issuer, transaction date, price, share count, transaction code, resulting ownership. Use for \"recent insider buys at NVDA\". Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-144",
+      "title": "Search Form 144 intent-to-sell filings",
+      "description": "Search Form 144 filings — intent-to-sell notices filed by insiders before selling restricted stock. Returns filer, issuer, planned share count, planned sale date, market value. Use to anticipate insider sales. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-nport",
+      "title": "Search Form N-PORT fund portfolio holdings",
+      "description": "Search Form N-PORT filings — monthly portfolio holdings reported by U.S. mutual funds and ETFs. Returns individual holdings (security, ISIN/CUSIP, share count, fair value, portfolio percentage), plus fund-level totals. Use for \"what does the SPY ETF hold\", \"find every fund holding a specific bond\". Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-npx",
+      "title": "Search Form N-PX proxy voting records",
+      "description": "Search Form N-PX filings — annual proxy-voting records reported by mutual funds and 13F filers. Returns fund, issuer voted on, meeting date, ballot item, fund's vote, whether the vote was for/against management. Use for ESG/voting-behavior research. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-ncen",
+      "title": "Search Form N-CEN investment company census",
+      "description": "Search Form N-CEN filings — annual census reports from registered investment companies (mutual funds, ETFs, closed-end funds, UITs). Returns fund structure, service providers (adviser, custodian, transfer agent), securities lending activity, share class data. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-adv-firms",
+      "title": "Search Form ADV firm registrations",
+      "description": "Search Form ADV firm-level registrations — SEC/state-registered investment advisers. Returns firm identity (name, CRD, IARD), regulatory status, assets under management, client types, disciplinary history summary. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-adv-individuals",
+      "title": "Search Form ADV individual registrations",
+      "description": "Search Form ADV individual-level registrations — registered investment adviser representatives (IARs). Returns individual identity (name, CRD), employment history, licenses/exams, disciplinary events. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-adv-brochures",
+      "title": "Get Form ADV Part 2 brochures for an adviser",
+      "description": "Fetch Form ADV Part 2 brochures (the plain-English disclosure documents) filed by an investment adviser. Input `crd` is the adviser's CRD number. Returns brochure metadata and links to individual brochures.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "crd": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "crd"
+        ]
+      }
+    },
+    {
+      "name": "form-adv-schedule-a-direct-owners",
+      "title": "Get Form ADV Schedule A — direct owners of an adviser",
+      "description": "Return Schedule A direct-owner rows for an adviser: individuals/entities that directly own 5%+ of the adviser firm, with title, ownership code, control person status. Input `crd` is the adviser's CRD number.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "crd": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "crd"
+        ]
+      }
+    },
+    {
+      "name": "form-adv-schedule-b-indirect-owners",
+      "title": "Get Form ADV Schedule B — indirect owners of an adviser",
+      "description": "Return Schedule B indirect-owner rows for an adviser: 5%+ owners of the direct owners disclosed on Schedule A. Input `crd` is the adviser's CRD number.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "crd": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "crd"
+        ]
+      }
+    },
+    {
+      "name": "form-adv-schedule-d-1-b",
+      "title": "Get Form ADV Schedule D-1-B — other business names",
+      "description": "Return Schedule D Section 1.B rows for an adviser: other business names under which the adviser operates. Input `crd` is the adviser's CRD number.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "crd": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "crd"
+        ]
+      }
+    },
+    {
+      "name": "form-adv-schedule-d-5-k",
+      "title": "Get Form ADV Schedule D-5-K — separately managed accounts",
+      "description": "Return Schedule D Section 5.K rows for an adviser: separately managed account (SMA) totals — number of accounts, regulatory assets under management, custodians. Input `crd` is the adviser's CRD number.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "crd": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "crd"
+        ]
+      }
+    },
+    {
+      "name": "form-adv-schedule-d-7-a",
+      "title": "Get Form ADV Schedule D-7-A — financial industry affiliations",
+      "description": "Return Schedule D Section 7.A rows for an adviser: related persons in the financial industry (broker-dealers, banks, insurance companies, etc.). Input `crd` is the adviser's CRD number.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "crd": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "crd"
+        ]
+      }
+    },
+    {
+      "name": "form-adv-schedule-d-7-b-1",
+      "title": "Get Form ADV Schedule D-7-B-1 — private funds advised",
+      "description": "Return Schedule D Section 7.B.1 rows for an adviser: private funds advised (name, ID, type, gross asset value, minimum investment, beneficial ownership). Input `crd` is the adviser's CRD number.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "crd": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "crd"
+        ]
+      }
+    },
+    {
+      "name": "form-s1-424b4",
+      "title": "Search S-1 / 424B4 registration filings",
+      "description": "Search and extract structured data from S-1, S-1/A, 424B4 registration filings — prospectuses filed for IPOs and follow-on offerings. Returns issuer, shares offered, price range, use of proceeds, underwriters, risk factors summary. Use for IPO pipeline analysis. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-d",
+      "title": "Search Form D private-placement filings",
+      "description": "Search Form D filings — notice-of-exempt-offering filings for private placements (Reg D). Returns issuer, offering size, amount sold, offering type, industry, related persons (execs / directors / promoters). Use for private-market fundraising research. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-c",
+      "title": "Search Form C Regulation Crowdfunding offerings",
+      "description": "Search Form C filings — crowdfunding offerings under Regulation Crowdfunding. Returns issuer, offering amount, target amount, funding portal, use of proceeds, financial info. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-8k",
+      "title": "Search structured 8-K material-event filings",
+      "description": "Search structured 8-K filings — the \"current report\" filed by public companies for material events (acquisitions, executive changes, earnings releases, restructurings). Returns filer, item numbers, event descriptions extracted from the filing body. Use for real-time material-event tracking. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "reg-a-search",
+      "title": "Search Regulation A / A+ offerings",
+      "description": "Search Regulation A / A+ offerings — small public offerings under $75M. Returns issuer, offering size, tier, filing date, status. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "compensation",
+      "title": "Search executive compensation data",
+      "description": "Search executive compensation data — annual salary, bonus, stock/option awards, non-equity incentive, and total compensation for named executive officers of public companies. Also covers director compensation where reported. Use for \"highest paid CEOs in software\". Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "compensation-by-key",
+      "title": "Get executive compensation by CIK or ticker",
+      "description": "Get annual executive compensation for one company by its CIK or ticker. Returns up to 200 records (salary, bonus, stock and option awards, non-equity incentive, total), most recent year first. Input `cikOrTicker` is a numeric CIK (e.g. `320193`) or a ticker symbol (e.g. `AAPL`). Use the search-based `compensation` tool for cross-company queries.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "cikOrTicker": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "cikOrTicker"
+        ]
+      }
+    },
+    {
+      "name": "audit-fees",
+      "title": "Search auditor / audit-fee disclosures",
+      "description": "Search audit fee disclosures — auditor name, audit fees, audit-related fees, tax fees, all other fees paid by public companies. Use for auditor market-share analysis or fee-inflation studies. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "directors-and-board-members",
+      "title": "Search directors and board members",
+      "description": "Search directors and board members of U.S. public companies. Returns director name, company, roles/committees, independence status, term dates, other directorships. Use for board composition and interlocking-directorate research. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "float",
+      "title": "Fetch public float and share count",
+      "description": "Fetch public float and share count for a company. Returns outstanding shares, public float (shares held by non-affiliates), reporting date. Use to compute market cap or effective free float. Query by `ticker` or `cik`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "cik": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "subsidiaries",
+      "title": "Search Exhibit 21 subsidiary disclosures",
+      "description": "Search subsidiary disclosures from Exhibit 21 of 10-K filings — the full list of a company's legal subsidiaries and their jurisdictions of incorporation. Returns parent, subsidiary name, jurisdiction, filing period. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "edgar-entities",
+      "title": "Search EDGAR entity master",
+      "description": "Search EDGAR's entity master — every filer registered with the SEC (companies, funds, individuals, foreign filers). Returns entity name, CIK, SIC code, state of incorporation, business address, former names. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "mapping",
+      "title": "Company identifier mapping (CIK/ticker/CUSIP/name)",
+      "description": "Look up cross-mappings between company identifiers. Given one identifier type and its value, returns matching companies with their full identifier set. Use to resolve \"Apple\" → CIK 320193, or a CUSIP → ticker. `param` is the identifier type; `value` is the value to look up.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "param": {
+            "type": "string",
+            "enum": [
+              "cik",
+              "ticker",
+              "cusip",
+              "name",
+              "exchange",
+              "sector",
+              "industry"
+            ]
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "param",
+          "value"
+        ]
+      }
+    },
+    {
+      "name": "sec-enforcement-actions",
+      "title": "Search SEC enforcement actions",
+      "description": "Search SEC enforcement actions — formal legal actions brought by the Commission against firms or individuals. Returns respondent, allegations, sanctions, dates, related documents. Use for compliance risk / bad-actor research. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-npx-file",
+      "title": "Get a Form N-PX file by accession number",
+      "description": "Fetch the raw Form N-PX filing content (XML / structured data) for a given accession number. Use after searching via `form-npx` when you need the full ballot-item detail.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "accessionNo": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accessionNo"
+        ]
+      }
+    },
+    {
+      "name": "reg-a-form-1a",
+      "title": "Search structured Reg A Form 1-A filings",
+      "description": "Search structured Form 1-A filings — the offering statement for a Regulation A / A+ offering. Returns issuer, offering size, use of proceeds, risk factors. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "reg-a-form-1k",
+      "title": "Search structured Reg A Form 1-K filings",
+      "description": "Search structured Form 1-K filings — the annual report for Regulation A / A+ issuers. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "reg-a-form-1z",
+      "title": "Search structured Reg A Form 1-Z filings",
+      "description": "Search structured Form 1-Z filings — the exit report filed when a Reg A offering terminates. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "sec-litigation-releases",
+      "title": "Search SEC litigation releases",
+      "description": "Search SEC Litigation Releases — public notices of civil lawsuits filed by the SEC in federal court. Returns release number, date, respondents, allegations summary. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "sec-administrative-proceedings",
+      "title": "Search SEC administrative proceedings",
+      "description": "Search SEC Administrative Proceedings — cases adjudicated inside the SEC (before an ALJ or the Commission). Returns proceeding number, date, respondents, charges, sanctions. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "aaers",
+      "title": "Search Accounting and Auditing Enforcement Releases (AAER)",
+      "description": "Search AAERs — enforcement actions specifically related to accounting fraud, audit failures, and financial-reporting misconduct. Returns AAER number, date, respondents, allegations. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "aaer-file",
+      "title": "Fetch an AAER document file",
+      "description": "Fetch the full document (order, opinion, complaint) attached to an AAER. Inputs: `aaerNo` and `fileTypeAndName` (both from the AAER search result).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "aaerNo": {
+            "type": "string"
+          },
+          "fileTypeAndName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "aaerNo",
+          "fileTypeAndName"
+        ]
+      }
+    },
+    {
+      "name": "sro",
+      "title": "Search SRO (self-regulatory organization) rule filings",
+      "description": "Search SRO rule filings — proposed rule changes filed by exchanges and self-regulatory organizations (NYSE, Nasdaq, FINRA, MSRB, etc.). Returns filer, rule change description, effective date. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "form-x-17a-5",
+      "title": "Search Form X-17A-5 (broker-dealer FOCUS reports)",
+      "description": "Search structured Form X-17A-5 (FOCUS) filings — quarterly and annual financial-and-operational reports filed by broker-dealers. Returns firm, reporting period, financial condition data. Lucene syntax in `query`.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "from": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50
+          },
+          "sort": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "additionalProperties": true
+      }
+    },
+    {
+      "name": "api-key-usage",
+      "title": "Get sec-api API key monthly bandwidth usage",
+      "description": "Return the caller's monthly bandwidth usage for a given calendar month. Input `date` is required, format `YYYY-MM` (e.g. `2026-08`).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "pattern": "^20\\d\\d-[0-3]\\d$"
+          }
+        },
+        "required": [
+          "date"
+        ]
+      }
+    }
+  ]
+}

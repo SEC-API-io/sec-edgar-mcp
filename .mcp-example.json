@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "sec-api": {
+      "type": "http",
+      "url": "https://api.sec-api.io/mcp?apiKey=YOUR_API_KEY"
+    }
+  }
+}

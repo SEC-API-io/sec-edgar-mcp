@@ -1,0 +1,15 @@
+.env
+.venv
+node_modules
+output
+.DS_Store
+docker-data
+__pycache__
+.pm2
+.claude
+modules
+config
+.mcp.json
+.claude-working-dir
+scripts
+TODO.md
