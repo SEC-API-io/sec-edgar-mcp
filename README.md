@@ -189,58 +189,57 @@ Full reference with input schemas, response shapes and examples:
 **[docs/tools/README.md](./docs/tools/README.md)**
 
 <!-- tools:start -->
-
-| Tool                                                                                         | Purpose                                                            | Category                    |
-| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | --------------------------- |
-| [`filing-search`](./docs/tools/filing-search.md)                                             | Search SEC EDGAR filings from 1993 to present to retrieve metadata | Search and discovery        |
-| [`full-text-search`](./docs/tools/full-text-search.md)                                       | Full-text search over SEC EDGAR filings                            | Search and discovery        |
-| [`filing-to-pdf`](./docs/tools/filing-to-pdf.md)                                             | Fetch any SEC EDGAR filing and exhibit as PDF                      | Filings and documents       |
-| [`get-edgar-file`](./docs/tools/get-edgar-file.md)                                           | Download any SEC EDGAR filing or exhibit in its original format    | Filings and documents       |
-| [`extractor`](./docs/tools/extractor.md)                                                     | Extract a section from a 10-K/10-Q/8-K filing                      | Filings and documents       |
-| [`xbrl-to-json`](./docs/tools/xbrl-to-json.md)                                               | Convert XBRL financials to normalized JSON                         | Filings and documents       |
-| [`form-13f-holdings`](./docs/tools/form-13f-holdings.md)                                     | Search Form 13F institutional holdings                             | Ownership and insiders      |
-| [`form-13f-cover-pages`](./docs/tools/form-13f-cover-pages.md)                               | Search Form 13F cover pages                                        | Ownership and insiders      |
-| [`form-13d-13g`](./docs/tools/form-13d-13g.md)                                               | Search Schedule 13D/13G beneficial-ownership filings               | Ownership and insiders      |
-| [`insider-trading`](./docs/tools/insider-trading.md)                                         | Search insider trading disclosures (Form 3/4/5)                    | Ownership and insiders      |
-| [`form-144`](./docs/tools/form-144.md)                                                       | Search Form 144 intent-to-sell filings                             | Ownership and insiders      |
-| [`form-nport`](./docs/tools/form-nport.md)                                                   | Search Form N-PORT fund portfolio holdings                         | Funds                       |
-| [`form-npx`](./docs/tools/form-npx.md)                                                       | Search Form N-PX proxy voting records                              | Funds                       |
-| [`form-npx-file`](./docs/tools/form-npx-file.md)                                             | Get a Form N-PX file by accession number                           | Funds                       |
-| [`form-ncen`](./docs/tools/form-ncen.md)                                                     | Search Form N-CEN investment company census                        | Funds                       |
-| [`form-adv-firms`](./docs/tools/form-adv-firms.md)                                           | Search Form ADV firm registrations                                 | Investment advisers         |
-| [`form-adv-individuals`](./docs/tools/form-adv-individuals.md)                               | Search Form ADV individual registrations                           | Investment advisers         |
-| [`form-adv-brochures`](./docs/tools/form-adv-brochures.md)                                   | Get Form ADV Part 2 brochures for an adviser                       | Investment advisers         |
-| [`form-adv-schedule-a-direct-owners`](./docs/tools/form-adv-schedule-a-direct-owners.md)     | Get Form ADV Schedule A, direct owners of an adviser               | Investment advisers         |
-| [`form-adv-schedule-b-indirect-owners`](./docs/tools/form-adv-schedule-b-indirect-owners.md) | Get Form ADV Schedule B, indirect owners of an adviser             | Investment advisers         |
-| [`form-adv-schedule-d-1-b`](./docs/tools/form-adv-schedule-d-1-b.md)                         | Get Form ADV Schedule D-1-B, other business names                  | Investment advisers         |
-| [`form-adv-schedule-d-5-k`](./docs/tools/form-adv-schedule-d-5-k.md)                         | Get Form ADV Schedule D-5-K, separately managed accounts           | Investment advisers         |
-| [`form-adv-schedule-d-7-a`](./docs/tools/form-adv-schedule-d-7-a.md)                         | Get Form ADV Schedule D-7-A, financial industry affiliations       | Investment advisers         |
-| [`form-adv-schedule-d-7-b-1`](./docs/tools/form-adv-schedule-d-7-b-1.md)                     | Get Form ADV Schedule D-7-B-1, private funds advised               | Investment advisers         |
-| [`form-s1-424b4`](./docs/tools/form-s1-424b4.md)                                             | Search S-1 / 424B4 registration filings                            | Offerings and registrations |
-| [`form-d`](./docs/tools/form-d.md)                                                           | Search Form D private-placement filings                            | Offerings and registrations |
-| [`form-c`](./docs/tools/form-c.md)                                                           | Search Form C Regulation Crowdfunding offerings                    | Offerings and registrations |
-| [`form-8k`](./docs/tools/form-8k.md)                                                         | Search structured 8-K material-event filings                       | Offerings and registrations |
-| [`reg-a-search`](./docs/tools/reg-a-search.md)                                               | Search Regulation A / A+ offerings                                 | Offerings and registrations |
-| [`reg-a-form-1a`](./docs/tools/reg-a-form-1a.md)                                             | Search structured Reg A Form 1-A filings                           | Offerings and registrations |
-| [`reg-a-form-1k`](./docs/tools/reg-a-form-1k.md)                                             | Search structured Reg A Form 1-K filings                           | Offerings and registrations |
-| [`reg-a-form-1z`](./docs/tools/reg-a-form-1z.md)                                             | Search structured Reg A Form 1-Z filings                           | Offerings and registrations |
-| [`compensation`](./docs/tools/compensation.md)                                               | Search executive compensation data                                 | Governance and compensation |
-| [`compensation-by-key`](./docs/tools/compensation-by-key.md)                                 | Get executive compensation by CIK or ticker                        | Governance and compensation |
-| [`audit-fees`](./docs/tools/audit-fees.md)                                                   | Search auditor / audit-fee disclosures                             | Governance and compensation |
-| [`directors-and-board-members`](./docs/tools/directors-and-board-members.md)                 | Search directors and board members                                 | Governance and compensation |
-| [`float`](./docs/tools/float.md)                                                             | Fetch public float and share count                                 | Company and entity          |
-| [`subsidiaries`](./docs/tools/subsidiaries.md)                                               | Search Exhibit 21 subsidiary disclosures                           | Company and entity          |
-| [`edgar-entities`](./docs/tools/edgar-entities.md)                                           | Search EDGAR entity master                                         | Company and entity          |
-| [`mapping`](./docs/tools/mapping.md)                                                         | Company identifier mapping (CIK/ticker/CUSIP/name)                 | Company and entity          |
-| [`sec-enforcement-actions`](./docs/tools/sec-enforcement-actions.md)                         | Search SEC enforcement actions                                     | Enforcement                 |
-| [`sec-litigation-releases`](./docs/tools/sec-litigation-releases.md)                         | Search SEC litigation releases                                     | Enforcement                 |
-| [`sec-administrative-proceedings`](./docs/tools/sec-administrative-proceedings.md)           | Search SEC administrative proceedings                              | Enforcement                 |
-| [`aaers`](./docs/tools/aaers.md)                                                             | Search Accounting and Auditing Enforcement Releases (AAER)         | Enforcement                 |
-| [`aaer-file`](./docs/tools/aaer-file.md)                                                     | Fetch an AAER document file                                        | Enforcement                 |
-| [`sro`](./docs/tools/sro.md)                                                                 | Search SRO (self-regulatory organization) rule filings             | Enforcement                 |
-| [`form-x-17a-5`](./docs/tools/form-x-17a-5.md)                                               | Search Form X-17A-5 (broker-dealer FOCUS reports)                  | Broker-dealers              |
-| [`edgar-ingestion-log`](./docs/tools/edgar-ingestion-log.md)                                 | Get all SEC filings ingested at a date                             | Ingestion logs              |
-| [`api-key-usage`](./docs/tools/api-key-usage.md)                                             | Get sec-api API key monthly bandwidth usage                        | Account                     |
+| Tool | Purpose | Category |
+| ---- | ------- | -------- |
+| [`filing-search`](./docs/tools/filing-search.md) | Search SEC EDGAR filings from 1993 to present to retrieve metadata | Search and discovery |
+| [`full-text-search`](./docs/tools/full-text-search.md) | Full-text search over SEC EDGAR filings | Search and discovery |
+| [`filing-to-pdf`](./docs/tools/filing-to-pdf.md) | Fetch any SEC EDGAR filing and exhibit as PDF | Filings and documents |
+| [`get-edgar-file`](./docs/tools/get-edgar-file.md) | Download any SEC EDGAR filing or exhibit in its original format | Filings and documents |
+| [`extractor`](./docs/tools/extractor.md) | Extract a section from a 10-K/10-Q/8-K filing | Filings and documents |
+| [`xbrl-to-json`](./docs/tools/xbrl-to-json.md) | Convert XBRL financials to normalized JSON | Filings and documents |
+| [`form-13f-holdings`](./docs/tools/form-13f-holdings.md) | Search Form 13F institutional holdings | Ownership and insiders |
+| [`form-13f-cover-pages`](./docs/tools/form-13f-cover-pages.md) | Search Form 13F cover pages | Ownership and insiders |
+| [`form-13d-13g`](./docs/tools/form-13d-13g.md) | Search Schedule 13D/13G beneficial-ownership filings | Ownership and insiders |
+| [`insider-trading`](./docs/tools/insider-trading.md) | Search insider trading disclosures (Form 3/4/5) | Ownership and insiders |
+| [`form-144`](./docs/tools/form-144.md) | Search Form 144 intent-to-sell filings | Ownership and insiders |
+| [`form-nport`](./docs/tools/form-nport.md) | Search Form N-PORT fund portfolio holdings | Funds |
+| [`form-npx`](./docs/tools/form-npx.md) | Search Form N-PX proxy voting records | Funds |
+| [`form-npx-file`](./docs/tools/form-npx-file.md) | Get a Form N-PX file by accession number | Funds |
+| [`form-ncen`](./docs/tools/form-ncen.md) | Search Form N-CEN investment company census | Funds |
+| [`form-adv-firms`](./docs/tools/form-adv-firms.md) | Search Form ADV firm registrations | Investment advisers |
+| [`form-adv-individuals`](./docs/tools/form-adv-individuals.md) | Search Form ADV individual registrations | Investment advisers |
+| [`form-adv-brochures`](./docs/tools/form-adv-brochures.md) | Get Form ADV Part 2 brochures for an adviser | Investment advisers |
+| [`form-adv-schedule-a-direct-owners`](./docs/tools/form-adv-schedule-a-direct-owners.md) | Get Form ADV Schedule A, direct owners of an adviser | Investment advisers |
+| [`form-adv-schedule-b-indirect-owners`](./docs/tools/form-adv-schedule-b-indirect-owners.md) | Get Form ADV Schedule B, indirect owners of an adviser | Investment advisers |
+| [`form-adv-schedule-d-1-b`](./docs/tools/form-adv-schedule-d-1-b.md) | Get Form ADV Schedule D-1-B, other business names | Investment advisers |
+| [`form-adv-schedule-d-5-k`](./docs/tools/form-adv-schedule-d-5-k.md) | Get Form ADV Schedule D-5-K, separately managed accounts | Investment advisers |
+| [`form-adv-schedule-d-7-a`](./docs/tools/form-adv-schedule-d-7-a.md) | Get Form ADV Schedule D-7-A, financial industry affiliations | Investment advisers |
+| [`form-adv-schedule-d-7-b-1`](./docs/tools/form-adv-schedule-d-7-b-1.md) | Get Form ADV Schedule D-7-B-1, private funds advised | Investment advisers |
+| [`form-s1-424b4`](./docs/tools/form-s1-424b4.md) | Search S-1 / 424B4 registration filings | Offerings and registrations |
+| [`form-d`](./docs/tools/form-d.md) | Search Form D private-placement filings | Offerings and registrations |
+| [`form-c`](./docs/tools/form-c.md) | Search Form C Regulation Crowdfunding offerings | Offerings and registrations |
+| [`form-8k`](./docs/tools/form-8k.md) | Search structured 8-K material-event filings | Offerings and registrations |
+| [`reg-a-search`](./docs/tools/reg-a-search.md) | Search Regulation A / A+ offerings | Offerings and registrations |
+| [`reg-a-form-1a`](./docs/tools/reg-a-form-1a.md) | Search structured Reg A Form 1-A filings | Offerings and registrations |
+| [`reg-a-form-1k`](./docs/tools/reg-a-form-1k.md) | Search structured Reg A Form 1-K filings | Offerings and registrations |
+| [`reg-a-form-1z`](./docs/tools/reg-a-form-1z.md) | Search structured Reg A Form 1-Z filings | Offerings and registrations |
+| [`compensation`](./docs/tools/compensation.md) | Search executive compensation data | Governance and compensation |
+| [`compensation-by-key`](./docs/tools/compensation-by-key.md) | Get executive compensation by CIK or ticker | Governance and compensation |
+| [`audit-fees`](./docs/tools/audit-fees.md) | Search auditor / audit-fee disclosures | Governance and compensation |
+| [`directors-and-board-members`](./docs/tools/directors-and-board-members.md) | Search directors and board members | Governance and compensation |
+| [`float`](./docs/tools/float.md) | Fetch public float and share count | Company and entity |
+| [`subsidiaries`](./docs/tools/subsidiaries.md) | Search Exhibit 21 subsidiary disclosures | Company and entity |
+| [`edgar-entities`](./docs/tools/edgar-entities.md) | Search EDGAR entity master | Company and entity |
+| [`mapping`](./docs/tools/mapping.md) | Company identifier mapping (CIK/ticker/CUSIP/name) | Company and entity |
+| [`sec-enforcement-actions`](./docs/tools/sec-enforcement-actions.md) | Search SEC enforcement actions | Enforcement |
+| [`sec-litigation-releases`](./docs/tools/sec-litigation-releases.md) | Search SEC litigation releases | Enforcement |
+| [`sec-administrative-proceedings`](./docs/tools/sec-administrative-proceedings.md) | Search SEC administrative proceedings | Enforcement |
+| [`aaers`](./docs/tools/aaers.md) | Search Accounting and Auditing Enforcement Releases (AAER) | Enforcement |
+| [`aaer-file`](./docs/tools/aaer-file.md) | Fetch an AAER document file | Enforcement |
+| [`sro`](./docs/tools/sro.md) | Search SRO (self-regulatory organization) rule filings | Enforcement |
+| [`form-x-17a-5`](./docs/tools/form-x-17a-5.md) | Search Form X-17A-5 (broker-dealer FOCUS reports) | Broker-dealers |
+| [`edgar-ingestion-log`](./docs/tools/edgar-ingestion-log.md) | Get all SEC filings ingested at a date | Ingestion logs |
+| [`api-key-usage`](./docs/tools/api-key-usage.md) | Get sec-api API key monthly bandwidth usage | Account |
 
 <!-- tools:end -->
 

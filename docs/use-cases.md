@@ -4,9 +4,8 @@ Ten worked jobs. Each one chains several tools. For each job you get the prompt
 a user types, the tool calls with their real arguments, what comes back, and the
 cost in tool calls.
 
-Every query field on this page was verified against the live server on
-2026-08-13. The counts and the payload sizes are measured, not estimated. The
-numbers move as companies file. The shapes do not.
+Every count and payload size on this page is from 2026-08-13. The numbers move
+as companies file. The shapes do not.
 
 Read [Getting started](./getting-started.md) first if the server is not
 connected yet. Every tool has its own page in the
@@ -136,11 +135,11 @@ Each line item is an array of fact objects:
 
 Watch out.
 
-- **This is the heaviest tool on the server.** One 10-K is 1.31 MB in a single
-  text block. A loop over 100 filings moves about 130 MB.
+- **The response is large.** One 10-K is 1.31 MB in a single text block. A loop
+  over 100 filings moves about 130 MB.
 - There is no way to ask for one statement. You get all 84 keys or nothing.
 - The top-level keys are the filer's own statement names. They differ between
-  companies and between years. Do not hard-code `StatementsOfIncome`.
+  companies and between years. `StatementsOfIncome` is not a fixed key.
 - `value` is always a string. Parse it.
 - A fact with no `segment` is the consolidated total. A fact with a `segment` is
   a product or region breakdown. Filter on the absence of `segment` for headline
@@ -293,12 +292,12 @@ Watch out.
   `otherManager` sequence numbers through
   `otherIncludedManagers[].sequenceNumber` on the cover page.
 - The two 13F indices disagree on counts. `cik:1067983` returns 60 cover pages
-  and 210 holdings rows. Do not use one total as a proxy for the other.
+  and 210 holdings rows. Neither total is a proxy for the other.
 - `form-13f-holdings` rewrites your query. If the query does not contain the
   text `13F`, the server prepends `formType:"13F-HR" AND `. Write `13F` yourself
   when you want amendments.
-- The data is never current. A quarter that ends 31 March is filed 45 days
-  later.
+- Holdings are reported quarterly. A quarter ending 31 March is filed up to 45
+  days later.
 
 ## 5. Find every 8-K that mentions a term
 
@@ -515,8 +514,7 @@ Watch out.
   for an empty `publicOfferingPrice` object before you read `total`.
 - The tool description promises use-of-proceeds and a risk-factors summary. No
   such field exists. For prospectus prose, call `get-edgar-file` on `filingUrl`.
-  **Do not call `extractor`.** It accepts only 10-K, 10-Q and 8-K, and rejects a
-  424B4.
+  **`extractor` accepts only 10-K, 10-Q and 8-K.** It rejects a 424B4.
 - `entityName`, `underwriters.name` and `auditors.name` are analysed text
   fields. A quoted phrase matches loosely. Check the rows you get back.
 
@@ -597,11 +595,11 @@ PDF `url` on `files.adviserinfo.sec.gov`.
 { "name": "aaers", "arguments": { "query": "respondents.name:\"Morgan Stanley\"", "size": 50 } }
 ```
 
-Measured counts: 72 administrative proceedings, 27 announced enforcement
-actions, 26 litigation releases, 1 AAER. The single AAER is `AAER-2132` from
-2004, about valuation methods in an aircraft leasing portfolio. The newest
-administrative proceeding is release `34-105802`, file numbers `3-21825` and
-`3-21826`, a Fair Fund disbursement of $119,825,301.06.
+The counts: 72 administrative proceedings, 27 announced enforcement actions, 26
+litigation releases, 1 AAER. The single AAER is `AAER-2132` from 2004, about
+valuation methods in an aircraft leasing portfolio. The newest administrative
+proceeding is release `34-105802`, file numbers `3-21825` and `3-21826`, a Fair
+Fund disbursement of $119,825,301.06.
 
 **Cost: 6 tool calls. 7 when you must resolve the CRD by name first.**
 
@@ -618,14 +616,12 @@ Watch out.
   administrative proceeding and an AAER at the same time. Deduplicate on the
   document URL, not on the summary text.
 - `form-adv-brochures` returns links, never the brochure text. An empty array
-  has two causes that the response does not separate: the adviser files no
-  brochure, or the live lookup on `adviserinfo.sec.gov` failed.
+  means the adviser files no brochure.
 - To check a named person instead of the firm, use `form-adv-individuals` with
   `CrntEmps.CrntEmp.orgPK:149777` plus `Info.lastNm`. That tool also returns
   flags only, in `DRPs.DRP[]`.
-- Add a date range to any of the four searches to watch a window. Both
-  `releasedAt:[2024-01-01 TO 2026-08-13]` and `dateTime:[...]` on `aaers` are
-  verified.
+- Add a date range to any of the four searches to watch a window. Use
+  `releasedAt:[2024-01-01 TO 2026-08-13]`, or `dateTime:[...]` on `aaers`.
 
 ## 9. Build a peer executive-compensation table
 
@@ -691,7 +687,7 @@ Watch out.
 - **`compensation` returns a bare array.** There is no `total`, so you cannot
   see how many rows exist beyond your page. `size` caps at 50. Page with `from`
   until a short page comes back.
-- Do not filter on `position` in the query. It is an analysed text field, so
+- `position` is an analysed text field, so a query filter on it is unreliable.
   `position:*Chief Executive*` matched a row whose title is
   `Senior Vice President, Chief Financial Officer`. The wildcard matches per
   word. Filter titles in your own code after the call.
@@ -798,7 +794,7 @@ Watch out.
 - `entities[].ticker` is not always tradable. Private LLCs get synthetic symbols
   such as `INVES6` and `UPFRON`. Check one with `mapping` before you use it.
 - `releasedAt` is the date of the document, not the date of the misconduct. One
-  captured row released in 2026 links a PDF stored under `/admin/2023/`.
+  row released in 2026 links a PDF stored under `/admin/2023/`.
 - Not every row is a charging document. Orders granting an extension of time
   arrive with empty `complaints` and empty `violatedSections`. Filter on those
   fields when you want charges only.
@@ -808,8 +804,8 @@ Watch out.
 - **One text block, JSON as a string.** No tool declares an output schema, so
   there is no `structuredContent`.
 - **Envelopes differ.** `filings[]`, `data[]`, `transactions[]`, `brochures[]`,
-  a bare array, or raw text. Do not assume `data[]`. See
-  [response format](./response-format.md).
+  a bare array, or raw text. `data[]` is one shape among many, not the default.
+  See [response format](./response-format.md).
 - **Errors arrive as text.** `isError` is true and the text reads
   `sec-api error: <message>`.
 

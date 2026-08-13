@@ -18,10 +18,10 @@ statement). This tool searches all three.
 
 One item in `transactions[]` is one filing, not one trade. The trades sit two
 levels down, in `nonDerivativeTable.transactions[]` and
-`derivativeTable.transactions[]`. The array name is misleading. Count filings at
-the top level and trades inside each item.
+`derivativeTable.transactions[]`. The array name is misleading. The top level
+counts filings. The nested arrays count trades.
 
-The capture asked for `issuer.tradingSymbol:AAPL` with `size: 1`. It returned
+A request for `issuer.tradingSymbol:AAPL` with `size: 1` returned
 `total.value: 1374` and one Form 4 from Apple's general counsel in 3,296 bytes.
 That filing carried two non-derivative trades, one derivative trade and three
 footnotes.
@@ -46,36 +46,31 @@ footnotes.
 | Parameter | Type    | Required | Constraints                            | Notes                                                     |
 | --------- | ------- | -------- | -------------------------------------- | ----------------------------------------------------------- |
 | `query`   | string  | yes      | must contain `:`, max 2,000 characters | Lucene syntax. See [query language](../query-language.md). The 2,000 limit is double the limit on the 13F and 13D tools. |
-| `from`    | integer | no       | minimum 0                              | Offset into the result set. The handler sets no ceiling.    |
+| `from`    | integer | no       | minimum 0                              | Offset into the result set. There is no ceiling.            |
 | `size`    | integer | no       | 1 to 50                                | Filings per call. **Defaults to 50** when you omit it.      |
 | `sort`    | array   | no       | array of sort objects                  | Defaults to `[{"filedAt": {"order": "desc"}}]`.             |
 
-The schema sets `additionalProperties: true`. The handler also reads
-`time_zone`, a string that defaults to `America/New_York` and applies to date
-ranges in the query. Query fields:
+Query fields:
 
-- `issuer.tradingSymbol`. Confirmed. The capture used
-  `issuer.tradingSymbol:AAPL`. Note the shape. Other tools use bare `ticker` or
-  `entities.ticker`. This one does not.
-- `documentType`. Used in the Node SDK examples as `documentType:4`,
-  **unverified** through MCP.
+- `issuer.tradingSymbol`. The example uses `issuer.tradingSymbol:AAPL`. Other
+  tools use bare `ticker` or `entities.ticker`. This one does not.
+- `documentType`, for example `documentType:4`.
 - `issuer.cik`, `issuer.name`, `reportingOwner.cik`, `reportingOwner.name`,
   `reportingOwner.relationship.isDirector`, `filedAt`, `periodOfReport`,
-  `accessionNo`. All present in the response body, all **unverified** as query
-  fields.
+  `accessionNo`. All present in the response body.
 
 ## Output
 
-The envelope is `{total, transactions[]}`. Read `total.value` and
-`total.relation`. The SDK responses show `{"value": 10000, "relation": "gte"}`
-on broad queries. That is the search-window ceiling. Read it as 10,000 or more.
+The envelope is `{total, transactions[]}`. `total` holds `value` and
+`relation`. Broad queries return `{"value": 10000, "relation": "gte"}`.
+That is the search-window ceiling. It means 10,000 or more.
 
 | Field                                   | Type    | Meaning                                                        |
 | --------------------------------------- | ------- | ---------------------------------------------------------------- |
 | `accessionNo`                           | string  | EDGAR accession number.                                           |
 | `filedAt`, `periodOfReport`             | string  | Filing timestamp in ISO 8601, and the `YYYY-MM-DD` date of the earliest reported transaction. |
 | `documentType`                          | string  | `3`, `4` or `5`.                                                  |
-| `notSubjectToSection16`, `aff10b5One`   | boolean | Not a Section 16 insider, and traded under a Rule 10b5-1 plan. `aff10b5One` is on the Form 4 in the capture and absent from the SDK Form 3 and Form 5 responses. |
+| `notSubjectToSection16`, `aff10b5One`   | boolean | Not a Section 16 insider, and traded under a Rule 10b5-1 plan. `aff10b5One` is on the example Form 4 and absent from Form 3 and Form 5 records. |
 | `issuer`                                | object  | `cik`, `name`, `tradingSymbol` of the company.                    |
 | `reportingOwner`                        | object  | `cik`, `name`, `address`, `relationship` of the insider.          |
 | `reportingOwner.relationship`           | object  | `isDirector`, `isOfficer`, `officerTitle`, `isTenPercentOwner`, `isOther`. `officerTitle` only appears when `isOfficer` is true. |
@@ -83,22 +78,23 @@ on broad queries. That is the search-window ceiling. Read it as 10,000 or more.
 | `nonDerivativeTable.holdings[]`         | array   | Positions held without a trade. This is the only table a Form 3 populates. |
 | `derivativeTable.transactions[]`        | array   | Trades in options, RSUs and other derivatives.                    |
 | `...securityTitle`, `...transactionDate` | string | The security traded, and the `YYYY-MM-DD` trade date.            |
-| `...coding.code`                        | string  | Transaction code. Observed: `M` derivative settled, `F` shares withheld for tax, `S` open-market sale, `A` grant. The full SEC code table is larger. |
+| `...coding.code`                        | string  | Transaction code, such as `M` derivative settled, `F` shares withheld for tax, `S` open-market sale, `A` grant. The full SEC code table is larger. |
 | `...amounts.shares`, `.acquiredDisposedCode` | number, string | Share count, which can be fractional such as `2264.5`, and `A` acquired or `D` disposed. |
-| `...amounts.pricePerShare`              | number  | Price per share. **Optional.** When a footnote sets the price instead, the field is absent and `pricePerShareFootnoteId` appears. The first trade in the capture has no `pricePerShare`. |
+| `...amounts.pricePerShare`              | number  | Price per share. **Optional.** When a footnote sets the price instead, the field is absent and `pricePerShareFootnoteId` appears. One Form 4 has no `pricePerShare` on its first trade. |
 | `...postTransactionAmounts.sharesOwnedFollowingTransaction` | number | Shares held after the trade.                  |
 | `...ownershipNature.directOrIndirectOwnership` | string | `D` direct, `I` indirect. `natureOfOwnership` explains an `I`. |
-| `...timeliness`                         | string  | Late-filing flag, for example `L`. Seen on a Form 5 in the SDK response, absent from the capture. |
+| `...timeliness`                         | string  | Late-filing flag, for example `L`. It appears on Form 5 records and is absent from the example response. |
 | `footnotes[]`                           | array   | `id` and `text`. Any `*FootnoteId` field points here. Footnote text can run to several hundred words. `ownerSignatureName` and `ownerSignatureNameDate` close the record. |
 
-Read the footnotes before you interpret a trade. In the capture, a 16,238 share
-disposal at $296.42 looks like a sale. Footnote F2 says Apple withheld the
-shares for tax on vesting RSUs and that no shares were sold. The `F` code says
-the same thing.
+A footnote changes what a trade means. In the example response, a
+16,238 share disposal at $296.42 looks like a sale. Footnote F2 says Apple
+withheld the shares for tax on vesting RSUs and that no shares were sold. The
+`F` code says the same thing.
 
 Size behaviour: one Form 4 was 3,296 bytes, and most of that was footnote text.
 `size` defaults to 50, so a call without `size` on an active issuer can return
-well over 100 KB. Set `size` and filter by `documentType` and a date range.
+well over 100 KB. `size`, `documentType` and a date range each narrow the
+response.
 
 ## Example
 
@@ -136,19 +132,20 @@ Prompt: "Show me the most recent insider transaction at Apple."
 }
 ```
 
-Trimmed. The capture also holds a second non-derivative trade, one derivative
-trade, three footnotes and the signature block.
+Trimmed. The full response also holds a second non-derivative trade, one
+derivative trade, three footnotes and the signature block.
 
 ## Limits and errors
 
 - The array is called `transactions` but holds filings. This is the most common
   mistake with this tool.
 - A price of `0` on a grant or a settlement is real, not missing data. An absent
-  `pricePerShare` is also normal. Check the matching footnote.
+  `pricePerShare` is also normal. `pricePerShareFootnoteId` points to the
+  footnote that holds the price.
 - A missing `query`, or a query without `:`, fails with HTTP 400 `Invalid
   query`. A query over 2,000 characters fails with `Query too long. Maximum
   length: 2000 characters`. `size` above 50 fails with `Maximum 'size' limit of
-  50 exceeded.` These texts come from the server handler, not from the capture.
+  50 exceeded.`
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

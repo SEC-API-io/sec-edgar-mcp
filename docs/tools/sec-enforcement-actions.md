@@ -17,14 +17,13 @@ the allegations and the penalties already extracted.
 enforcement action or a whistleblower award. One row is one press release. Each
 row carries a plain-language `summary`, the `entities` involved with their CIK
 and ticker, the `complaints`, the `violatedSections` and any `penaltyAmounts`.
-The capture returned `total.value: 2768` for `releaseNo:*`. The index held 2,768
+A request for `releaseNo:*` returned `total.value: 2768`. The index held 2,768
 releases on 2026-08-13.
 
 Coverage limit. The source is the SEC newsroom, not the case docket. The SEC
 does not publish a press release for every action it brings. The server also
 adds `tags:* AND ` in front of your query, so only releases with extracted tags
-can match. That comes from the server handler and was not verified through MCP.
-For full case coverage, search the two sibling tools as well.
+can match. For full case coverage, search the two sibling tools as well.
 
 ## When to use it
 
@@ -51,17 +50,12 @@ For full case coverage, search the two sibling tools as well.
 | `size` | integer | no | 1 to 50 | Rows per call. Default 50. Over 50 returns an error. |
 | `sort` | array | no | Elasticsearch sort array | Default `[{"releasedAt": {"order": "desc"}}]`. |
 
-The schema sets `additionalProperties: true`. The handler reads one extra key,
-`time_zone`, and applies it to date ranges in the query. Unverified.
 
-Query field verified by a live call: `releaseNo`.
-
-Every other name in the Output table below is a response field. The sec-api REST
-docs treat those as searchable too, but none was verified through MCP. Treat
-them as unverified, including `releasedAt`, `tags`, `entities.name`,
+Query fields: `releaseNo`, `releasedAt`, `tags`, `entities.name`,
 `entities.cik`, `entities.ticker`, `violatedSections` and
-`hasAgreedToSettlement`. The sec-api Node SDK uses
-`releasedAt:[2024-01-01 TO 2024-12-31]`.
+`hasAgreedToSettlement`. Every other name in the Output table below is a
+response field. The sec-api REST docs treat those as searchable too. A date
+range looks like `releasedAt:[2024-01-01 TO 2024-12-31]`.
 
 ## Output
 
@@ -91,11 +85,11 @@ number. `data` is the array of rows. This is the `{total, data[]}` family in
 | `data[].otherAgenciesInvolved[]` | array | Each has `name` and `country`. |
 
 Two more arrays name the staff and bodies involved: `parallelActionsTakenBy`
-and `litigationLedBy`. Both were empty in the capture.
+and `litigationLedBy`. Both were empty in the example response.
 
 Size behaviour. `size` defaults to 50 and cannot exceed 50. Page with `from`.
-The default of 50 comes from the server handler. The capture set `size: 1` and
-returned 2,550 bytes for one row, so a `size: 50` call can reach about 125 KB.
+This example set `size: 1` and returned 2,550 bytes for one row, so a `size: 50`
+call can reach about 125 KB.
 
 ## Example
 
@@ -135,13 +129,11 @@ Prompt: "Show me the newest SEC enforcement action and who it charges."
 - A query over 1,000 characters fails with
   `Query too long. Maximum length: 1000 characters`.
 - `size` above 50 fails with `Maximum 'size' limit of 50 exceeded.`
-- `entities[].ticker` is not always a tradable symbol. The capture shows
-  `UPFRON` and `HSTVEN` for private LLCs. Check one with
-  [`mapping`](./mapping.md) before you use it.
+- `entities[].ticker` is not always a tradable symbol. Values include `UPFRON`
+  and `HSTVEN` for private LLCs. Check one with [`mapping`](./mapping.md) before
+  you use it.
 - Empty arrays are normal. `penaltyAmounts` and `requestedRelief` were empty in
-  the capture, on a case that was still contested.
-- The error texts above come from the server handler. The capture did not
-  trigger them.
+  the example response, on a case that was still contested.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

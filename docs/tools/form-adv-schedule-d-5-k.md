@@ -48,15 +48,18 @@ record, in `FormInfo.Part1A.Item5F`. Use
 
 | Parameter | Type   | Required | Constraints                      | Notes                                             |
 | --------- | ------ | -------- | -------------------------------- | ------------------------------------------------- |
-| `crd`     | string | Yes      | Digits only, 2 to 20 characters  | The firm CRD number, for example `"149777"`. Send it as a string. |
+| `crd`     | string | Yes      | Digits only, 2 to 20 characters  | The firm CRD number, for example `"341357"`. Send it as a string. |
 
 A one-character CRD is rejected. The tool takes no query and no paging.
 
 ## Output
 
 The tool returns an **object**, not an array. This is the only Form ADV schedule
-tool that does. The object always has the same three keys. An adviser with nothing to report returns
-`{"1-separatelyManagedAccounts":{},"2-borrowingsAndDerivatives":{},"3-custodiansForSeparatelyManagedAccounts":[]}`.
+tool that does. The object always has the same three keys. Many advisers file an
+empty shell. The shell keeps the full shape. Every asset-type key and every
+leverage key is present, each percentage is the bare string `"%"`, each money
+field is the bare string `"$"`, and
+`3-custodiansForSeparatelyManagedAccounts` is an empty array.
 
 | Field                                                | Type   | Meaning                                                             |
 | ---------------------------------------------------- | ------ | ------------------------------------------------------------------- |
@@ -77,71 +80,59 @@ tool that does. The object always has the same three keys. An adviser with nothi
 | `...g-amountHeldAtCustodian`                         | string | Amount held, as a formatted string.                                  |
 
 **Every number in this response is a formatted string, not a number.**
-Percentages come as `"58 %"`. Money comes as `"$ 1,733,996,722,410"`. Strip the
-symbol, the spaces and the commas before you do arithmetic. An unanswered
-percentage is the bare string `"%"`.
+A percentage carries a space and a percent sign. Money carries a dollar sign, a
+space and comma separators. Strip the symbol, the spaces and the commas before
+you do arithmetic. An unanswered percentage is the bare string `"%"`. An
+unanswered money field is the bare string `"$"`.
 
 **There is no pagination.** The whole section arrives in one call. It is small.
-Morgan Stanley Smith Barney returned about 3 KB.
+CRD 341357 returned 2,641 bytes.
 
 ## Example
 
-Prompt: "What do the separate accounts of adviser CRD 149777 hold, and who custodies them?"
+Prompt: "What do the separate accounts of adviser CRD 341357 hold?"
 
 ```json
-{ "name": "form-adv-schedule-d-5-k", "arguments": { "crd": "149777" } }
+{ "name": "form-adv-schedule-d-5-k", "arguments": { "crd": "341357" } }
 ```
 
-Trimmed response, verified on the REST route on 2026-08-13:
+An excerpt of the response from 2026-08-13. It shows the asset-class
+breakdown in `1-separatelyManagedAccounts.a`:
 
 ```json
 {
   "1-separatelyManagedAccounts": {
     "a": {
-      "i-exchangeTradedEquity": { "midYear": "58 %", "endOfYear": "58 %" },
-      "iii-usGovernmentBonds": { "midYear": "2 %", "endOfYear": "2 %" },
-      "ix-registeredInvestmentCompanies": { "midYear": "26 %", "endOfYear": "25 %" },
-      "xi-cash": { "midYear": "3 %", "endOfYear": "4 %" },
-      "other": "STRUCTURED INVESTMENTS AND ANNUITIES"
+      "i-exchangeTradedEquity": { "midYear": "%", "endOfYear": "%" },
+      "ii-nonExchangeTradedEquity": { "midYear": "%", "endOfYear": "%" },
+      "iii-usGovernmentBonds": { "midYear": "%", "endOfYear": "%" },
+      "iv-usStateAndLocalBonds": { "midYear": "%", "endOfYear": "%" },
+      "v-sovereignBonds": { "midYear": "%", "endOfYear": "%" },
+      "vi-investmentGradeCorporateBonds": { "midYear": "%", "endOfYear": "%" },
+      "vii-nonInvestmentGradeCorporateBonds": { "midYear": "%", "endOfYear": "%" },
+      "viii-derivatives": { "midYear": "%", "endOfYear": "%" },
+      "ix-registeredInvestmentCompanies": { "midYear": "%", "endOfYear": "%" },
+      "x-pooledInvestmentVehicles": { "midYear": "%", "endOfYear": "%" },
+      "xi-cash": { "midYear": "%", "endOfYear": "%" },
+      "xii-other": { "midYear": "%", "endOfYear": "%" },
+      "other": ""
     }
   },
-  "3-custodiansForSeparatelyManagedAccounts": [
-    {
-      "a-legalName": "MORGAN STANLEY SMITH BARNEY LLC",
-      "b-businessName": "MORGAN STANLEY",
-      "c-locations": [{ "city": "PURCHASE", "state": "New York", "country": "United States" }],
-      "d-isRelatedPerson": true,
-      "e-secRegistrationNumber": "8 - 68191",
-      "f-lei": "",
-      "g-amountHeldAtCustodian": "$ 1,733,996,722,410"
-    }
-  ]
-}
-```
-
-Eight asset types and the whole `2-borrowingsAndDerivatives` block were removed
-to fit. The values shown are unchanged.
-
-The probe called CRD 344073 instead. That adviser manages no separate accounts,
-so the capture holds the three keys, empty:
-
-```json
-{ "name": "form-adv-schedule-d-5-k", "arguments": { "crd": "344073" } }
-```
-
-```json
-{
-  "1-separatelyManagedAccounts": {},
-  "2-borrowingsAndDerivatives": {},
   "3-custodiansForSeparatelyManagedAccounts": []
 }
 ```
+
+The `b` block and the whole `2-borrowingsAndDerivatives` block were removed to
+fit. The values shown are unchanged. This adviser left Section 5.K blank, so
+every percentage is the bare string `"%"` and the custodian array is empty. The
+shape is still complete. Read a bare `"%"` as no answer, not as zero.
 
 ## Limits and errors
 
 - A CRD of one character, or with a non-digit, returns HTTP 404 and
   `{"status":404,"error":"Invalid CRD provided."}`.
-- An unknown CRD returns the three keys, empty. It is not an error.
+- An unknown CRD returns the same three keys as an empty shell. It is not an
+  error.
 - Percentages are reported to the whole number. They do not always sum to 100.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 

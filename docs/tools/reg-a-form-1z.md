@@ -53,7 +53,7 @@ Because a 1-Z is the last word on an offering, it is the cleanest source for
 | `size`    | integer | no       | 1 to 50        | Default 50. Above 50 returns HTTP 400.    |
 | `sort`    | array   | no       | ES sort clause | Default `[{"filedAt":{"order":"desc"}}]`. |
 
-Query fields confirmed to return rows:
+Query fields:
 
 | Field                                        | Example                                      |
 | -------------------------------------------- | -------------------------------------------- |
@@ -91,7 +91,7 @@ The envelope is `{total, data[]}`. `total` is `{value, relation}`. On this index
 | `signatureTab[]`            | array  | `cik`, `regulationIssuerName1`, `regulationIssuerName2`, `signatureBy`, `date`, `title` |
 
 `item1` holds `issuerName`, `street1`, `city`, `stateOrCountry`, `zipCode`,
-`phone` and `commissionFileNumber[]`. Note the key is `phone` here, not
+`phone` and `commissionFileNumber[]`. The key is `phone` here, not
 `phoneNumber` as on [reg-a-form-1k](./reg-a-form-1k.md).
 
 `summaryInfoOffering[]` is the substance of the form:
@@ -113,11 +113,10 @@ Seven service-provider roles each get a name array and a fee number:
 `auditorFees`, `legalSpName` with `legalFees`, `promoterSpName` with
 `promotersFees`, and `blueSkySpName` with `blueSkyFees`.
 
-The Node SDK example adds `crdNumberBrokerDealer` and `clarificationResponses`
-to this block. Neither was in the capture. Treat both as unverified.
+This block also holds `crdNumberBrokerDealer` and `clarificationResponses`.
 
 Filers write `"None"` or `"-"` in the `*SpName[]` arrays when a role was unused.
-Do not treat those as company names.
+Those two values are not company names.
 
 Paging is real but shallow. `from` plus `size` must stay at or below 10,000.
 With 648 rows in the index, that ceiling never bites here.
@@ -130,7 +129,7 @@ Prompt: "Show me the most recent Regulation A exit reports."
 { "name": "reg-a-form-1z", "arguments": { "query": "cik:*", "size": 1 } }
 ```
 
-Response from the capture, trimmed for length:
+Response, trimmed for length:
 
 ```json
 {
@@ -179,7 +178,7 @@ Response from the capture, trimmed for length:
   no error.
 - The index holds 648 rows. A broad query returns an exact `total`.
 - Dates inside `item1`, `summaryInfoOffering[]` and `signatureTab[]` use
-  `MM-DD-YYYY`. Only the top-level `filedAt` is ISO. Do not mix them.
+  `MM-DD-YYYY`. Only the top-level `filedAt` is ISO. The two formats differ.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

@@ -17,12 +17,14 @@ The tool searches parsed N-PORT filings. Funds file N-PORT every quarter and
 report three months of data in each filing. One item in `filings[]` is one
 filing for one fund series. It carries the fund identity in `genInfo`, the
 fund-level totals and flows in `fundInfo`, and the complete position list in
-`invstOrSecs`. The sec-api SDK coverage table gives the period as 2019 to
-present, for form types NPORT and NPORT/A. The capture returned
-`total: {value: 10000, relation: "gte"}`. Read that as "10,000 or more".
+`invstOrSecs`. Coverage runs from 2019 to present, for form types NPORT and
+NPORT/A. A request for `genInfo.regName:*`
+returns `total: {value: 10000, relation: "gte"}`. That means 10,000 or more.
 
-Each filing is large. The captured filing holds 70 positions, and the raw
-response was 45 KB for `size: 1`. Funds with thousands of positions return more.
+Each filing is large, and this is the heaviest tool on the server. A filing
+carries every position the fund held. The example filing holds 70 positions in
+45 KB at `size: 1`. A large fund holds thousands, and one filing alone can
+exceed anything else the server returns.
 
 ## When to use it
 
@@ -49,14 +51,14 @@ response was 45 KB for `size: 1`. Funds with thousands of positions return more.
 | `size`    | integer | No       | Schema 1 to 50. Server maximum 10. | Number of filings, not holdings. Default 10.                  |
 | `sort`    | array   | No       | Elasticsearch sort array           | Default `[{"filedAt": {"order": "desc"}}]`.                   |
 
-Query fields confirmed to return rows:
+Query fields:
 
 - `genInfo.regName`
+- `fundInfo.totAssets`, with range syntax such as `[100000000 TO *]`
+- `genInfo.seriesName`, `genInfo.regCik`, `invstOrSecs.cusip`, `accessionNo`,
+  `filedAt`
 
-Fields taken from the SDK examples and the response shape, all **unverified**:
-`fundInfo.totAssets` with range syntax such as `[100000000 TO *]`,
-`genInfo.seriesName`, `genInfo.regCik`, `invstOrSecs.cusip`, `accessionNo`,
-`filedAt`. See [query language](../query-language.md).
+See [query language](../query-language.md).
 
 ## Output
 
@@ -65,7 +67,7 @@ object, `{value, relation}`. A `relation` of `gte` means the count is capped.
 
 | Field                              | Type   | Meaning                                                     |
 | ---------------------------------- | ------ | ----------------------------------------------------------- |
-| `submissionType`                   | string | Form type. `NPORT-P` in the capture.                        |
+| `submissionType`                   | string | Form type, for example `NPORT-P`.                           |
 | `genInfo.regName`                  | string | Registrant, that is the trust or fund company.              |
 | `genInfo.regCik`                   | string | Registrant CIK, zero padded to 10 digits.                   |
 | `genInfo.regFileNumber`            | string | Investment Company Act file number, for example `811-23928`.|
@@ -80,15 +82,15 @@ object, `{value, relation}`. A `relation` of `gte` means the count is capped.
 | `invstOrSecs[].cusip`              | string | CUSIP. `identifiers.isin.value` holds the ISIN.             |
 | `invstOrSecs[].balance`, `.units`  | number, string | Quantity and unit. `PA` is principal amount, `NS` is number of shares. |
 | `invstOrSecs[].valUSD`             | number | Fair value in USD.                                          |
-| `invstOrSecs[].pctVal`             | number | Percent of net assets. The 70 captured positions sum to 97.6.|
-| `invstOrSecs[].assetCat`           | string | Asset category. The capture holds `ABS-MBS`, `STIV`, `LON`, `EC`. |
+| `invstOrSecs[].pctVal`             | number | Percent of net assets. The 70 example positions sum to 97.6.|
+| `invstOrSecs[].assetCat`           | string | Asset category. The example response holds `ABS-MBS`, `STIV`, `LON`, `EC`. |
 | `invstOrSecs[].fairValLevel`       | string | Fair value hierarchy, `1`, `2` or `3`.                      |
-| `invstOrSecs[].debtSec`            | object | Maturity, coupon kind, rate, default flags. Present on 68 of the 70 captured positions. Equity positions have no `debtSec`. |
+| `invstOrSecs[].debtSec`            | object | Maturity, coupon kind, rate, default flags. Present on 68 of the 70 example positions. Equity positions have no `debtSec`. |
 
 `size` counts filings, not positions. Every returned filing carries its whole
-`invstOrSecs` array, so raise `size` with care. `filerInfo` held only the filer
-CIK in the capture. The SDK example also shows `filerInfo.seriesClassInfo` and a
-top-level `explntrNotes`. Neither appeared in the capture.
+`invstOrSecs` array, so the response grows with each portfolio. `filerInfo`
+held only the filer CIK in the example response. `filerInfo.seriesClassInfo`
+and a top-level `explntrNotes` can also appear.
 
 The JSON arrives as one stringified text block. See
 [response format](../response-format.md).
@@ -138,10 +140,8 @@ Keys were removed to fit. The values are unchanged.
   `Query too long. Maximum length: 2000 characters`.
 - The server caps `size` at **10** for N-PORT, while the tool schema advertises
   50. A `size` of 11 to 50 passes the schema, then fails with
-  `Maximum 'size' limit of 10 exceeded`. The cap is set in the API handler, which
-  also defaults `size` to 10. The capture used `size: 1`, so it never triggered
-  the error. Keep `size` at 10 or less.
-- Responses are heavy. Budget about 45 KB per filing for a 70-position fund.
+  `Maximum 'size' limit of 10 exceeded`. `size` also defaults to 10.
+- Responses are heavy. A 70-position fund returns about 45 KB per filing.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

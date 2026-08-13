@@ -72,8 +72,7 @@ Prompt: "Which other business names does adviser CRD 149777 use?"
 { "name": "form-adv-schedule-d-1-b", "arguments": { "crd": "149777" } }
 ```
 
-CRD 149777 uses seven other names. Trimmed response, verified on the REST route
-on 2026-08-13:
+CRD 149777 uses seven other names. The first three:
 
 ```json
 [
@@ -82,29 +81,20 @@ on 2026-08-13:
     "jurisdictions": ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL"]
   },
   {
-    "name": "MORGAN STANLEY PRIVATE WEALTH MANAGEMENT",
+    "name": "MORGAN STANLEY WEALTH MANAGEMENT",
     "jurisdictions": ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL"]
   },
   {
-    "name": "GRAYSTONE CONSULTING",
+    "name": "MORGAN STANLEY CONSULTING GROUP",
     "jurisdictions": ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL"]
   }
 ]
 ```
 
 Four names were removed and each `jurisdictions` list was cut to its first ten
-entries. The values shown are unchanged.
-
-The probe called CRD 344073 instead. That adviser reports no other names, so the
-capture is an empty array:
-
-```json
-{ "name": "form-adv-schedule-d-1-b", "arguments": { "crd": "344073" } }
-```
-
-```json
-[]
-```
+entries. The values shown are unchanged. The full lists run to 54 entries. Six
+of the seven names cover every state plus `GU`, `PR` and `VI`. `GRAYSTONE
+CONSULTING` omits `GU` and `PR`.
 
 ## Limits and errors
 

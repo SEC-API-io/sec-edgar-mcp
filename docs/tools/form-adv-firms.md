@@ -15,7 +15,7 @@ SEC-registered and state-registered investment adviser.
 
 One item in `filings[]` is one adviser firm, not one filing. The row is the
 current Form ADV Part 1 record for that CRD number. A query for a single CRD
-returns exactly one row, confirmed with `Info.FirmCrdNb:149777`. The tool holds
+returns exactly one row, for example `Info.FirmCrdNb:149777`. The tool holds
 no filing history. `Filing[].Dt` is the date the record was last updated.
 
 The index merges two sources, SEC-registered advisers and state-registered
@@ -55,7 +55,7 @@ the CRD number, `Info.FirmCrdNb`.
 | `size`    | integer | No       | 1 to 50                  | Default 50.                                       |
 | `sort`    | array   | No       | Elasticsearch sort array | Default `[{"Info.FirmCrdNb": {"order": "desc"}}]`. |
 
-Query fields confirmed live on 2026-08-13. The hit count is in brackets.
+Query fields. The hit count on 2026-08-13 is in brackets.
 
 | Field                             | Example                                            |
 | --------------------------------- | -------------------------------------------------- |
@@ -66,12 +66,12 @@ Query fields confirmed live on 2026-08-13. The hit count is in brackets.
 | `Rgstn.FirmType`                  | `Rgstn.FirmType:ERA` (8,893)                       |
 | `FormInfo.Part1A.Item5F.Q5F2C`    | `FormInfo.Part1A.Item5F.Q5F2C:[100000000000 TO *]` (270) |
 
-`Info.LegalNm` is also present in every row and is unverified as a query field.
-Ranges work on numeric item codes, as the `Q5F2C` example shows. Sorting on
-`FormInfo.Part1A.Item5F.Q5F2C` works too. Item 5 values are what the adviser
-typed into the form. The top firm by that sort reports $11.5 trillion, which is
-not credible, so sanity-check before you rank on it. An unknown field returns
-`total: 0` with no error. See [query language](../query-language.md).
+`Info.LegalNm` is also present in every row. Ranges work on numeric item codes,
+as the `Q5F2C` example shows. Sorting on `FormInfo.Part1A.Item5F.Q5F2C` works
+too. Item 5 values are what the adviser typed into the form. The top firm by
+that sort reports $11.5 trillion, which is not credible. An unknown field
+returns `total: 0` with no error. See
+[query language](../query-language.md).
 
 ## Output
 
@@ -105,11 +105,11 @@ Rows come in two shapes. Both always carry `Info`, `MainAddr`, `MailingAddr`,
 
 The `QxxNN` codes are the question numbers on Form ADV Part 1A. sec-api does not
 label them. An item object is empty when the adviser did not answer it. The
-exempt reporting adviser in the capture has empty `Item5A` to `Item5L`.
+exempt reporting adviser in the example response has empty `Item5A` to `Item5L`.
 
-`size` counts firms and caps at 50. Page with `from`. A `from` plus `size` above
-10,000 returns `{"total":{"value":0},"filings":[]}` with no error and no
-`relation` key. The JSON arrives as one text block. See
+`size` counts firms and caps at 50. `from` moves the window. A `from` plus
+`size` above 10,000 returns `{"total":{"value":0},"filings":[]}` with no error
+and no `relation` key. The JSON arrives as one text block. See
 [response format](../response-format.md).
 
 ## Example
@@ -155,7 +155,8 @@ descending, so the first row is the newest registrant.
 - `size` above 50 returns HTTP 400 with
   `Maximum 'size' limit of 50 exceeded.`
 - Omitting `size` returns 50 firms, not 10.
-- Do not assume `Rgstn` exists. State-shaped rows use `StateRgstn` and `ERA`.
+- `Rgstn` is absent from state-shaped rows. Those rows carry `StateRgstn` and
+  `ERA` instead.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

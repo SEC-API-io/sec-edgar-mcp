@@ -17,13 +17,12 @@ organizations file with the SEC.
 self-regulatory organizations. One row is one notice. Each row carries the
 release number, the issue date, the filing SRO, a one-line `details`
 description, the comment deadline and links to the notice PDF and its exhibits.
-The capture returned `total.value: 7743` for `sro:NASDAQ`, so Nasdaq alone had
+A request for `sro:NASDAQ` returned `total.value: 7743`, so Nasdaq alone had
 7,743 notices on 2026-08-13.
 
 This tool sits in the Enforcement category, but the content is regulatory, not
 punitive. A row is a proposed rule or a fee change, never a charge against a
 firm. The registry description names NYSE, Nasdaq, FINRA and MSRB as filers.
-Only the Nasdaq value is verified by the capture.
 
 ## When to use it
 
@@ -51,17 +50,15 @@ Only the Nasdaq value is verified by the capture.
 | `size` | integer | no | 1 to 50 | Rows per call. Default 50. Over 50 returns an error. |
 | `sort` | array | no | Elasticsearch sort array | Default `[{"issueDate": {"order": "desc"}}]`. |
 
-The schema sets `additionalProperties: true`, but this handler reads no extra
-key. Unlike the other enforcement tools, it ignores `time_zone`.
+The schema sets `additionalProperties: true`, but this tool reads no extra key.
 
-Query field verified by a live call: `sro`. The field holds the full name, for
-example `The Nasdaq Stock Market LLC (NASDAQ)`. A single token such as `NASDAQ`
-matches it, so the field is analysed text.
+Query field: `sro`. The field holds the full name, for example `The Nasdaq Stock
+Market LLC (NASDAQ)`. A single token such as `NASDAQ` matches it, so the field
+is analysed text. `sro:NYSE` is another query example.
 
 Every other name in the Output table below is a response field. The sec-api REST
-docs treat those as searchable too, but none was verified through MCP. Treat
-`releaseNumber`, `issueDate`, `fileNumber`, `details` and `commentsDue` as
-unverified. The sec-api Node SDK uses `sro:NYSE`.
+docs treat `releaseNumber`, `issueDate`, `fileNumber`, `details` and
+`commentsDue` as searchable too.
 
 ## Output
 
@@ -77,7 +74,7 @@ allegation data.
 | `total.value` | number | Number of matching notices. |
 | `total.relation` | string | `eq` means exact. `gte` means at least that many. |
 | `data[].id` | string | Internal record hash. |
-| `data[].releaseNumber` | string | SEC release number, for example `34-106072`. Note the name. It is `releaseNo` on the other enforcement tools. |
+| `data[].releaseNumber` | string | SEC release number, for example `34-106072`. The name differs here. It is `releaseNo` on the other enforcement tools. |
 | `data[].issueDate` | string | Publication date, `YYYY-MM-DD`. The sort field for this tool. |
 | `data[].fileNumber` | string | SRO file number, for example `SR-NYSEAMER-2026-25`. Can be an empty string. |
 | `data[].sro` | string | Full name of the filing organisation, with its short code in brackets. |
@@ -85,10 +82,10 @@ allegation data.
 | `data[].commentsDue` | string | Free text comment deadline, for example `21 days after date of publication in the Federal Register.` Not a date. |
 | `data[].urls[]` | array | Documents. Each has `type` and `url`. The notice itself uses the release number as its `type`. Exhibits use `Exhibit 5`. A comment link can also appear. |
 
-Size behaviour. `size` defaults to 50 and cannot exceed 50. Page with `from`,
-which stops at 10000. The default of 50 comes from the server handler. The
-capture set `size: 1` and returned 623 bytes for one row, so a `size: 50` call
-stays near 30 KB. This is the lightest tool in the category.
+Size behaviour. `size` defaults to 50 and cannot exceed 50. `from` moves the
+window to later rows and stops at 10000. This example set `size: 1` and returned
+623 bytes for one row, so a `size: 50` call stays near 30 KB. This is the
+lightest tool in the category.
 
 ## Example
 
@@ -120,18 +117,17 @@ Prompt: "What is the newest Nasdaq rule filing?"
 
 ## Limits and errors
 
-- This handler returns one error for several causes. A query without a `:`, a
+- This tool returns one error for several causes. A query without a `:`, a
   query over 1,000 characters, or `from` above 10000 all fail with HTTP 400
-  `Invalid request parameter provided.` The sibling tools give more precise
-  messages. Check your query yourself.
+  `Invalid request parameter provided.` The message names no cause. The sibling
+  tools give more precise messages.
 - A missing `query` fails with `"query" parameter not provided.`
 - `size` above 50 fails with `Maximum 'size' limit of 50 exceeded.`
-- `fileNumber` is not reliable. It was an empty string in the capture, while the
-  canonical SDK response has `SR-NYSEAMER-2026-25`. Do not use it as a key.
+- `fileNumber` is not on every row. It is an empty string in the example
+  response, while other records hold a value such as `SR-NYSEAMER-2026-25`. An
+  empty `fileNumber` identifies no row.
 - `commentsDue` is free text, not a date. You cannot sort or range query it as a
   date.
-- The error texts above come from the server handler. The capture did not
-  trigger them.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

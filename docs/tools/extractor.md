@@ -19,7 +19,7 @@ not overlap. The `url` must start with `https://www.sec.gov/` and must point at
 the primary filing document, not at an exhibit. Output is cleaned text by
 default, or the original HTML of the section.
 
-The capture pulled Item 1A, Risk Factors, from Apple's fiscal 2025 10-K. The
+One request pulled Item 1A, Risk Factors, from Apple's fiscal 2025 10-K. The
 section came back as 69,877 bytes of text.
 
 ## When to use it
@@ -46,8 +46,8 @@ section came back as 69,877 bytes of text.
 | `item` | string | yes | enum, 68 values, listed below | Must belong to the form type at `url`. |
 | `type` | string | no | enum: `text`, `html`. Default `text` | `html` keeps the original markup of the section. |
 
-The schema sets `additionalProperties: true`. No other key is documented or
-verified. This tool takes no `query`, so there are no Lucene fields.
+The schema sets `additionalProperties: true`. No other key is documented. This
+tool takes no `query`, so there are no Lucene fields.
 
 ### `item` values
 
@@ -58,8 +58,8 @@ Disclosures, `5` Market for Common Equity, `6` Selected Financial Data,
 Disagreements with Accountants, `9A` Controls and Procedures, `9B` Other
 Information, `9C`, `10` Directors and Officers, `11` Executive Compensation,
 `12` Security Ownership, `13` Related Transactions, `14` Principal Accountant
-Fees, `15` Exhibits. The server accepts `9C` but the SDK section list gives it
-no title, so its meaning is unverified here.
+Fees, `15` Exhibits. The server accepts `9C`, but no section title is documented
+for it.
 
 **10-Q.** `part1item1` Financial Statements, `part1item2` MD&A,
 `part1item3` Market Risk, `part1item4` Controls and Procedures,
@@ -81,12 +81,12 @@ of Directors or Certain Officers. Full set: `1-1`, `1-2`, `1-3`, `1-4`, `1-5`,
 One MCP `text` content block that holds the section body. There is no JSON
 envelope, no `total`, no `data[]`, no item title field and no length field.
 
-| Detail | Observed value |
+| Detail | Value |
 | ------ | -------------- |
 | First line, `type: text` | The item heading, for example ` Item 1A. Risk Factors ` |
 | Paragraph separator | A blank line between paragraphs |
 | Character entities | **Not decoded.** The text still contains numeric HTML entities such as `&#8217;` for an apostrophe and `&#8220;` for a quotation mark. Decode them yourself. |
-| Size in the capture | 69,877 bytes for Apple's Item 1A |
+| Size | 69,877 bytes for Apple's Item 1A |
 
 **This tool has no pagination.** There is no `from`, no `size` and no `sort`. The
 whole section arrives in one block. Risk Factors and MD&A are the longest items

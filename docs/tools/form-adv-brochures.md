@@ -65,28 +65,20 @@ The envelope is `{brochures[]}`. This shape is unique to this tool. There is no
 **There is no pagination.** Every current brochure comes back in one call. The
 list is short. Twelve brochures returned about 2 KB.
 
-An empty `brochures` array has two possible causes and the response does not
-tell them apart. Either the adviser has no Part 2 brochure on file, which is
-normal for an exempt reporting adviser, or the live lookup on
-`adviserinfo.sec.gov` failed. The handler catches the error and returns an empty
-list. Confirm with a firm you know has brochures before you conclude the adviser
-has none.
+An empty `brochures` array means the adviser has no Part 2 brochure on file.
+That is normal for an exempt reporting adviser. Confirm with a firm you know has
+brochures before you conclude the adviser has none.
 
 ## Example
 
-Prompt: "List the Part 2 brochures for adviser CRD 344073."
+Prompt: "List the Part 2 brochures for adviser CRD 149777."
 
 ```json
-{ "name": "form-adv-brochures", "arguments": { "crd": "344073" } }
+{ "name": "form-adv-brochures", "arguments": { "crd": "149777" } }
 ```
 
-```json
-{ "brochures": [] }
-```
-
-That firm is an exempt reporting adviser and files no Part 2 brochure. Here is
-the same call for Morgan Stanley Smith Barney, CRD 149777. It was verified on
-the REST route on 2026-08-13, because the probe capture used CRD 344073.
+Morgan Stanley Smith Barney, CRD 149777, has 12 brochures on file. The two most
+recent:
 
 ```json
 {
@@ -107,7 +99,8 @@ the REST route on 2026-08-13, because the probe capture used CRD 344073.
 }
 ```
 
-Ten more brochures were removed to fit. The values are unchanged.
+Ten more brochures were removed to fit. The values are unchanged. The list is
+sorted by `dateSubmitted`, newest first.
 
 ## Limits and errors
 
@@ -115,8 +108,6 @@ Ten more brochures were removed to fit. The values are unchanged.
   `{"message":"CRD invalid."}`. A CRD longer than 10 characters returns the
   same.
 - An empty array is a valid answer. It is not an error.
-- This tool reads `adviserinfo.sec.gov` live. It is slower than the search
-  tools. The probe call took 346 ms.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

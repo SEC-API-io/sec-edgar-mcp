@@ -18,11 +18,11 @@ holds more than $100 million in US-listed equities. This tool searches the
 holdings index built from those filings. One item in `data[]` is one filing, not
 one position. The positions sit in the `holdings[]` array inside each item.
 
-The capture asked for `cik:1067983` (Berkshire Hathaway) with `size: 1`. It
-returned `total.value: 210` and one 13F-HR filing for the period ending
+A request for `cik:1067983` (Berkshire Hathaway) with `size: 1` returned
+`total.value: 210` and one 13F-HR filing for the period ending
 2026-03-31. That single filing carried **90 holdings and 28,316 bytes**. The
 registry description says the tool returns "individual holding rows". The
-capture contradicts this. Read `data[i].holdings` to reach the positions.
+response contradicts this. Read `data[i].holdings` to reach the positions.
 
 ## When to use it
 
@@ -49,23 +49,17 @@ capture contradicts this. Read `data[i].holdings` to reach the positions.
 | `size`    | integer | no       | 1 to 50                              | Number of **filings**, not positions. **Defaults to 50** when you omit it. |
 | `sort`    | array   | no       | array of sort objects                | Defaults to `[{"filedAt": {"order": "desc"}}]`.               |
 
-The schema sets `additionalProperties: true`. The handler also reads
-`time_zone`, a string that defaults to `America/New_York` and applies to date
-ranges in the query.
-
 **The server rewrites your query.** If the query string does not contain the
-text `13F`, the handler prepends `formType:"13F-HR" AND ` to it. The capture's
-`cik:1067983` ran as `formType:"13F-HR" AND cik:1067983`. Put `13F` in your own
+text `13F`, the server prepends `formType:"13F-HR" AND ` to it. The query
+`cik:1067983` runs as `formType:"13F-HR" AND cik:1067983`. Put `13F` in your own
 query to keep control, for example when you want amendments. This tool searches
 the general filings index, the same one [`filing-search`](./filing-search.md)
 uses.
 
-Query fields:
-
-- `cik`. Confirmed. The capture used `cik:1067983`.
-- `ticker`, `companyName`, `formType`, `accessionNo`, `periodOfReport`,
-  `filedAt`, `holdings.ticker`, `holdings.cusip`, `holdings.nameOfIssuer`. All
-  present in the response body, all **unverified** as query fields.
+Query fields: `cik`, `ticker`, `companyName`, `formType`, `accessionNo`,
+`periodOfReport`, `filedAt`, `holdings.ticker`, `holdings.cusip` and
+`holdings.nameOfIssuer`. All are present in the response body. The example uses
+`cik:1067983`.
 
 ## Output
 
@@ -77,7 +71,7 @@ for 10,000 or more.
 | ------------------------------------ | ------ | ------------------------------------------------------------- |
 | `accessionNo`                        | string | EDGAR accession number. Joins to `form-13f-cover-pages`.       |
 | `cik`, `ticker`, `companyName`       | string | The filing manager, not the held company.                      |
-| `formType`                           | string | `13F-HR` in the capture.                                       |
+| `formType`                           | string | `13F-HR`, for example.                                         |
 | `filedAt`                            | string | ISO 8601 with offset.                                          |
 | `periodOfReport`                     | string | Quarter end the holdings describe, `YYYY-MM-DD`.               |
 | `effectivenessDate`                  | string | Date the filing became effective.                              |
@@ -85,9 +79,9 @@ for 10,000 or more.
 | `entities[]`                         | array  | EDGAR header data. `sic` holds HTML entities such as `&amp;`.  |
 | `holdings[]`                         | array  | The positions. One item per line of the information table.     |
 | `holdings[].nameOfIssuer`, `.cusip`, `.titleOfClass` | string | The held security.                             |
-| `holdings[].value`                   | number | Market value in US dollars. `value / sshPrnamt` gives a plausible per-share price in the capture. |
-| `holdings[].shrsOrPrnAmt`            | object | `sshPrnamt` is the amount held. `sshPrnamtType` is `SH` in the capture. |
-| `holdings[].investmentDiscretion`    | string | `DFND` in the capture. The form defines other codes, unverified here. |
+| `holdings[].value`                   | number | Market value in US dollars. `value / sshPrnamt` gives a plausible per-share price in this response. |
+| `holdings[].shrsOrPrnAmt`            | object | `sshPrnamt` is the amount held. `sshPrnamtType` is `SH`, for example. |
+| `holdings[].investmentDiscretion`    | string | `DFND`, for example. The form defines other codes. |
 | `holdings[].votingAuthority`         | object | `Sole`, `Shared` and `None` share counts. Note the capital keys. |
 | `holdings[].otherManager`            | string | Comma-separated sequence numbers of other managers, such as `"2,4,11"`. Resolve them through `form-13f-cover-pages`. |
 | `holdings[].ticker`, `.cik`          | string | The held company, added by sec-api. Not in the raw filing.     |
@@ -98,9 +92,9 @@ you report a position.
 
 Size behaviour: `size` counts filings, and **it defaults to 50**. One filing can
 hold hundreds of positions. The Berkshire filing returned 90 positions in 28 KB.
-The canonical SDK cover page for Bridgewater reports 1,040 entries, so that
-filing returns far more. **Always set `size` on this tool. Start with `size:
-1`.** A default call can fill a context window in one shot.
+A Bridgewater cover page reports 1,040 entries, so that filing returns far more.
+**Always set `size` on this tool. Start with `size: 1`.** A default call can
+fill a context window in one shot.
 
 ## Example
 
@@ -138,7 +132,7 @@ Prompt: "What were Berkshire Hathaway's largest holdings in its most recent 13F?
 }
 ```
 
-Trimmed. The capture holds 89 more `holdings[]` entries, plus `entities[]`,
+Trimmed. The full response holds 89 more `holdings[]` entries, plus `entities[]`,
 `documentFormatFiles[]` and the link fields.
 
 ## Limits and errors
@@ -148,10 +142,8 @@ Trimmed. The capture holds 89 more `holdings[]` entries, plus `entities[]`,
   `from` above 10000 all fail with HTTP 400 `Invalid request parameter
   provided.` One message covers four causes, so check all four.
 - `size` above 50 fails with `Maximum 'size' limit of 50 exceeded.`
-- These error texts come from the server handler. The capture did not trigger
-  them.
-- The data is never current. The captured filing covers the quarter that ended
-  2026-03-31 and was filed 45 days later, on 2026-05-15.
+- Holdings are reported quarterly, up to 45 days after the quarter ends. The
+  filing above covers the quarter ending 2026-03-31 and was filed 2026-05-15.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

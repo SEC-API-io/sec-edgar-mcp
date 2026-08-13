@@ -4,13 +4,12 @@ Most tools on this server take a Lucene query string. This page explains that
 syntax, lists the field names that are confirmed to work, and shows the mistakes
 that cost the most time.
 
-Every count on this page was measured live on 2026-08-13. Counts change as EDGAR
-grows. The syntax does not.
+Every count on this page is from 2026-08-13. Counts change as EDGAR grows. The
+syntax does not.
 
 ## Three kinds of input
 
-The 49 tools split into three groups. Check which group your tool is in before
-you write anything.
+The 49 tools split into three groups. The group decides what input a tool takes.
 
 | Group | Tools | How you filter |
 | ----- | ----- | -------------- |
@@ -22,7 +21,7 @@ Tools in the third group include [`float`](./tools/float.md),
 [`mapping`](./tools/mapping.md), [`xbrl-to-json`](./tools/xbrl-to-json.md),
 [`extractor`](./tools/extractor.md), [`get-edgar-file`](./tools/get-edgar-file.md),
 [`form-npx-file`](./tools/form-npx-file.md) and every
-`form-adv-schedule-*` tool. Do not send a `query` to them.
+`form-adv-schedule-*` tool. None of them takes a `query` parameter.
 
 ## Lucene basics
 
@@ -46,16 +45,16 @@ offeringData.offeringSalesAmounts.totalOfferingAmount:5000000
 
 ### Quote the value
 
-Quote any value that holds a space, a hyphen or a slash. This is the single most
-common cause of wrong results.
+A value that holds a space, a hyphen or a slash needs quotes. An unquoted one is
+the single most common cause of wrong results.
 
 | Query | Rows | What comes back |
 | ----- | ---- | --------------- |
 | `ticker:AAPL AND formType:"10-K"` | 33 | Apple 10-K filings only. |
 | `ticker:AAPL AND formType:10-K` | 371 | Wrong. The first rows are 10-Q and 8-K. |
 
-The unquoted form breaks `10-K` into pieces and matches far too much. Always
-write `formType:"10-K"`, `formType:"10-K/A"`, `formType:"SC 13D"`.
+The unquoted form breaks `10-K` into pieces and matches far too much. The quoted
+forms are `formType:"10-K"`, `formType:"10-K/A"` and `formType:"SC 13D"`.
 
 Quoting is also how you match an exact name.
 
@@ -75,15 +74,15 @@ Two different rules apply, and they trip people up.
 
 ### AND, OR, NOT
 
-Write the operators in **capital letters**. Lowercase `and` is not an operator.
-It becomes a search term, and the query falls back to OR.
+The operators work in **capital letters** only. Lowercase `and` is not an
+operator. It becomes a search term, and the query falls back to OR.
 
 | Query | Rows | Meaning |
 | ----- | ---- | ------- |
 | `ticker:AAPL AND formType:"10-K"` | 33 | Correct. |
 | `ticker:AAPL and formType:"10-K"` | 10,000 or more | Wrong. Matches nearly everything. |
 
-Group alternatives with parentheses.
+Parentheses group alternatives.
 
 ```text
 ticker:(AAPL OR MSFT) AND formType:"8-K"
@@ -136,8 +135,8 @@ aaerNo:*
 genInfo.regLei:*
 ```
 
-Wildcards fail on hyphenated exact values. `formType:10-K*` returns 0 rows. Use
-`formType:"10-K"` and `formType:"10-K/A"` as two terms instead.
+Wildcards fail on hyphenated exact values. `formType:10-K*` returns 0 rows. Two
+terms, `formType:"10-K"` and `formType:"10-K/A"`, match them.
 
 [`form-adv-individuals`](./tools/form-adv-individuals.md) also accepts
 `_exists_`, which reads better on deep paths.
@@ -148,9 +147,8 @@ Info.lastNm:Kim AND _exists_:DRPs.DRP
 
 ## Confirmed field vocabulary
 
-Every field below returned rows on a live call. A field that is not on this list
-may still work. Test it before you trust it, because an unknown field returns
-`total: 0` and never an error.
+Every field below returns rows. A field that is not on this list may still work.
+An unknown field returns `total: 0` and never an error.
 
 | Tool | Confirmed query fields |
 | ---- | ---------------------- |
@@ -185,8 +183,8 @@ may still work. Test it before you trust it, because an unknown field returns
 | [`sro`](./tools/sro.md) | `sro`, `issueDate` |
 | [`form-x-17a-5`](./tools/form-x-17a-5.md) | `entities.cik`, `entities.fileNo`, `formType`, `filedAt`, `periodOfReport`, `submissionInformation.materialWeakness` |
 
-Each tool page carries a longer list that includes unverified names. Treat those
-as candidates, not as facts.
+Each tool page carries a longer list of field names. A name from that list can
+still return `total: 0`.
 
 ## The ticker trap
 
@@ -202,7 +200,7 @@ returns zero rows with no error message.
 | [`form-13f-holdings`](./tools/form-13f-holdings.md) | `holdings.ticker` for the held stock, `cik` for the manager |
 | [`edgar-entities`](./tools/edgar-entities.md) | **none.** Use `cik` or `name`. |
 
-Measured proof. Each of these returns `total: 0` and HTTP 200:
+Each of these returns `total: 0` and HTTP 200:
 
 ```text
 audit-fees        ticker:NVDA
@@ -212,11 +210,11 @@ filing-search     entities.ticker:AAPL
 edgar-entities    ticker:AAPL
 ```
 
-The correct forms return 22, 1,331, 26 and 33 rows. When a query returns zero,
-check the field name first.
+The correct forms return 22, 1,331, 26 and 33 rows. A zero result is often a
+wrong field name, not an empty index.
 
-If you only have a company name, resolve it with
-[`mapping`](./tools/mapping.md) first. Then query on the CIK.
+[`mapping`](./tools/mapping.md) resolves a company name to a CIK. The CIK then
+works as a query field.
 
 ## Dates
 
@@ -236,7 +234,7 @@ too, but the two ranges return different sets across a full year.
 
 ### Format
 
-Write plain `YYYY-MM-DD` in a query, even though `filedAt` comes back as a full
+A query takes plain `YYYY-MM-DD`, even though `filedAt` comes back as a full
 ISO 8601 timestamp. A one-day range covers the whole day.
 
 ```text
@@ -246,9 +244,6 @@ ticker:AAPL AND filedAt:[2025-10-31 TO 2025-10-31]
 That returns the 10-K filed at 06:01 that morning.
 
 ### Time zone
-
-Most handlers run date ranges in `America/New_York`. Send a `time_zone` argument
-to change that. [`form-144`](./tools/form-144.md) applies no default time zone.
 
 ### Other date field names
 
@@ -277,7 +272,7 @@ Not every tool calls its date `filedAt`.
 }
 ```
 
-Sort on date and numeric fields. Confirmed sort fields include `filedAt`,
+Sorting works on date and numeric fields. Sort fields include `filedAt`,
 `periodOfReport` and `FormInfo.Part1A.Item5F.Q5F2C`.
 
 ### Default sort
@@ -350,7 +345,7 @@ with four exhibits can produce five rows.
 
 ## Ten worked examples
 
-Counts come from live calls on 2026-08-13.
+Counts are from 2026-08-13.
 
 ### 1. One company, one form type
 

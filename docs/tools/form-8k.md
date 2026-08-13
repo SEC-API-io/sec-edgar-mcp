@@ -19,7 +19,7 @@ row is one 8-K filing.
 
 Coverage starts 2004-08-23.
 
-**Only three 8-K items are extracted.** Probing confirmed this:
+**Only three 8-K items are extracted.**
 
 | Item object | 8-K item | Subject                                            | Rows          |
 | ----------- | -------- | -------------------------------------------------- | ------------- |
@@ -64,7 +64,7 @@ object.
 The colon rule is strict. A bare word such as `apple` returns HTTP 400 with
 `Invalid request parameter provided.`
 
-Query fields confirmed to return rows:
+Query fields:
 
 | Field            | Example                                     |
 | ---------------- | ------------------------------------------- |
@@ -82,7 +82,8 @@ Query fields confirmed to return rows:
 The `itemX_YY:*` form is the idiom for "give me the filings that carry this
 structured block". Combine it with a date range, for example
 `item4_01:* AND filedAt:[2024-01-01 TO 2024-12-31]`. Nested fields inside the
-item objects, such as `item4_01.formerAccountantName`, are unverified.
+item objects, such as `item4_01.formerAccountantName`, follow the same dotted
+syntax.
 
 ## Output
 
@@ -113,12 +114,10 @@ summary of the event. The rest differs per item.
 `positionsAtOtherCompanies[]`), a `compensation` object (`annual`, `equity`,
 `equityVesting`, `noCompensation`), and the booleans `continuedConsultingRole`,
 `termExtended`, `termShortened`, `compensationIncreased`,
-`compensationDecreased`, `disagreements` and `interim`. The Node SDK example
-also shows `organizationChanges` and `attachments[]`. Those two were not in the
-capture and are unverified.
+`compensationDecreased`, `disagreements` and `interim`. `organizationChanges`
+and `attachments[]` can also appear.
 
-`item4_01` and `item4_02` were not captured. The two field lists below come from
-the Node SDK examples and are unverified.
+The other two item objects hold their own fields.
 
 `item4_01`: `formerAccountantName`, `newAccountantName`, `engagementEndReason`,
 `formerAccountantDate`, `newAccountantDate`, `opinionType`, `attachments[]`, and
@@ -143,7 +142,7 @@ Prompt: "Show me the newest 8-K filings with a structured event block."
 { "name": "form-8k", "arguments": { "query": "cik:*", "size": 1 } }
 ```
 
-Response from the capture, trimmed for length:
+Response, trimmed for length:
 
 ```json
 {

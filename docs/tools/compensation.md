@@ -46,8 +46,7 @@ company total. Director pay appears where the company reports it.
 | `size`    | integer | No       | 1 to 50            | Default 50. Above 50 the server returns HTTP 400.         |
 | `sort`    | array   | No       | Elasticsearch sort | Default `[{"year": {"order": "desc"}}]`. Newest year first. |
 
-Query fields verified live on 2026-08-13: `ticker`, `cik`, `name`, `position`,
-`year`, `total`.
+Query fields: `ticker`, `cik`, `name`, `position`, `year`, `total`.
 
 The company identifier is bare `ticker` here. On [`audit-fees`](./audit-fees.md)
 the same idea is `entities.ticker`. See [query language](../query-language.md).
@@ -97,7 +96,7 @@ Prompt: "What did Apple's CFO earn?"
 { "name": "compensation", "arguments": { "query": "ticker:AAPL", "size": 1 } }
 ```
 
-The full response from the capture:
+The full response:
 
 ```json
 [

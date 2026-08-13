@@ -1,17 +1,199 @@
 {
   "tool": "form-adv-schedule-d-5-k",
   "request": {
-    "crd": "344073"
+    "crd": "341357"
   },
   "httpStatus": 200,
   "isError": false,
-  "durationMs": 133,
-  "rawBytes": 112,
+  "durationMs": 172,
+  "rawBytes": 2641,
   "truncated": false,
-  "text": "{\"1-separatelyManagedAccounts\":{},\"2-borrowingsAndDerivatives\":{},\"3-custodiansForSeparatelyManagedAccounts\":[]}",
+  "text": "{\"1-separatelyManagedAccounts\":{\"a\":{\"i-exchangeTradedEquity\":{\"midYear\":\"%\",\"endOfYear\":\"%\"},\"ii-nonExchangeTradedEquity\":{\"midYear\":\"%\",\"endOfYear\":\"%\"},\"iii-usGovernmentBonds\":{\"midYear\":\"%\",\"endOfYear\":\"%\"},\"iv-usStateAndLocalBonds\":{\"midYear\":\"%\",\"endOfYear\":\"%\"},\"v-sovereignBonds\":{\"midYear\":\"%\",\"endOfYear\":\"%\"},\"vi-investmentGradeCorporateBonds\":{\"midYear\":\"%\",\"endOfYear\":\"%\"},\"vii-nonInvestmentGradeCorporateBonds\":{\"midYear\":\"%\",\"endOfYear\":\"%\"},\"viii-derivatives\":{\"midYear\":\"%\",\"endOfYear\":\"%\"},\"ix-registeredInvestmentCompanies\":{\"midYear\":\"%\",\"endOfYear\":\"%\"},\"x-pooledInvestmentVehicles\":{\"midYear\":\"%\",\"endOfYear\":\"%\"},\"xi-cash\":{\"midYear\":\"%\",\"endOfYear\":\"%\"},\"xii-other\":{\"midYear\":\"%\",\"endOfYear\":\"%\"},\"other\":\"\"},\"b\":{\"i-exchangeTradedEquity\":{\"endOfYear\":\"%\"},\"ii-nonExchangeTradedEquity\":{\"endOfYear\":\"%\"},\"iii-usGovernmentBonds\":{\"endOfYear\":\"%\"},\"iv-usStateAndLocalBonds\":{\"endOfYear\":\"%\"},\"v-sovereignBonds\":{\"endOfYear\":\"%\"},\"vi-investmentGradeCorporateBonds\":{\"endOfYear\":\"%\"},\"vii-nonInvestmentGradeCorporateBonds\":{\"endOfYear\":\"%\"},\"viii-derivatives\":{\"endOfYear\":\"%\"},\"ix-registeredInvestmentCompanies\":{\"endOfYear\":\"%\"},\"x-pooledInvestmentVehicles\":{\"endOfYear\":\"%\"},\"xi-cash\":{\"endOfYear\":\"%\"},\"xii-other\":{\"endOfYear\":\"%\"},\"other\":\"\"}},\"2-borrowingsAndDerivatives\":{\"a-i-midYear\":{\"regulatoryAssetsUnderManagement\":{\"lessThan10\":\"$\",\"between10And149\":\"$\",\"moreThan150\":\"$\"},\"borrowings\":{\"lessThan10\":\"$\",\"between10And149\":\"$\",\"moreThan150\":\"$\"},\"derivativeExposures\":{\"lessThan10\":{\"interestRate\":\"%\",\"foreignExchange\":\"%\",\"credit\":\"%\",\"equity\":\"%\",\"commodity\":\"%\",\"other\":\"%\"},\"between10And149\":{\"interestRate\":\"%\",\"foreignExchange\":\"%\",\"credit\":\"%\",\"equity\":\"%\",\"commodity\":\"%\",\"other\":\"%\"},\"moreThan150\":{\"interestRate\":\"%\",\"foreignExchange\":\"%\",\"credit\":\"%\",\"equity\":\"%\",\"commodity\":\"%\",\"other\":\"%\"}}},\"a-i-optional\":\"\",\"a-ii-endOfYear\":{\"regulatoryAssetsUnderManagement\":{\"lessThan10\":\"$\",\"between10And149\":\"$\",\"moreThan150\":\"$\"},\"borrowings\":{\"lessThan10\":\"$\",\"between10And149\":\"$\",\"moreThan150\":\"$\"},\"derivativeExposures\":{\"lessThan10\":{\"interestRate\":\"%\",\"foreignExchange\":\"%\",\"credit\":\"%\",\"equity\":\"%\",\"commodity\":\"%\",\"other\":\"%\"},\"between10And149\":{\"interestRate\":\"%\",\"foreignExchange\":\"%\",\"credit\":\"%\",\"equity\":\"%\",\"commodity\":\"%\",\"other\":\"%\"},\"moreThan150\":{\"interestRate\":\"%\",\"foreignExchange\":\"%\",\"credit\":\"%\",\"equity\":\"%\",\"commodity\":\"%\",\"other\":\"%\"}}},\"a-ii-optional\":\"\",\"b\":{\"regulatoryAssetsUnderManagement\":{\"lessThan10\":\"$\",\"between10And149\":\"$\",\"moreThan150\":\"$\"},\"borrowings\":{\"lessThan10\":\"$\",\"between10And149\":\"$\",\"moreThan150\":\"$\"}}},\"3-custodiansForSeparatelyManagedAccounts\":[]}",
   "data": {
-    "1-separatelyManagedAccounts": {},
-    "2-borrowingsAndDerivatives": {},
+    "1-separatelyManagedAccounts": {
+      "a": {
+        "i-exchangeTradedEquity": {
+          "midYear": "%",
+          "endOfYear": "%"
+        },
+        "ii-nonExchangeTradedEquity": {
+          "midYear": "%",
+          "endOfYear": "%"
+        },
+        "iii-usGovernmentBonds": {
+          "midYear": "%",
+          "endOfYear": "%"
+        },
+        "iv-usStateAndLocalBonds": {
+          "midYear": "%",
+          "endOfYear": "%"
+        },
+        "v-sovereignBonds": {
+          "midYear": "%",
+          "endOfYear": "%"
+        },
+        "vi-investmentGradeCorporateBonds": {
+          "midYear": "%",
+          "endOfYear": "%"
+        },
+        "vii-nonInvestmentGradeCorporateBonds": {
+          "midYear": "%",
+          "endOfYear": "%"
+        },
+        "viii-derivatives": {
+          "midYear": "%",
+          "endOfYear": "%"
+        },
+        "ix-registeredInvestmentCompanies": {
+          "midYear": "%",
+          "endOfYear": "%"
+        },
+        "x-pooledInvestmentVehicles": {
+          "midYear": "%",
+          "endOfYear": "%"
+        },
+        "xi-cash": {
+          "midYear": "%",
+          "endOfYear": "%"
+        },
+        "xii-other": {
+          "midYear": "%",
+          "endOfYear": "%"
+        },
+        "other": ""
+      },
+      "b": {
+        "i-exchangeTradedEquity": {
+          "endOfYear": "%"
+        },
+        "ii-nonExchangeTradedEquity": {
+          "endOfYear": "%"
+        },
+        "iii-usGovernmentBonds": {
+          "endOfYear": "%"
+        },
+        "iv-usStateAndLocalBonds": {
+          "endOfYear": "%"
+        },
+        "v-sovereignBonds": {
+          "endOfYear": "%"
+        },
+        "vi-investmentGradeCorporateBonds": {
+          "endOfYear": "%"
+        },
+        "vii-nonInvestmentGradeCorporateBonds": {
+          "endOfYear": "%"
+        },
+        "viii-derivatives": {
+          "endOfYear": "%"
+        },
+        "ix-registeredInvestmentCompanies": {
+          "endOfYear": "%"
+        },
+        "x-pooledInvestmentVehicles": {
+          "endOfYear": "%"
+        },
+        "xi-cash": {
+          "endOfYear": "%"
+        },
+        "xii-other": {
+          "endOfYear": "%"
+        },
+        "other": ""
+      }
+    },
+    "2-borrowingsAndDerivatives": {
+      "a-i-midYear": {
+        "regulatoryAssetsUnderManagement": {
+          "lessThan10": "$",
+          "between10And149": "$",
+          "moreThan150": "$"
+        },
+        "borrowings": {
+          "lessThan10": "$",
+          "between10And149": "$",
+          "moreThan150": "$"
+        },
+        "derivativeExposures": {
+          "lessThan10": {
+            "interestRate": "%",
+            "foreignExchange": "%",
+            "credit": "%",
+            "equity": "%",
+            "commodity": "%",
+            "other": "%"
+          },
+          "between10And149": {
+            "interestRate": "%",
+            "foreignExchange": "%",
+            "credit": "%",
+            "equity": "%",
+            "commodity": "%",
+            "other": "%"
+          },
+          "moreThan150": {
+            "interestRate": "%",
+            "foreignExchange": "%",
+            "credit": "%",
+            "equity": "%",
+            "commodity": "%",
+            "other": "%"
+          }
+        }
+      },
+      "a-i-optional": "",
+      "a-ii-endOfYear": {
+        "regulatoryAssetsUnderManagement": {
+          "lessThan10": "$",
+          "between10And149": "$",
+          "moreThan150": "$"
+        },
+        "borrowings": {
+          "lessThan10": "$",
+          "between10And149": "$",
+          "moreThan150": "$"
+        },
+        "derivativeExposures": {
+          "lessThan10": {
+            "interestRate": "%",
+            "foreignExchange": "%",
+            "credit": "%",
+            "equity": "%",
+            "commodity": "%",
+            "other": "%"
+          },
+          "between10And149": {
+            "interestRate": "%",
+            "foreignExchange": "%",
+            "credit": "%",
+            "equity": "%",
+            "commodity": "%",
+            "other": "%"
+          },
+          "moreThan150": {
+            "interestRate": "%",
+            "foreignExchange": "%",
+            "credit": "%",
+            "equity": "%",
+            "commodity": "%",
+            "other": "%"
+          }
+        }
+      },
+      "a-ii-optional": "",
+      "b": {
+        "regulatoryAssetsUnderManagement": {
+          "lessThan10": "$",
+          "between10And149": "$",
+          "moreThan150": "$"
+        },
+        "borrowings": {
+          "lessThan10": "$",
+          "between10And149": "$",
+          "moreThan150": "$"
+        }
+      }
+    },
     "3-custodiansForSeparatelyManagedAccounts": []
   }
 }

@@ -24,7 +24,7 @@ form types: `S-1`, `S-1/A`, `424B4`, `F-1`, `F-1/A` and `S-11`. The queries
 424B5 prospectuses are not in this index.
 
 The registry description promises "use of proceeds" and a "risk factors
-summary". No such field exists in the capture or in any of the 50 sampled rows.
+summary". No such field exists in any response or in any of the 50 sampled rows.
 Treat that part of the description as wrong. For prospectus prose, use
 [extractor](./extractor.md).
 
@@ -57,7 +57,7 @@ Treat that part of the description as wrong. For prospectus prose, use
 The colon rule is strict. A bare word such as `apple` returns HTTP 400 with
 `Invalid request parameter provided.`
 
-Query fields confirmed to return rows:
+Query fields:
 
 `ticker`, `cik`, `entityName`, `formType`, `filedAt`, `accessionNo`,
 `tickers.exchange`, `underwriters.name`, `auditors.name`,
@@ -110,7 +110,7 @@ Prompt: "What price did Rivian price its IPO at, and who underwrote it?"
 { "name": "form-s1-424b4", "arguments": { "query": "ticker:RIVN", "size": 1 } }
 ```
 
-Response from the capture, trimmed for length:
+Response, trimmed for length:
 
 ```json
 {
@@ -137,8 +137,8 @@ Response from the capture, trimmed for length:
 }
 ```
 
-The capture used `query: "cik:*"`, which is why the row is SunScout, not Rivian.
-`ticker:RIVN` returns 5 rows.
+The response above came from `query: "cik:*"`, which is why the row is SunScout,
+not Rivian. `ticker:RIVN` returns 5 rows.
 
 ## Limits and errors
 

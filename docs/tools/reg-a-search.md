@@ -51,7 +51,7 @@ Coverage starts 2015-06-22, the first year of Regulation A+.
 | `size`    | integer | no       | 1 to 50        | Default 50. Above 50 returns HTTP 400.    |
 | `sort`    | array   | no       | ES sort clause | Default `[{"filedAt":{"order":"desc"}}]`. |
 
-Query fields confirmed to return rows:
+Query fields:
 
 | Field                                  | Example                                          | Applies to  |
 | -------------------------------------- | ------------------------------------------------ | ----------- |
@@ -69,7 +69,7 @@ of them 1-A.
 
 `formType` matches the exact string. `formType:"1-K"` returns 2,875 rows and
 does **not** include the 125 `1-K/A` amendments. Query both, or use a wildcard
-such as `formType:1-K*`, which was not verified.
+such as `formType:1-K*`.
 
 Counts by form type, measured on 2026-08-13:
 
@@ -126,7 +126,7 @@ Prompt: "Show me the newest Regulation A filings."
 { "name": "reg-a-search", "arguments": { "query": "cik:*", "size": 1 } }
 ```
 
-Response from the capture, trimmed for length:
+Response, trimmed for length:
 
 ```json
 {

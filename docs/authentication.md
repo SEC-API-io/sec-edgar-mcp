@@ -199,7 +199,7 @@ Read the two failure shapes above for anything else.
 
 Clients that speak only stdio need the `mcp-remote` bridge. The bridge takes the
 server URL on its command line, so a key in the URL lands in your shell history
-and in the process list. Prefer a client that sends headers. See
+and in the process list. A client that sends headers avoids this. See
 [transport](./transport.md) for the bridge setup.
 
 ## Related

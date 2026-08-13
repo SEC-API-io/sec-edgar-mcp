@@ -26,7 +26,8 @@ Three rules keep an agent alive:
 
 1. Call an unfamiliar search tool with `size: 1` first. Multiply the row size by
    the page size you actually want.
-2. Never put `form-npx-file` or `xbrl-to-json` in a loop without a size check.
+2. A loop over `form-npx-file` or `xbrl-to-json` without a size check fills the
+   context window.
 3. Ask [`extractor`](./tools/extractor.md) for one section instead of pulling a
    whole filing with [`get-edgar-file`](./tools/get-edgar-file.md).
 
@@ -56,7 +57,7 @@ These tools return everything they hold for the input. You cannot ask for less.
 
 | Tool                                                                                                                                                                 | What one call returns                                                       |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| [`form-npx-file`](./tools/form-npx-file.md)                                                                                                                          | Every proxy vote in the filing. 4,372 records and 1.94 MB in the probe      |
+| [`form-npx-file`](./tools/form-npx-file.md)                                                                                                                          | Every proxy vote in the filing. 4,372 records and 1.94 MB in one call       |
 | [`float`](./tools/float.md)                                                                                                                                          | Every reporting period on record. 61 rows and 19 KB for Apple, back to 2011 |
 | [`xbrl-to-json`](./tools/xbrl-to-json.md)                                                                                                                            | Every statement in the filing                                               |
 | [`form-adv-brochures`](./tools/form-adv-brochures.md)                                                                                                                | Every brochure for the CRD                                                  |
@@ -66,7 +67,7 @@ These tools return everything they hold for the input. You cannot ask for less.
 | [`extractor`](./tools/extractor.md), [`filing-to-pdf`](./tools/filing-to-pdf.md), [`get-edgar-file`](./tools/get-edgar-file.md), [`aaer-file`](./tools/aaer-file.md) | One document                                                                |
 
 `form-npx-file` and `float` are the two to watch. They accept no `size`, no
-`from` and no `sort`, and a large fund makes `form-npx-file` the worst context
+`from` and no `sort`, so a large fund makes `form-npx-file` a heavy context
 trap in the tool set.
 
 ### The 10,000 ceiling
@@ -85,8 +86,8 @@ Tools disagree on what happens above the ceiling:
   is what [`edgar-entities`](./tools/edgar-entities.md) gives for `from` above
   10000, and what most tools give when `from` plus `size` crosses 10,000.
 
-An empty page above the ceiling does not mean the data ended. Never treat it as
-the end of a result set.
+An empty page above the ceiling does not mean the data ended. It is a ceiling
+hit, not the end of a result set.
 
 **The counting ceiling.** `total` is an object, not a number:
 
@@ -98,8 +99,9 @@ the end of a result set.
 result-window ceiling. A `value` of exactly `10000` with `relation: "gte"`
 means **10,000 or more**. It is never a real count.
 
-Never print `10000` as a number of filings. To get a true count, split the query
-by date range until every part reports `relation: "eq"`, then add the parts.
+`10000` is the result window ceiling, not a filing count. To get a true count,
+split the query by date range until every part reports `relation: "eq"`, then
+add the parts.
 
 ## Error shape
 
@@ -120,15 +122,15 @@ a small JSON object.
 }
 ```
 
-Check `isError`, or the `sec-api error: ` prefix. Do not check the HTTP status.
-A failed tool call and a good one both return 200.
+`isError`, or the `sec-api error: ` prefix, marks a failure. The HTTP status
+does not. A failed tool call and a good one both return 200.
 
 ## Transport errors
 
 | HTTP | Body                                     | Cause                                    | Fix                                                                 |
 | ---- | ---------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------- |
 | 401  | `{"error":"invalid or missing apiKey"}`  | No key in the URL or header              | Send `?apiKey=YOUR_API_KEY` or `Authorization: Bearer YOUR_API_KEY` |
-| 503  | `{"error":"mcp server not initialized"}` | The process is still loading the MCP SDK | Retry after a few seconds                                           |
+| 503  | `{"error":"mcp server not initialized"}` | The server process is still starting     | Retry after a few seconds                                           |
 | 500  | `{"error":"mcp handler failed"}`         | The transport threw before a tool ran    | Retry once. Report it if it repeats                                 |
 
 A client that hangs on connect is a different problem, not an error. The
@@ -148,8 +150,8 @@ far. The two failures look different, so read the layer before you debug.
 
 ## Query and paging errors
 
-These come from the search handlers. Every one is HTTP 400 under the tool error
-envelope.
+These errors apply to the search tools. Every one is HTTP 400 under the tool
+error envelope.
 
 | Message                                                                                                                                                                                               | Tools                                                                                       | Cause                                                                                                     | Fix                                                          |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |

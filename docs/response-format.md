@@ -4,13 +4,12 @@ Every tool on this server answers in the same MCP envelope. Inside that envelope
 the payload shape changes from tool to tool. This page describes both layers, and
 gives you one parser that handles all 49 tools.
 
-Read this before you write client code. The most common mistake is to assume
-`data[]`. Only half the tools use it.
+The most common mistake is to assume `data[]`. Only half the tools use it.
 
 ## The MCP envelope
 
 One tool call returns **one** `text` content block. That is true for all 49
-tools, in every capture taken so far.
+tools.
 
 A successful call:
 
@@ -50,9 +49,9 @@ A failed call:
 
 | Fact | Detail |
 | ---- | ------ |
-| Content blocks | Always one. Read `result.content[0].text`. |
+| Content blocks | Always one. The payload sits at `result.content[0].text`. |
 | Block type | Always `text`. No `image`, no `resource`, no `audio`. |
-| JSON payloads | **Stringified** inside `text`. You must parse the string yourself. |
+| JSON payloads | **Stringified** inside `text`. The value is a JSON string, not an object. |
 | `structuredContent` | **Never present.** No tool declares an `outputSchema`, so the server sends no parsed copy. |
 | `isError` | Always present. `false` on success, `true` on failure. |
 | Errors | Arrive as text, not as a JSON-RPC `error` object. The HTTP status stays 200. |
@@ -76,7 +75,7 @@ curl -s 'https://api.sec-api.io/mcp?apiKey=YOUR_API_KEY' \
 ## Ten payload envelopes
 
 Inside `content[0].text` the server uses ten different shapes. The counts below
-cover 48 tools. `compensation-by-key` has no verified shape.
+cover 48 tools. `compensation-by-key` is not in the table.
 
 | Envelope | Count | Read rows from | Tools |
 | -------- | ----- | -------------- | ----- |
@@ -104,7 +103,8 @@ Notes on the rows that surprise people:
   `formData`. There is no wrapper and no `total`.
 - **`xbrl-to-json`** names its top-level keys after the filing's own statements,
   such as `CoverPage`, `BalanceSheets` and `StatementsOfCashFlows`. The names
-  change between filers and between years. Do not hard-code them.
+  change between filers and between years. A hard-coded name does not carry
+  from one filing to the next.
 - **`form-adv-schedule-d-5-k`** returns a fixed three-key object:
   `1-separatelyManagedAccounts`, `2-borrowingsAndDerivatives` and
   `3-custodiansForSeparatelyManagedAccounts`. The other six Form ADV schedule
@@ -116,15 +116,14 @@ Each tool page names its own row in this table. Start at the
 
 ## Tools that return HTML, text or PDF
 
-Four tools return the document itself. The JSON parse will fail on all four, so
-branch before you parse.
+Four tools return the document itself. A JSON parse fails on all four.
 
 | Tool | What arrives in the text block | Notes |
 | ---- | ------------------------------ | ----- |
 | [`extractor`](./tools/extractor.md) | Plain text, or HTML when you set `type: "html"` | Numeric HTML entities stay encoded. `&#8217;` is an apostrophe. Decode them yourself. Apple's Item 1A gave 69,877 bytes. |
 | [`get-edgar-file`](./tools/get-edgar-file.md) | The file source, exactly as filed | Text files arrive as UTF-8. Binary files arrive base64-encoded in the same text block. |
-| [`filing-to-pdf`](./tools/filing-to-pdf.md) | PDF bytes. The block starts with `%PDF-1.4` | The bytes are decoded as UTF-8, so binary sections are lossy. Treat the block as a preview, not as a file you can save. |
-| [`aaer-file`](./tools/aaer-file.md) | PDF, HTML or plain text | The content type follows the file extension you ask for. Add `.txt` to the value of `fileTypeAndName` to get a text rendering. One AAER summary gave 3 KB as text against 70 KB as HTML. |
+| [`filing-to-pdf`](./tools/filing-to-pdf.md) | PDF bytes. The block starts with `%PDF-1.4` | The bytes are decoded as UTF-8, so binary sections are lossy. The block is a preview, not a file you can save. |
+| [`aaer-file`](./tools/aaer-file.md) | PDF, HTML or plain text | The content type follows the file extension you ask for. A `.txt` suffix on `fileTypeAndName` gives a text rendering. One AAER summary gave 3 KB as text against 70 KB as HTML. |
 
 None of the four sends a file name, a content type or a byte count. You get the
 body and nothing else. None of the four supports paging.
@@ -143,24 +142,25 @@ body and nothing else. None of the four supports paging.
 | `relation` | `eq` for an exact count. `gte` for "at least this many". |
 
 A `relation` of `gte` with a `value` of `10000` means the search engine stopped
-counting. Report it as "10,000 or more". Never print it as an exact total.
+counting. It means "10,000 or more". It is not an exact total.
 
-`total` counts matches, not returned rows. Use `length` of the array to count
-what you received.
+`total` counts matches, not returned rows. The `length` of the array is the
+count you received.
 
 ## How to parse reliably
 
-Follow these six steps in order.
+A parser reads the response in six steps.
 
-1. Read `result.content[0].text`. Ignore any other block. There is never one.
-2. Check `result.isError` first. On `true`, the text is an error message, not
-   data. Strip the `sec-api error: ` prefix and stop.
-3. Never read `structuredContent`. It does not exist on this server.
-4. Parse the text with a `try`. A failure means the tool returned a raw document.
-   Keep the text as-is.
-5. Find the payload array by probing keys in a fixed order. Do not switch on the
-   tool name. New tools reuse the same six keys.
-6. Read `total.value` and `total.relation`, not `total`.
+1. The payload is `result.content[0].text`. There is never a second block.
+2. `result.isError` says what the text holds. On `true`, the text is an error
+   message, not data, and it carries the `sec-api error: ` prefix.
+3. `structuredContent` does not exist on this server.
+4. A JSON parse of the text fails when the tool returns a raw document. The text
+   is then the document itself.
+5. The payload array sits under one of six keys. New tools reuse the same six
+   keys, so a key probe outlives a switch on the tool name.
+6. `total` is an object. The count is `total.value`, and `total.relation` says
+   whether that count is exact.
 
 An empty result is not an error. Searches return the envelope with an empty
 array and `total.value` of `0`. `mapping` and the Form ADV schedules return a
@@ -265,17 +265,16 @@ def read_result(result):
 The whole payload arrives in one block. There is no streaming and no chunking,
 so a large response lands in your context in one step.
 
-| Tool | Largest capture | Why it grows |
-| ---- | --------------- | ------------ |
+| Tool | Largest response | Why it grows |
+| ---- | ---------------- | ------------ |
 | `form-npx-file` | 1.94 MB, 4,372 vote records | Takes no paging. One accession number returns every vote. |
 | `xbrl-to-json` | 1.31 MB | Returns all statements of one filing. You cannot ask for one. |
 | `filing-to-pdf` | 68 KB for a small exhibit | A full 10-K source is 1.5 MB, and a complete submission file is 9.4 MB. |
 | `extractor` | 70 KB for Apple's Item 1A | Risk Factors and MD&A are the longest items. |
 | `float` | 19 KB, 61 records | Takes no `size`. Returns every reporting period held. |
 
-Check the document size with [`filing-search`](./tools/filing-search.md) before
-you fetch a primary document. It reports the byte size of each file in the
-filing.
+[`filing-search`](./tools/filing-search.md) reports the byte size of each file
+in the filing. That size is available before you fetch a primary document.
 
 ## See also
 

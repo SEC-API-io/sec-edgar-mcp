@@ -15,8 +15,7 @@ advice for a Form ADV firm.
 
 One item in `filings[]` is one person, not one filing. The row is the current
 record for that individual CRD number, `Info.indvlPK`. A query for a single
-`indvlPK` returns exactly one row, confirmed live. There is no history of
-versions.
+`indvlPK` returns exactly one row. There is no history of versions.
 
 Each row carries the person's name, the firm that employs them now, their state
 registrations, their exams, their professional designations, ten years of
@@ -53,7 +52,7 @@ the full detail on the IAPD page in `Info.link`.
 | `size`    | integer | No       | 1 to 50                  | Default 50.                                         |
 | `sort`    | array   | No       | Elasticsearch sort array | Default `[{"Info.indvlPK": {"order": "desc"}}]`.   |
 
-Query fields confirmed live on 2026-08-13. The hit count is in brackets.
+Query fields. The hit count on 2026-08-13 is in brackets.
 
 | Field                                            | Example                                              |
 | ------------------------------------------------ | ---------------------------------------------------- |
@@ -68,9 +67,8 @@ Query fields confirmed live on 2026-08-13. The hit count is in brackets.
 
 `_exists_` works and is the way to find populated blocks, for example
 `_exists_:DRPs.DRP`, `_exists_:Dsgntns.Dsgntn` and `_exists_:PrevRgstns.PrevRgstn`.
-`Info.firstNm` is present in every row and is unverified as a query field. An
-unknown field returns `total: 0` with no error. See
-[query language](../query-language.md).
+`Info.firstNm` is present in every row. An unknown field returns `total: 0`
+with no error. See [query language](../query-language.md).
 
 ## Output
 

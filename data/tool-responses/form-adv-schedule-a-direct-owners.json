@@ -1,24 +1,35 @@
 {
   "tool": "form-adv-schedule-a-direct-owners",
   "request": {
-    "crd": "344073"
+    "crd": "149777"
   },
   "httpStatus": 200,
   "isError": false,
-  "durationMs": 362,
-  "rawBytes": 194,
+  "durationMs": 141,
+  "rawBytes": 2111,
   "truncated": false,
-  "text": "[{\"name\":\"GRAVES, DAVID GAVIN\",\"ownerType\":\"I\",\"titleStatus\":\"DIRECTOR\",\"dateTitleStatusAcquired\":\"2026-07\",\"ownershipCode\":\"E\",\"isControlPerson\":true,\"isPublicReporting\":false,\"crd\":\"8326994\"}]",
+  "text": "[{\"name\":\"HANSEN, TIMOTHY GERARD\",\"ownerType\":\"I\",\"titleStatus\":\"CHIEF COMPLIANCE OFFICER (IA ONLY )\",\"dateTitleStatusAcquired\":\"2011-03\",\"ownershipCode\":\"NA\",\"isControlPerson\":true,\"isPublicReporting\":false,\"crd\":\"4956475\"},{\"name\":\"FINN, JED\",\"ownerType\":\"I\",\"titleStatus\":\"DIRECTOR, CHAIRMAN, PRESIDENT AND CHIEF EXECUTIVE OFFICER\",\"dateTitleStatusAcquired\":\"2024-01\",\"ownershipCode\":\"NA\",\"isControlPerson\":true,\"isPublicReporting\":false,\"crd\":\"5658048\"},{\"name\":\"JANOVER, JAMES TROY\",\"ownerType\":\"I\",\"titleStatus\":\"DIRECTOR\",\"dateTitleStatusAcquired\":\"2016-02\",\"ownershipCode\":\"NA\",\"isControlPerson\":true,\"isPublicReporting\":false,\"crd\":\"2818307\"},{\"name\":\"GALASSO, DAVID ANTHONY\",\"ownerType\":\"I\",\"titleStatus\":\"PRINCIPAL OPERATIONS OFFICER\",\"dateTitleStatusAcquired\":\"2019-07\",\"ownershipCode\":\"NA\",\"isControlPerson\":true,\"isPublicReporting\":false,\"crd\":\"1926502\"},{\"name\":\"MORGAN STANLEY CAPITAL MANAGEMENT, LLC\",\"ownerType\":\"DE\",\"titleStatus\":\"MEMBER\",\"dateTitleStatusAcquired\":\"2023-08\",\"ownershipCode\":\"E\",\"isControlPerson\":true,\"isPublicReporting\":false,\"crd\":\"\"},{\"name\":\"FLETCHER, PATRICIA KAY\",\"ownerType\":\"I\",\"titleStatus\":\"TEXAS DESIGNATED PRINCIPAL\",\"dateTitleStatusAcquired\":\"2023-10\",\"ownershipCode\":\"NA\",\"isControlPerson\":false,\"isPublicReporting\":false,\"crd\":\"1202060\"},{\"name\":\"HENNESSY, MICHAEL S\",\"ownerType\":\"I\",\"titleStatus\":\"DIRECTOR\",\"dateTitleStatusAcquired\":\"2024-01\",\"ownershipCode\":\"NA\",\"isControlPerson\":true,\"isPublicReporting\":false,\"crd\":\"1988660\"},{\"name\":\"TURNER, CHAD EDWARD\",\"ownerType\":\"I\",\"titleStatus\":\"DIRECTOR\",\"dateTitleStatusAcquired\":\"2024-01\",\"ownershipCode\":\"NA\",\"isControlPerson\":true,\"isPublicReporting\":false,\"crd\":\"6009808\"},{\"name\":\"GIVENS, WILLIAM BENJAMIN\",\"ownerType\":\"I\",\"titleStatus\":\"CHIEF COMPLIANCE OFFICER (BD ONLY)\",\"dateTitleStatusAcquired\":\"2024-07\",\"ownershipCode\":\"NA\",\"isControlPerson\":true,\"isPublicReporting\":false,\"crd\":\"2790454\"},{\"name\":\"CROWE, JOHN WILLIAM\",\"ownerType\":\"I\",\"titleStatus\":\"CHIEF FINANCIAL OFFICER\",\"dateTitleStatusAcquired\":\"2025-02\",\"ownershipCode\":\"NA\",\"isControlPerson\":true,\"isPublicReporting\":false,\"crd\":\"5475007\"}]",
   "data": [
     {
-      "name": "GRAVES, DAVID GAVIN",
+      "name": "HANSEN, TIMOTHY GERARD",
       "ownerType": "I",
-      "titleStatus": "DIRECTOR",
-      "dateTitleStatusAcquired": "2026-07",
-      "ownershipCode": "E",
+      "titleStatus": "CHIEF COMPLIANCE OFFICER (IA ONLY )",
+      "dateTitleStatusAcquired": "2011-03",
+      "ownershipCode": "NA",
       "isControlPerson": true,
       "isPublicReporting": false,
-      "crd": "8326994"
-    }
+      "crd": "4956475"
+    },
+    {
+      "name": "FINN, JED",
+      "ownerType": "I",
+      "titleStatus": "DIRECTOR, CHAIRMAN, PRESIDENT AND CHIEF EXECUTIVE OFFICER",
+      "dateTitleStatusAcquired": "2024-01",
+      "ownershipCode": "NA",
+      "isControlPerson": true,
+      "isPublicReporting": false,
+      "crd": "5658048"
+    },
+    "... 8 more rows trimmed"
   ]
 }

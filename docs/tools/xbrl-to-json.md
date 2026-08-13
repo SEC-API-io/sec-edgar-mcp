@@ -17,11 +17,10 @@ fact, grouped under the filing's own statement and disclosure names. One
 top-level key is one statement or one note. One value is either a plain string or
 a list of fact objects, one per period and per reporting dimension.
 
-The capture converted Apple's fiscal 2025 10-K, accession
-`0000320193-25-000079`. It returned **84 top-level keys** and **1,313,231 bytes**
-of JSON. This is the heaviest tool in the server by a wide margin. The registry
-description names 10-K and 10-Q. The REST documentation also lists 20-F, 40-F,
-S-1, POS AM, 485BPOS and 8-K. Only the 10-K case is verified here.
+A request for Apple's fiscal 2025 10-K, accession
+`0000320193-25-000079`, returned **84 top-level keys** and **1,313,231 bytes**
+of JSON. It covers 10-K and 10-Q filings, and also 20-F, 40-F, S-1, POS AM,
+485BPOS and 8-K.
 
 ## When to use it
 
@@ -41,26 +40,27 @@ S-1, POS AM, 485BPOS and 8-K. Only the 10-K case is verified here.
 
 ## Input
 
-Send exactly one of the three. The server uses the first one present, in this
-order: `htm-url`, `xbrl-url`, `accession-no`.
+One of the three inputs identifies the filing. The server uses the first one
+present, in this order: `htm-url`, `xbrl-url`, `accession-no`.
 
 | Parameter | Type | Required | Constraints | Notes |
 | --------- | ---- | -------- | ----------- | ----- |
 | `htm-url` | string | no | none in the schema | URL of the primary filing document. |
 | `xbrl-url` | string | no | none in the schema | URL of the XBRL instance file. |
-| `accession-no` | string | no | none in the schema | Dashed accession number, for example `0000320193-25-000079`. Verified. |
+| `accession-no` | string | no | none in the schema | Dashed accession number, for example `0000320193-25-000079`. |
 
 The schema marks nothing as required. That contradicts the server, which returns
-HTTP 400 `Invalid request parameter` when all three are missing. Treat one of the
-three as mandatory. The schema sets `additionalProperties: true`. This tool takes
-no `query`, so there are no Lucene fields.
+HTTP 400 `Invalid request parameter` when all three are missing. One of the
+three is mandatory in practice. The schema sets `additionalProperties: true`.
+This tool takes no `query`, so there are no Lucene fields.
 
 ## Output
 
 A JSON object. The top-level keys are the filing's own statement and disclosure
-names, so **they differ between filers and between years**. Do not hard-code them.
+names, so **they differ between filers and between years**. A key in one filing
+can be absent in the next.
 
-| Key seen in the capture | Type | Meaning |
+| Key seen in the response | Type | Meaning |
 | ----------------------- | ---- | ------- |
 | `CoverPage` | object | Filer identity and document metadata. Holds `DocumentType`, `DocumentPeriodEndDate`, `EntityRegistrantName`, `EntityCentralIndexKey`, `EntityFilerCategory`, `TradingSymbol` and 30 more. |
 | `AuditorInformation` | object | `AuditorName`, `AuditorLocation`, `AuditorFirmId`. All plain strings. |
@@ -68,26 +68,25 @@ names, so **they differ between filers and between years**. Do not hard-code the
 | `BalanceSheets` | object | 30 line items, from `CashAndCashEquivalentsAtCarryingValue` to `LiabilitiesAndStockholdersEquity`. |
 | `StatementsOfCashFlows` | object | 28 line items. `StatementsOfComprehensiveIncome` has 13 and `StatementsOfShareholdersEquity` has 9. |
 | `InsiderTradingArrangements` | object | Rule 10b5-1 adoption and termination flags. |
-| `Cybersecurity*` | string | Item 1C disclosures. 15 keys in the capture, 9 ending in `TextBlock` and 6 in `Flag`. |
+| `Cybersecurity*` | string | Item 1C disclosures. 15 keys in this response, 9 ending in `TextBlock` and 6 in `Flag`. |
 
 Line-item values are lists of fact objects. A fact object has these fields.
 
 | Field | Type | Meaning |
 | ----- | ---- | ------- |
-| `value` | string | The reported figure. **Always a string**, never a number. Parse it. |
+| `value` | string | The reported figure. **Always a string**, never a number. |
 | `unitRef`, `decimals` | string | The unit, for example `usd` or `shares`, and the XBRL rounding, for example `-6` for millions. |
 | `period.startDate`, `period.endDate` | string | The range, for flow items such as revenue. |
 | `period.instant` | string | The date, for stock items such as cash. |
 | `segment.explicitMember` | object | `dimension` is the XBRL axis, for example `srt:ProductOrServiceAxis`. `$t` is the member, for example `us-gaap:ProductMember`. |
 
 A fact with no `segment` is the consolidated total. A fact with a `segment` is a
-breakdown. Filter on the absence of `segment` to get headline figures. The Node
-SDK example shows `segment` as `{dimension, value}`. The live response uses
-`{explicitMember: {dimension, $t}}`, and the live shape is the correct one.
+breakdown. You may see `segment` described as `{dimension, value}` elsewhere.
+The correct shape is `{explicitMember: {dimension, $t}}`.
 
 **This tool has no pagination.** There is no `from`, no `size`, no `sort` and no
-way to ask for one statement only. You get all 84 keys or nothing. Budget 1 MB
-or more of context per call on a large 10-K.
+way to ask for one statement only. The response holds all 84 keys or nothing. A
+large 10-K returns 1 MB or more of context per call.
 
 ## Example
 
@@ -121,7 +120,7 @@ Prompt: "Pull Apple's fiscal 2025 financial statements from the 10-K."
 }
 ```
 
-Four of 84 keys are shown. Values are verbatim from the capture.
+Four of 84 keys are shown. Values are verbatim from the response.
 
 ## Limits and errors
 
@@ -129,8 +128,7 @@ Four of 84 keys are shown. Values are verbatim from the capture.
   parameter`. A filing with no XBRL data cannot be converted.
 - If the conversion is not cached, the server answers HTTP 202 with `XBRL
   conversion started, but the processing has not been completed. Please try
-  again after 60 seconds.` The capture hit a warm cache, so this message is not
-  verified through MCP.
+  again after 60 seconds.`
 - Every call is billed on response size. At 1.31 MB per 10-K, a loop over 100
   filings costs about 130 MB.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).

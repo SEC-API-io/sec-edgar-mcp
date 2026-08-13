@@ -16,8 +16,8 @@ and name.
 You give the tool one identifier type and one value. It returns every company
 that matches, each with its full identifier set plus sector, industry and
 listing data. One element of the array is one company, not one filing. The list
-covers listed and delisted companies, and some institutional filers. Use it as
-the first step of most workflows, because other tools need a ticker or a CIK.
+covers listed and delisted companies, and some institutional filers. Most
+workflows start here, because the other tools need a ticker or a CIK.
 
 ## When to use it
 
@@ -47,25 +47,25 @@ How matching works:
   `320193` both return Apple.
 - Every other `param` treats `value` as a case-insensitive regular expression.
   `name=Apple` returned 12 companies, one of them `APPLE ORTHODONTIX INC`.
-  Anchor the value for one exact hit: `name=^APPLE INC$` returned 1.
+  An anchored value matches one name: `name=^APPLE INC$` returned 1.
 - No match returns an empty array, `[]`, not an error.
 
-The server also accepts `param: "sic"`. Verified live: `sic=3571` returned 43
-companies. The schema leaves `sic` out of the enum, so a client that validates
-against the schema may block the call.
+The server also accepts `param: "sic"`. `sic=3571` returns 43 companies. The
+schema leaves `sic` out of the enum, so a client that validates against the
+schema may block the call.
 
 ## Output
 
 The response is a **bare JSON array**. There is no `{total, data[]}` wrapper
-here. Read `response[0]`, not `response.data[0]`. Seven other tools do the same:
-[`compensation`](./compensation.md),
+here. The first record is `response[0]`, not `response.data[0]`. Seven other
+tools do the same: [`compensation`](./compensation.md),
 [`compensation-by-key`](./compensation-by-key.md) and five of the Form ADV
 schedule tools. See [response format](../response-format.md).
 
 | Field                       | Type    | Meaning                                                           |
 | --------------------------- | ------- | ----------------------------------------------------------------- |
 | `name`, `ticker`            | string  | Company name in upper case, `APPLE INC`, and its trading symbol.  |
-| `cik`                       | string  | CIK, no leading zeros. Pass this to the other tools.              |
+| `cik`                       | string  | CIK, no leading zeros. The other tools take this value.           |
 | `cusip`                     | string  | CUSIP of the main security. Empty for filers that have none.      |
 | `exchange`                  | string  | `NASDAQ`, `NYSE`, `NYSEMKT` and similar.                          |
 | `isDelisted`                | boolean | `true` if the security no longer trades.                          |
@@ -78,8 +78,8 @@ schedule tools. See [response format](../response-format.md).
 
 Unknown values come back as empty strings. An investment manager, for example,
 returns empty `cusip`, `exchange`, `sector`, `industry` and `sic`. The canonical
-REST response also has `famaSector`, which the Apple capture does not. Treat
-that one field as optional.
+REST response also has `famaSector`, which the Apple response does not. That one
+field is optional.
 
 **This tool has no pagination.** It returns every match in one text block, and
 you cannot ask for fewer. Measured sizes:
@@ -92,9 +92,9 @@ you cannot ask for fewer. Measured sizes:
 | `sector` = `Technology`     | 3,950   | 1,701,747 |
 | `exchange` = `NASDAQ`       | 16,234  | 6,913,084 |
 
-The `exchange` call returns 6.9 MB in one response, the largest payload of any
-tool in this server. Never call `mapping` with `exchange`, `sector` or
-`industry` from an agent that keeps the result in its context.
+The `exchange` call returns 6.9 MB in one response. `sector` and `industry`
+return comparable volumes. An agent that keeps the result in its context holds
+all of it.
 
 ## Example
 
@@ -135,7 +135,7 @@ Prompt: "What is Apple's CIK and CUSIP?"
 - Short values are expensive, because the match is a regular expression.
   `name=In` hits every company with those two letters anywhere in its name.
 - Coverage is company reference data. Individuals who file Forms 3, 4 and 5 are
-  not in this list. Use [`edgar-entities`](./edgar-entities.md) for those.
+  not in this list. [`edgar-entities`](./edgar-entities.md) covers those.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

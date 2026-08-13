@@ -16,7 +16,7 @@ Public companies publish a summary compensation table in the proxy statement.
 This tool returns every row sec-api holds for one company, newest fiscal year
 first. One element of the array is one person in one fiscal year.
 
-The capture asked for NVIDIA and got 110 rows in 38,842 bytes. They cover nine
+A request for NVIDIA returns 110 rows in 38,842 bytes. They cover nine
 people across fiscal years 2007 to 2026, about five named executive officers per
 year. The server caps the answer at 200 rows.
 
@@ -44,7 +44,7 @@ Use this tool when you know the company. Use
 
 | Parameter     | Type   | Required | Constraints                    | Notes                                                          |
 | ------------- | ------ | -------- | ------------------------------ | -------------------------------------------------------------- |
-| `cikOrTicker` | string | Yes      | a numeric CIK, or a ticker     | `1045810` and `NVDA` both work. The capture used `NVDA`.       |
+| `cikOrTicker` | string | Yes      | a numeric CIK, or a ticker     | `1045810` and `NVDA` both work. The example uses `NVDA`.       |
 
 The server reads an all-digit value as a CIK and anything else as a ticker. It
 upper-cases the ticker for you, so `nvda` works. Send a CIK without leading
@@ -86,9 +86,9 @@ not missing data.
 
 **This tool has no pagination.** The server pins the query to the first 200
 rows, sorted by `year` descending, and ignores anything else you send. NVIDIA
-returned 110 rows, so the cap was not reached in testing. A company with a long
-history and many officers can hit it. Switch to
-[`compensation`](./compensation.md) and page with `from` when it does.
+returns 110 rows, below the cap. A company with a long history and many
+officers can hit it. Switch to [`compensation`](./compensation.md) and page
+with `from` when it does.
 
 Rows are small. One row is about 350 bytes, so 110 rows cost 39 KB.
 
@@ -100,7 +100,7 @@ Prompt: "Show me NVIDIA's executive pay history."
 { "name": "compensation-by-key", "arguments": { "cikOrTicker": "NVDA" } }
 ```
 
-Two of 110 rows from the capture:
+Two of the 110 rows:
 
 ```json
 [
@@ -131,7 +131,6 @@ Two of 110 rows from the capture:
 - A person's `position` is free text and changes over the years. Group a career
   by `name`, not by `position`.
 - An identifier the server does not hold returns an empty array, not an error.
-  Verified live on 2026-08-13 with a ticker that does not exist.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

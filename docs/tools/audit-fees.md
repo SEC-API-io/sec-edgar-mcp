@@ -18,8 +18,8 @@ the proxy statement, usually a DEF 14A. This tool searches those disclosures.
 
 One row is one filing, not one fee figure. Each row carries a `records[]` array
 with one entry per fiscal year, so a single proxy statement gives you the
-current year and the prior year side by side. The capture asked for NVIDIA and
-got 22 filings, the newest holding fees for 2026 and 2025, both audited by PwC.
+current year and the prior year side by side. A request for NVIDIA returns 22
+filings, the newest holding fees for 2026 and 2025, both audited by PwC.
 
 ## When to use it
 
@@ -47,8 +47,8 @@ got 22 filings, the newest holding fees for 2026 and 2025, both audited by PwC.
 | `size`    | integer | No       | 1 to 50            | Default 50. Above 50 the server returns HTTP 400.            |
 | `sort`    | array   | No       | Elasticsearch sort | Default `[{"filedAt": {"order": "desc"}}]`.                  |
 
-Query fields verified live on 2026-08-13: `entities.ticker`, `entities.cik`,
-`formType`, `records.auditor`, `records.totalFees`.
+Query fields: `entities.ticker`, `entities.cik`, `formType`, `records.auditor`,
+`records.totalFees`.
 
 Note the shape. The company identifiers sit under `entities`, so the ticker
 field is `entities.ticker`, not bare `ticker`. Other tools differ. See
@@ -93,7 +93,7 @@ Prompt: "What has NVIDIA paid its auditor?"
 { "name": "audit-fees", "arguments": { "query": "entities.ticker:NVDA", "size": 1 } }
 ```
 
-Trimmed response from the capture:
+Trimmed response:
 
 ```json
 {

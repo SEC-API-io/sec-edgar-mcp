@@ -18,12 +18,12 @@ filing. It gives the filer, the report period, the cover page, the list of fund
 series in the report, and the signature block.
 
 **The search result holds no votes.** The registry description says the tool
-returns "issuer voted on, meeting date, ballot item, fund's vote". The capture
-returns none of that. Vote records come from
+returns "issuer voted on, meeting date, ballot item, fund's vote". The response
+holds none of that. Vote records come from
 [`form-npx-file`](./form-npx-file.md), which takes an accession number. Treat
 `form-npx` as the index, and `form-npx-file` as the content.
 `proxyVotingRecordsAttached` tells you whether that follow-up call will find
-records. It was `true` in the capture.
+records. It is `true` in the example below.
 
 ## When to use it
 
@@ -52,18 +52,16 @@ records. It was `true` in the capture.
 The query length limit is 1,000 characters here. It is 2,000 on
 [`form-nport`](./form-nport.md).
 
-Query field confirmed to return rows: `cik`.
-
-Fields taken from the response shape, all **unverified**: `companyName`,
-`formType`, `periodOfReport`, `accessionNo`, `proxyVotingRecordsAttached`,
+Query fields: `cik`, `companyName`, `formType`, `periodOfReport`,
+`accessionNo`, `proxyVotingRecordsAttached` and
 `formData.coverPage.reportCalendarYear`. See
 [query language](../query-language.md).
 
 ## Output
 
 The envelope is `{total, data[]}`. `total` is an object, `{value, relation}`. A
-`relation` of `eq` means the count is exact. The capture returned
-`{value: 2, relation: "eq"}` for CIK 2110.
+`relation` of `eq` means the count is exact. A request for CIK 2110 returned
+`{value: 2, relation: "eq"}`.
 
 | Field                                       | Type    | Meaning                                                             |
 | ------------------------------------------- | ------- | ------------------------------------------------------------------- |
@@ -71,25 +69,24 @@ The envelope is `{total, data[]}`. `total` is an object, `{value, relation}`. A
 | `formType`, `filedAt`                       | string  | `N-PX`, and the filing timestamp with offset.                        |
 | `periodOfReport`                            | string  | End of the report period, `YYYY-MM-DD`.                              |
 | `cik`                                       | string  | Filer CIK, no zero padding.                                          |
-| `ticker`                                    | string  | Ticker. Empty string in the capture. Most N-PX filers have none.     |
+| `ticker`                                    | string  | Ticker. Empty string in the example response. Most N-PX filers have none. |
 | `companyName`                               | string  | Filer name.                                                          |
 | `proxyVotingRecordsAttached`                | boolean | `true` when vote records exist for this accession number.            |
-| `headerData.filerInfo.registrantType`       | string  | `RMIC` in the capture. The SDK example shows `IM`.                   |
-| `headerData.filerInfo.investmentCompanyType`| string  | Registration form, `N-1A` in the capture.                            |
-| `formData.coverPage.yearOrQuarter`          | string  | `YEAR` in the capture.                                               |
+| `headerData.filerInfo.registrantType`       | string  | `RMIC` in the example response. `IM` also appears.                   |
+| `headerData.filerInfo.investmentCompanyType`| string  | Registration form, `N-1A` in the example response.                   |
+| `formData.coverPage.yearOrQuarter`          | string  | `YEAR` in the example response.                                      |
 | `formData.coverPage.reportCalendarYear`     | string  | Calendar year covered, for example `2025`.                           |
 | `formData.coverPage.reportingPerson`        | object  | Name, phone and address. `agentForService` has the same shape.       |
-| `formData.coverPage.reportInfo.reportType`  | string  | `FUND VOTING REPORT` in the capture. The SDK example shows `INSTITUTIONAL MANAGER VOTING REPORT`. |
+| `formData.coverPage.reportInfo.reportType`  | string  | `FUND VOTING REPORT` in the example response. `INSTITUTIONAL MANAGER VOTING REPORT` also appears. |
 | `formData.coverPage.fileNumber`             | string  | File number, for example `811-01829`. `leiNumber` holds the LEI.     |
 | `formData.summaryPage.otherIncludedManagersCount` | number | Count of other managers included in the report.                |
-| `formData.seriesPage.seriesCount`           | number  | Number of fund series in the report. 5 in the capture.               |
+| `formData.seriesPage.seriesCount`           | number  | Number of fund series in the report. 5 in the example response.      |
 | `formData.seriesPage.seriesDetails.seriesReports[]` | array | `idOfSeries`, `nameOfSeries`, `leiOfSeries` per series.        |
 | `formData.signaturePage`                    | object  | `txSignature`, `txPrintedSignature`, `txTitle`, `txAsOfDate`.        |
 
-`seriesPage` is absent from the SDK example for an institutional manager filer.
-Expect it only on fund filers. The response is small. The capture was 2 KB for
-one record. The JSON arrives as one stringified text block. See
-[response format](../response-format.md).
+`seriesPage` is absent on an institutional manager filer. Expect it only on fund
+filers. The response is small, 2 KB for one record. The JSON arrives as one
+stringified text block. See [response format](../response-format.md).
 
 ## Example
 

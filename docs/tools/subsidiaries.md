@@ -46,7 +46,7 @@ subsidiaries.
 | `size`    | integer | no       | 1 to 50, default 50               | Above 50 the server returns an error.                        |
 | `sort`    | array   | no       | Elasticsearch sort clause         | Default `[{"filedAt":{"order":"desc"}}]`.                    |
 
-Query fields confirmed to return rows:
+Query fields:
 
 | Field                        | Example                                  |
 | ---------------------------- | ---------------------------------------- |

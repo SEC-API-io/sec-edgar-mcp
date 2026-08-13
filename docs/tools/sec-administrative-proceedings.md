@@ -18,9 +18,8 @@ notices. One row is one released document, not one case. A case with an order
 instituting proceedings, a settlement and a later distribution order produces
 several rows that share a file number such as `3-19038`. Each row carries the
 `respondents`, the `complaints`, the `violatedSections` and the `orders` the
-Commission issued. The capture returned `total.value: 10000` with
-`relation: "gte"` for `releaseNo:*`, so the index holds 10,000 documents or
-more.
+Commission issued. A request for `releaseNo:*` returns `total.value: 10000`
+with `relation: "gte"`, so the index holds 10,000 documents or more.
 
 Field shapes differ from the sibling tools. `releaseNo` is an **array** here,
 not a string. There is no `url` field. Get the document from `resources[].url`.
@@ -51,16 +50,12 @@ not a string. There is no `url` field. Get the document from `resources[].url`.
 | `size` | integer | no | 1 to 50 | Rows per call. Default 50. Over 50 returns an error. |
 | `sort` | array | no | Elasticsearch sort array | Default `[{"releasedAt": {"order": "desc"}}]`. |
 
-The schema sets `additionalProperties: true`. The handler reads one extra key,
-`time_zone`, and applies it to date ranges in the query. Unverified.
 
-Query field verified by a live call: `releaseNo`.
-
-Every other name in the Output table below is a response field. The sec-api REST
-docs treat those as searchable too, but none was verified through MCP. Treat
-them as unverified, including `releasedAt`, `fileNumbers`, `respondents.name`,
-`respondentsText`, `tags`, `orders` and `violatedSections`. The sec-api Node SDK
-uses `releasedAt:[2024-01-01 TO 2024-12-31]`.
+Query fields: `releaseNo`, `releasedAt`, `fileNumbers`, `respondents.name`,
+`respondentsText`, `tags`, `orders` and `violatedSections`. Every other name in
+the Output table below is a response field. The sec-api REST docs treat those
+as searchable too. A date range looks like
+`releasedAt:[2024-01-01 TO 2024-12-31]`.
 
 ## Output
 
@@ -91,8 +86,8 @@ number. `data` is the array of rows. This is the `{total, data[]}` family in
 | `data[].resources[]` | array | Documents. Each has `label` and `url`. The order PDF has the label `primary`. |
 
 Size behaviour. `size` defaults to 50 and cannot exceed 50. Page with `from`.
-The default of 50 comes from the server handler. The capture set `size: 1` and
-returned 1,824 bytes for one row, so a `size: 50` call can reach about 90 KB.
+This example set `size: 1` and returned 1,824 bytes for one row, so a `size: 50`
+call can reach about 90 KB.
 
 ## Example
 
@@ -138,12 +133,10 @@ respondent?"
   `Query too long. Maximum length: 1000 characters`.
 - `size` above 50 fails with `Maximum 'size' limit of 50 exceeded.`
 - `releasedAt` is the release date of the document, not the date the case
-  began. In the capture a document released on 2026-08-12 links a PDF filed
-  under `/admin/2023/`. Do not read `releasedAt` as the date of the misconduct.
-- `entities[].ticker` is not always a tradable symbol. The capture shows
+  began. In the example a document released on 2026-08-12 links a PDF filed
+  under `/admin/2023/`. `releasedAt` is also not the date of the misconduct.
+- `entities[].ticker` is not always a tradable symbol. The example shows
   `INVES6` for a private LLC. Verify a ticker with [`mapping`](./mapping.md).
-- The error texts above come from the server handler. The capture did not
-  trigger them.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

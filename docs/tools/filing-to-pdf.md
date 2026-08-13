@@ -2,12 +2,12 @@
 
 Fetch any SEC EDGAR filing or exhibit and return it as a rendered PDF.
 
-|                 |                                                   |
-| --------------- | ------------------------------------------------- |
-| Category        | Filings and documents                             |
-| Required input  | `url`                                             |
-| Returns         | raw PDF bytes in one text block, no JSON envelope |
-| Pagination      | **None.** No `from`, `size` or `sort`.                                              |
+|                 |                                                    |
+| --------------- | -------------------------------------------------- |
+| Category        | Filings and documents                              |
+| Required input  | `url`                                              |
+| Returns         | raw PDF bytes in one text block, no JSON envelope  |
+| Pagination      | **None.** No `from`, `size` or `sort`.             |
 | REST equivalent | `GET /filing-reader?type=pdf&url=<EDGAR file URL>` |
 
 > **Warning.** The PDF comes back inside an MCP `text` content block, not as a
@@ -18,7 +18,7 @@ Fetch any SEC EDGAR filing or exhibit and return it as a rendered PDF.
 ## What it does
 
 The server renders the EDGAR file at `url` with headless Chrome and returns the
-generated PDF. The capture shows `/Producer (Skia/PDF m142)` and a
+generated PDF. The output carries `/Producer (Skia/PDF m142)` and a
 `HeadlessChrome/142.0.0.0` creator string, so the PDF is generated, not stored
 by the SEC. Rendered PDFs are cached. The `url` must start with
 `https://www.sec.gov/`. Any EDGAR document works: a primary 10-K, 10-Q or 8-K,
@@ -32,21 +32,21 @@ or an exhibit such as EX-21 or EX-99.
 
 ## When to use a different tool
 
-| Situation | Better tool | Why |
-| --------- | ----------- | --- |
-| An agent has to read the content | [`extractor`](./extractor.md) | Returns clean text. A PDF byte stream is useless to a language model. |
-| You want the file as the SEC holds it | [`get-edgar-file`](./get-edgar-file.md) | Returns the original HTML, XML or text source. |
-| You want the numbers | [`xbrl-to-json`](./xbrl-to-json.md) | Returns parsed financial statements. |
-| You do not know the file URL yet | [`filing-search`](./filing-search.md) | Returns `linkToFilingDetails` and the document URLs. |
+| Situation                             | Better tool                             | Why                                                                   |
+| ------------------------------------- | --------------------------------------- | --------------------------------------------------------------------- |
+| An agent has to read the content      | [`extractor`](./extractor.md)           | Returns clean text. A PDF byte stream is useless to a language model. |
+| You want the file as the SEC holds it | [`get-edgar-file`](./get-edgar-file.md) | Returns the original HTML, XML or text source.                        |
+| You want the numbers                  | [`xbrl-to-json`](./xbrl-to-json.md)     | Returns parsed financial statements.                                  |
+| You do not know the file URL yet      | [`filing-search`](./filing-search.md)   | Returns `linkToFilingDetails` and the document URLs.                  |
 
 ## Input
 
-| Parameter | Type | Required | Constraints | Notes |
-| --------- | ---- | -------- | ----------- | ----- |
-| `url` | string | yes | `format: uri`. Must match `https://www.sec.gov/...` | The EDGAR file URL of the filing or exhibit. |
+| Parameter | Type   | Required | Constraints                                         | Notes                                        |
+| --------- | ------ | -------- | --------------------------------------------------- | -------------------------------------------- |
+| `url`     | string | yes      | `format: uri`. Must match `https://www.sec.gov/...` | The EDGAR file URL of the filing or exhibit. |
 
 The schema sets `additionalProperties: true`, so other keys are accepted and
-passed through. No other key is documented or verified through MCP.
+passed through. No other key is documented.
 
 This tool takes no `query`, so there are no Lucene fields.
 
@@ -55,12 +55,12 @@ This tool takes no `query`, so there are no Lucene fields.
 One MCP `text` content block. There is no JSON envelope. There is no `total`,
 no `data[]`, and no metadata of any kind. The block is the PDF file itself.
 
-| Detail | Observed value |
-| ------ | -------------- |
-| First line | `%PDF-1.4` |
-| Block size in the capture | 68,147 bytes for Apple's EX-21.1 exhibit |
-| Encoding | PDF bytes decoded as UTF-8, so binary sections are lossy |
-| Content type declared | none. The MCP block is typed `text` |
+| Detail                | Value                                                    |
+| --------------------- | -------------------------------------------------------- |
+| First line            | `%PDF-1.4`                                               |
+| Block size            | 68,147 bytes for Apple's EX-21.1 exhibit                 |
+| Encoding              | PDF bytes decoded as UTF-8, so binary sections are lossy |
+| Content type declared | none. The MCP block is typed `text`                      |
 
 **This tool has no pagination.** There is no `from`, no `size`, and no `sort`.
 You get the whole PDF or nothing. Size follows the source document. The Apple
@@ -97,16 +97,14 @@ endobj
 ```
 
 The second line of the real response is a binary marker and is omitted above.
-Everything else is verbatim from the capture.
+Everything else is verbatim from the response.
 
 ## Limits and errors
 
 - A `url` that is not on `www.sec.gov` returns HTTP 404 with `Invalid filing
-  URL`.
-- If the PDF is not in the cache, the REST handler answers HTTP 202 with
-  `Cache miss: PDF generation started. Retry in 5 seconds.` This comes from the
-  server source. The capture hit a warm cache, so the message is not verified
-  through MCP.
+URL`.
+- If the PDF is not in the cache, the REST route answers HTTP 202 with
+  `Cache miss: PDF generation started. Retry in 5 seconds.`
 - Every call is billed on response size. A 10 MB PDF costs 10 MB of bandwidth.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 

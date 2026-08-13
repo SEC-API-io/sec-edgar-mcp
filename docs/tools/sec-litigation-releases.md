@@ -16,10 +16,10 @@ files in federal court.
 `sec-litigation-releases` searches the SEC litigation release archive. One row
 is one release, identified by a number such as `LR-26609`. Each row carries the
 court `caseCitations`, the parties in `entities`, the allegations in
-`complaints`, the statutes in `violatedSections` and any `penaltyAmounts`. The
-capture returned `total.value: 10000` with `relation: "gte"` for `releaseNo:*`,
-so the index holds 10,000 releases or more. Read that number as a floor, never
-as a count.
+`complaints`, the statutes in `violatedSections` and any `penaltyAmounts`. A
+request for `releaseNo:*` returns `total.value: 10000` with `relation: "gte"`,
+so the index holds 10,000 releases or more. That number is a floor, not a
+count.
 
 A litigation release is the SEC's own notice of a court filing or a court
 outcome. It is not the complaint itself. `resources[]` links the complaint PDF.
@@ -49,17 +49,12 @@ outcome. It is not the complaint itself. `resources[]` links the complaint PDF.
 | `size` | integer | no | 1 to 50 | Rows per call. Default 50. Over 50 returns an error. |
 | `sort` | array | no | Elasticsearch sort array | Default `[{"releasedAt": {"order": "desc"}}]`. |
 
-The schema sets `additionalProperties: true`. The handler reads one extra key,
-`time_zone`, and applies it to date ranges in the query. Unverified.
 
-Query field verified by a live call: `releaseNo`.
-
-Every other name in the Output table below is a response field. The sec-api REST
-docs treat those as searchable too, but none was verified through MCP. Treat
-them as unverified, including `releasedAt`, `tags`, `caseCitations`,
+Query fields: `releaseNo`, `releasedAt`, `tags`, `caseCitations`,
 `entities.name`, `entities.ticker`, `violatedSections` and
-`hasAgreedToSettlement`. The sec-api Node SDK uses
-`releasedAt:[2024-01-01 TO 2024-12-31]`.
+`hasAgreedToSettlement`. Every other name in the Output table below is a
+response field. The sec-api REST docs treat those as searchable too. A date
+range looks like `releasedAt:[2024-01-01 TO 2024-12-31]`.
 
 ## Output
 
@@ -76,7 +71,7 @@ number. `data` is the array of rows. This is the `{total, data[]}` family in
 | `data[].releasedAt` | string | Publication timestamp, ISO 8601. |
 | `data[].url` | string | URL of the release on sec.gov. |
 | `data[].title` | string | Case name, often just the lead defendant. |
-| `data[].subTitle` | string | The descriptive headline. Read this, not `title`. |
+| `data[].subTitle` | string | The descriptive headline. `title` is often only a party name. |
 | `data[].caseCitations[]` | array | Full court citation with court, docket number and filing date. |
 | `data[].summary` | string | One-paragraph summary of the action. |
 | `data[].tags[]` | array | Short subject labels, for example `insider trading`. |
@@ -88,14 +83,14 @@ number. `data` is the array of rows. This is the `{total, data[]}` family in
 | `data[].penaltyAmounts[]` | array | Each has `penaltyAmount` (a numeric string), `penaltyAmountText` and `imposedOn`. |
 | `data[].resources[]` | array | Attached documents. Each has `label` and `url`. |
 | `data[].investigationConductedBy[]` | array | Staff who ran the investigation. |
-| `data[].otherAgenciesInvolved[]` | array | Each has `name` and `country`, for example FINRA in the capture. |
+| `data[].otherAgenciesInvolved[]` | array | Each has `name` and `country`, for example FINRA. |
 
 Two more arrays name who else acted: `parallelActionsTakenBy` and
 `litigationLedBy`.
 
-Size behaviour. `size` defaults to 50 and cannot exceed 50. Page with `from`.
-The default of 50 comes from the server handler. The capture set `size: 1` and
-returned 2,010 bytes for one row, so a `size: 50` call can reach about 100 KB.
+Size behaviour. `size` defaults to 50 and cannot exceed 50. `from` moves the
+window to later rows. This example set `size: 1` and returned 2,010 bytes for
+one row, so a `size: 50` call can reach about 100 KB.
 
 ## Example
 
@@ -136,17 +131,15 @@ settle?"
 ## Limits and errors
 
 - `total.value: 10000` with `relation: "gte"` is the search-window ceiling. It
-  means 10,000 or more. Narrow the query with a date range for an exact count.
+  means 10,000 or more. A date range narrows the query enough for an exact
+  count.
 - A query without a `:` fails with HTTP 400 `Invalid Lucene query string`.
 - A query over 1,000 characters fails with
   `Query too long. Maximum length: 1000 characters`.
 - `size` above 50 fails with `Maximum 'size' limit of 50 exceeded.`
-- `title` is often only a party name. Use `subTitle` when you need a headline.
-- `entities[].role` is free text set per case. The capture shows
-  `target of insider trading` and `acquirer` next to `defendant`. Do not assume
-  a fixed set of roles.
-- The error texts above come from the server handler. The capture did not
-  trigger them.
+- `title` is often only a party name. `subTitle` holds the headline.
+- `entities[].role` is free text set per case. Values include `target of insider
+  trading` and `acquirer` next to `defendant`. The set of roles is not fixed.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

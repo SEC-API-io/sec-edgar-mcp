@@ -47,8 +47,8 @@ form of the same document is 70 KB.
 | `aaerNo` | string | yes | Pattern `aaer-<1 to 5 digits>`, case insensitive, max 15 characters | Example: `AAER-4597`. Comes from `aaers` → `data[].aaerNo`. |
 | `fileTypeAndName` | string | yes | Must contain a hyphen, max 500 characters | `<type>-<file name>`. Build it from `urls[]`. Example: `primary-33-11432.pdf`. |
 
-The constraints come from the server handler, not from the input schema. The
-schema declares both parameters as plain strings.
+The schema declares both parameters as plain strings. The server enforces the
+constraints above.
 
 Build `fileTypeAndName` like this, from one entry of `urls[]` in the `aaers`
 result:
@@ -62,7 +62,7 @@ result:
    extension in the URL but are stored as HTML.
 5. Add `.txt` to the whole value to get plain text instead of the raw file.
 
-Verified on AAER-4452: `primary-34-98243.pdf` returns a 199 KB PDF,
+On AAER-4452, `primary-34-98243.pdf` returns a 199 KB PDF,
 `primary-34-98243.pdf.txt` returns 29 KB of text, and
 `administrative summary-34-98243-s.html.txt` returns 3 KB of text.
 
@@ -77,7 +77,7 @@ so ask for the `.txt` form unless you need the raw file. See
 [response format](../response-format.md).
 
 There is **no** envelope, no `total` and no `data[]`. There is also **no
-pagination**. The whole file arrives in one response. The captured PDF was
+pagination**. The whole file arrives in one response. The example PDF was
 159 KB.
 
 ## Example
@@ -96,7 +96,7 @@ That gives `primary` plus `33-11432.pdf`, so the call is:
 { "name": "aaer-file", "arguments": { "aaerNo": "AAER-4597", "fileTypeAndName": "primary-33-11432.pdf" } }
 ```
 
-The captured response is the raw PDF, 159 KB, in one text block. It starts:
+The response is the raw PDF, 159 KB, in one text block. It starts:
 
 ```text
 %PDF-1.6

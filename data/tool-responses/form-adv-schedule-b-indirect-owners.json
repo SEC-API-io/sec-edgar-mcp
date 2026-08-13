@@ -1,13 +1,25 @@
 {
   "tool": "form-adv-schedule-b-indirect-owners",
   "request": {
-    "crd": "344073"
+    "crd": "149777"
   },
   "httpStatus": 200,
   "isError": false,
-  "durationMs": 142,
-  "rawBytes": 2,
+  "durationMs": 140,
+  "rawBytes": 224,
   "truncated": false,
-  "text": "[]",
-  "data": []
+  "text": "[{\"name\":\"MORGAN STANLEY\",\"ownerType\":\"DE\",\"entityOwned\":\"MORGAN STANLEY CAPITAL MANAGEMENT LLC\",\"status\":\"MEMBER\",\"dateStatusAcquired\":\"2002-10\",\"ownershipCode\":\"E\",\"isControlPerson\":true,\"isPublicReporting\":true,\"crd\":\"\"}]",
+  "data": [
+    {
+      "name": "MORGAN STANLEY",
+      "ownerType": "DE",
+      "entityOwned": "MORGAN STANLEY CAPITAL MANAGEMENT LLC",
+      "status": "MEMBER",
+      "dateStatusAcquired": "2002-10",
+      "ownershipCode": "E",
+      "isControlPerson": true,
+      "isPublicReporting": true,
+      "crd": ""
+    }
+  ]
 }

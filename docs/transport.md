@@ -193,7 +193,7 @@ sits inside the result, as `isError: true` plus one text block:
 {"result":{"content":[{"type":"text","text":"sec-api error: Invalid parameter. Valid parameters are: cik, cusip, ticker, name, exchange, sic, sector, industry."}],"isError":true},"jsonrpc":"2.0","id":3}
 ```
 
-Never test for HTTP status alone. Always read `isError`. The full error
+The HTTP status alone does not show a tool error. `isError` does. The full error
 catalogue is in [limits and errors](./limits-and-errors.md).
 
 ### initialize, and proof that there is no session
@@ -324,9 +324,9 @@ Why this is easy to allow, and what to watch:
 - **Explicit proxy for the bridge.** `mcp-remote` ignores `HTTPS_PROXY` unless
   you add `--enable-proxy`. With that flag it reads `HTTP_PROXY`, `HTTPS_PROXY`
   and `NO_PROXY` from the environment.
-- **Do not strip the query string.** Some gateways log or rewrite URLs. If yours
-  drops query parameters, the `?apiKey=` form fails. Move the key into the
-  `Authorization` header.
+- **A stripped query string breaks the key.** Some gateways log or rewrite
+  URLs. If yours drops query parameters, the `?apiKey=` form fails. Move the
+  key into the `Authorization` header.
 - **Browser clients.** The endpoint sends `Access-Control-Allow-Origin: *` and
   answers CORS preflight requests, so a browser-based client can call it
   directly. Never ship your key to a browser. Proxy the call through your own

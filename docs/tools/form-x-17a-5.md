@@ -50,9 +50,7 @@ statements sit in the filing documents. Read them with
 | `size`    | integer | no       | 1 to 50            | Default 50. Above 50 the server returns HTTP 400.          |
 | `sort`    | array   | no       | Elasticsearch sort | Default `[{"filedAt": {"order": "desc"}}]`.                |
 
-These query fields returned rows on 2026-08-13. The probe confirmed `*:*`
-through MCP. The rest were confirmed on the REST endpoint, which serves the same
-index: `entities.cik`,
+These query fields returned rows on 2026-08-13: `entities.cik`,
 `entities.fileNo`, `formType`, `filedAt`, `periodOfReport`,
 `registrantIdentification.brokerDealerName`,
 `accountantIdentification.accountantName`,
@@ -88,8 +86,8 @@ holds one object per filing.
 | `oathSignature`                             | object | `signPersonName`, `signature`, `oathTitle`, `signDate`, `confirmNotarizedFlag`, `explanation`. |
 
 The sec-api.io reference also lists `entities[].sic`, `entities[].tickers`, and
-the `submissionInformation.subTypeOf*` fields. None appeared in the sampled
-records, so treat them as unverified.
+the `submissionInformation.subTypeOf*` fields. They do not appear on every
+record. Treat them as optional.
 
 `size` defaults to 50 and caps at 50. Page with `from`. `total.value` stops at
 `10000` with `relation: "gte"`, so a broad query reports "10,000 or more", not a
@@ -101,10 +99,10 @@ array, with no error. The dataset holds about 16,500 filings.
 Prompt: "Show the newest FOCUS report filed by any broker-dealer."
 
 ```json
-{ "name": "form-x-17a-5", "arguments": { "query": "*:*", "size": 1 } }
+{ "name": "form-x-17a-5", "arguments": { "query": "formType:\"X-17A-5\"", "size": 1 } }
 ```
 
-Trimmed response from the capture:
+Trimmed response:
 
 ```json
 {

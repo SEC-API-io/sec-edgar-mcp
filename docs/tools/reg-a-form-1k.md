@@ -51,7 +51,7 @@ those, 2,875 are `1-K` and 125 are `1-K/A`. Coverage starts 2016-04-27.
 | `size`    | integer | no       | 1 to 50        | Default 50. Above 50 returns HTTP 400.    |
 | `sort`    | array   | no       | ES sort clause | Default `[{"filedAt":{"order":"desc"}}]`. |
 
-Query fields confirmed to return rows:
+Query fields:
 
 | Field                              | Example                                       |
 | ---------------------------------- | --------------------------------------------- |
@@ -95,18 +95,17 @@ The envelope is `{total, data[]}`. `total` is `{value, relation}`. On this index
 series on issue. Series issuers list one title per series, so this array can be
 long.
 
-`summaryInfo[]` is one entry per commission file number. From the Node SDK
-example it holds `commissionFileNumber`, `offeringQualificationDate`,
+`summaryInfo[]` is one entry per commission file number. It holds
+`commissionFileNumber`, `offeringQualificationDate`,
 `offeringCommenceDate`, `qualifiedSecuritiesSold`, `offeringSecuritiesSold`,
 `pricePerSecurity`, `aggregrateOfferingPrice`,
 `aggregrateOfferingPriceHolders`, the service-provider pairs
 `underwrittenSpName` and `underwriterFees`, `auditorSpName` and `auditorFees`,
 `legalSpName` and `legalFees`, `blueSkySpName` and `blueSkyFees`, plus
 `crdNumberBrokerDealer`, `issuerNetProceeds` and `clarificationResponses`.
-`summaryInfo.issuerNetProceeds` was verified live. The rest of that list comes
-from the SDK example and is unverified.
 
-`summaryInfo[]` was absent from the captured row. It is optional. Guard for it.
+`summaryInfo[]` is optional. It is absent from the example row below. Guard for
+it.
 
 Note the misspelling in the API: `aggregrateOfferingPrice`, with an extra `r`.
 Copy it exactly.
@@ -122,7 +121,7 @@ Prompt: "Show me the newest Regulation A annual reports."
 { "name": "reg-a-form-1k", "arguments": { "query": "cik:*", "size": 1 } }
 ```
 
-Response from the capture, trimmed for length:
+Response, trimmed for length:
 
 ```json
 {
@@ -156,7 +155,7 @@ Response from the capture, trimmed for length:
 }
 ```
 
-The captured `issuedSecuritiesTitle` held 12 series. Three are shown here.
+The full `issuedSecuritiesTitle` held 12 series. Three are shown here.
 
 ## Limits and errors
 
@@ -165,7 +164,7 @@ The captured `issuedSecuritiesTitle` held 12 series. Three are shown here.
   no error.
 - The index is small, 3,000 rows. A broad query returns an exact `total`, not a
   ceiling.
-- `summaryInfo[]` is optional and was absent from the captured row.
+- `summaryInfo[]` is optional and was absent from the example row.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

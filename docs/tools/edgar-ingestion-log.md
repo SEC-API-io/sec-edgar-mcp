@@ -16,8 +16,8 @@ This tool reports the ingestion pipeline, not EDGAR itself. One row is one
 filing that sec-api pulled in on the day you asked for. Each row holds the
 accession number, the form type, and the time EDGAR published the filing.
 
-Coverage starts on 2025-12-02. Earlier dates return an error. The capture asked
-for 2025-12-15 and got 2,818 rows in 265,912 bytes.
+Coverage starts on 2025-12-02. Earlier dates return an error. A request for
+2025-12-15 returned 2,818 rows in 265,912 bytes.
 
 The day is the ingestion day, not the filing day. 169 of those 2,818 rows carry
 a `filedAt` of 2025-12-12, a Friday. The pipeline picked them up on the Monday.
@@ -68,12 +68,12 @@ not a number.
 | `data[].filedAt`     | string | When EDGAR published the filing. ISO 8601 with an offset.               |
 
 Rows come back newest ingestion first. They are **not** sorted by `filedAt`. Two
-neighbouring rows in the capture read 21:55:06 and then 21:55:07. Sort the array
+neighbouring rows in this response read 21:55:06 and then 21:55:07. Sort the array
 yourself if you need filing order.
 
 The timestamps carry a `-05:00` offset and run to 21:56 in the 2025-12-15 log.
 The day boundary follows Eastern time. The registry description calls it a UTC
-calendar day. Trust the capture.
+calendar day. Trust the data.
 
 **This tool has no pagination.** One call returns the whole day. A busy weekday
 runs to about 2,800 rows and 260 KB. Budget the context before you call it,
@@ -87,7 +87,7 @@ Prompt: "Which filings did sec-api ingest on 15 December 2025?"
 { "name": "edgar-ingestion-log", "arguments": { "date": "2025-12-15" } }
 ```
 
-Trimmed response from the capture:
+Trimmed response:
 
 ```json
 {
@@ -112,7 +112,7 @@ Six of 2,818 rows are shown. That day's mix was 741 Form 4 filings, 301 424B2,
 - A date before 2025-12-02 returns
   `Data for the requested date is only available from December 1, 2025 onwards.`
   The message names December 1, but the server compares with a strict "later
-  than", so 2025-12-01 fails too. Verified live on 2026-08-13.
+  than", so 2025-12-01 fails too.
 - A date in any other shape returns
   `Invalid date provided. Use YYYY-MM-DD format.`
 - A date with no log file returns `Log file not found for the specified date.`

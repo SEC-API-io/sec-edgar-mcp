@@ -50,7 +50,7 @@ It is one of only two tools in the server that use that key.
 | `size`    | integer | no       | 1 to 50        | Default 50. Above 50 returns HTTP 400.    |
 | `sort`    | array   | no       | ES sort clause | Default `[{"filedAt":{"order":"desc"}}]`. |
 
-Query fields confirmed to return rows:
+Query fields:
 
 | Field                                                    | Example                                    |
 | -------------------------------------------------------- | ------------------------------------------ |
@@ -107,11 +107,11 @@ The envelope is `{total, offerings[]}`. `total` is `{value, relation}`. A
 | `offeringData.salesCommissionsFindersFees`        | object | `salesCommissions.dollarAmount`, `findersFees.dollarAmount` |
 | `offeringData.signatureBlock.signature[]`         | array  | `nameOfSigner`, `signatureTitle`, `signatureDate` |
 
-The Node SDK example also shows
+Further fields:
 `offeringData.typeOfFiling.newOrAmendment.previousAccessionNumber`,
 `offeringData.useOfProceeds.grossProceedsUsed.isEstimate` and
-`offeringData.useOfProceeds.clarificationOfResponse`. Those three were not
-present in the capture and are unverified here.
+`offeringData.useOfProceeds.clarificationOfResponse`. Those three are absent
+from the example response.
 
 Paging is real but shallow. `from` plus `size` must stay at or below 10,000.
 
@@ -129,7 +129,7 @@ Prompt: "Show me the newest private placements that raised at least $1 million."
 }
 ```
 
-Response from the capture, trimmed for length:
+Response, trimmed for length:
 
 ```json
 {

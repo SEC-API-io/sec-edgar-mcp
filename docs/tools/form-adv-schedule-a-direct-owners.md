@@ -59,7 +59,7 @@ object. An adviser with nothing to report returns `[]`.
 | `ownerType`               | string  | `I` individual, `DE` domestic entity, `FE` foreign entity.       |
 | `titleStatus`             | string  | Title or status held, for example `SHAREHOLDER` or `EXECUTIVE VICE PRESIDENT & DIRECTOR`. |
 | `dateTitleStatusAcquired` | string  | `YYYY-MM`. Month the title or stake began.                       |
-| `ownershipCode`           | string  | Form ADV ownership band as a letter. `NA` and `E` appear in live data. The API returns the letter only, never a percentage. |
+| `ownershipCode`           | string  | Form ADV ownership band as a letter. `NA` and `E` appear in the data. The API returns the letter only, never a percentage. |
 | `isControlPerson`         | boolean | True when the person controls the adviser.                        |
 | `isPublicReporting`       | boolean | True when the owner is a public reporting company.                |
 | `crd`                     | string  | The owner's own CRD number. Empty string when it has none.        |
@@ -69,28 +69,42 @@ Stifel Nicolaus, CRD 793, returned 14 rows and about 3 KB on 2026-08-13.
 
 ## Example
 
-Prompt: "Who directly owns adviser CRD 344073?"
+Prompt: "Who directly owns adviser CRD 149777?"
 
 ```json
-{ "name": "form-adv-schedule-a-direct-owners", "arguments": { "crd": "344073" } }
+{ "name": "form-adv-schedule-a-direct-owners", "arguments": { "crd": "149777" } }
 ```
 
-The full response from the capture:
+Morgan Stanley Smith Barney, CRD 149777, returned 10 rows. The first two rows:
 
 ```json
 [
   {
-    "name": "GRAVES, DAVID GAVIN",
+    "name": "HANSEN, TIMOTHY GERARD",
     "ownerType": "I",
-    "titleStatus": "DIRECTOR",
-    "dateTitleStatusAcquired": "2026-07",
-    "ownershipCode": "E",
+    "titleStatus": "CHIEF COMPLIANCE OFFICER (IA ONLY )",
+    "dateTitleStatusAcquired": "2011-03",
+    "ownershipCode": "NA",
     "isControlPerson": true,
     "isPublicReporting": false,
-    "crd": "8326994"
+    "crd": "4956475"
+  },
+  {
+    "name": "FINN, JED",
+    "ownerType": "I",
+    "titleStatus": "DIRECTOR, CHAIRMAN, PRESIDENT AND CHIEF EXECUTIVE OFFICER",
+    "dateTitleStatusAcquired": "2024-01",
+    "ownershipCode": "NA",
+    "isControlPerson": true,
+    "isPublicReporting": false,
+    "crd": "5658048"
   }
 ]
 ```
+
+Eight rows were removed to fit. The values shown are unchanged. The only entity
+owner in the full list is `MORGAN STANLEY CAPITAL MANAGEMENT, LLC`, with
+ownership code `E`.
 
 ## Limits and errors
 

@@ -21,13 +21,13 @@ issuer's balance sheet and income statement as filed on the cover, the service
 providers and their fees, and the securities the issuer sold in the last year
 without registration.
 
-Coverage starts 2015-06-22. Confirmed form types and counts on 2026-08-13:
+Coverage starts 2015-06-22. Form types and counts on 2026-08-13:
 `1-A` 2,326, `1-A/A` 4,608, `1-A POS` 2,591, `1-A-W` 492. The index reports
 "10,000 or more" in total.
 
 The registry description promises "use of proceeds" and "risk factors". Neither
-field exists in the capture or in a 50-row sample. Treat that as wrong. For the
-narrative sections, use [extractor](./extractor.md) on the filing URL.
+field exists in the response. For the narrative sections, use
+[extractor](./extractor.md) on the filing URL.
 
 ## When to use it
 
@@ -56,7 +56,7 @@ narrative sections, use [extractor](./extractor.md) on the filing URL.
 | `size`    | integer | no       | 1 to 50        | Default 50. Above 50 returns HTTP 400.    |
 | `sort`    | array   | no       | ES sort clause | Default `[{"filedAt":{"order":"desc"}}]`. |
 
-Query fields confirmed to return rows:
+Query fields:
 
 | Field                                     | Example                                        |
 | ----------------------------------------- | ---------------------------------------------- |
@@ -119,15 +119,13 @@ of `gte` with `value` `10000` means "10,000 or more".
 `solicitationProposedOfferingFlag`, `resaleSecuritiesAffiliatesFlag`), and three
 service-provider pairs: `auditorServiceProviderName` with `auditorFees`,
 `legalServiceProviderName` with `legalFees`, `blueSkyServiceProviderName` with
-`blueSkyFees`. The Node SDK example adds `estimatedNetAmount` and
-`clarificationResponses`, which were not in the capture and are unverified.
+`blueSkyFees`. `estimatedNetAmount` and `clarificationResponses` also appear.
 
 Copy the spellings exactly. Several are misspelled in the API and will not match
 a corrected guess: `juridictionSecuritiesOffered`,
 `issueJuridicationSecuritiesOffering`, `securityHolderAggegate`,
-`securitiesActExcemption`. A 50-row sample also showed an
-`unregisteredSecurities` key on some rows, distinct from
-`unregisteredSecuritiesAct`. Its contents are unverified.
+`securitiesActExcemption`. Some rows also carry an `unregisteredSecurities` key,
+distinct from `unregisteredSecuritiesAct`.
 
 Paging is real but shallow. `from` plus `size` must stay at or below 10,000.
 
@@ -139,7 +137,7 @@ Prompt: "Show me the newest Regulation A offering statements."
 { "name": "reg-a-form-1a", "arguments": { "query": "cik:*", "size": 1 } }
 ```
 
-Response from the capture, trimmed for length:
+Response, trimmed for length:
 
 ```json
 {

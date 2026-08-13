@@ -74,7 +74,7 @@ object. An adviser with no affiliations returns `[]`.
 | `11-shareSupervisedPersons`  | boolean | True when staff are shared with the adviser.                         |
 | `12-shareSameLocation`       | boolean | True when the two share an office.                                   |
 
-Type codes seen in the 149 live rows for CRD 149777, with the row count:
+Type codes in the 149 rows for CRD 149777, with the row count:
 `p-sponsorOfPooledInvestmentVehicles` (115), `b-otherAdviser` (38),
 `f-commodityPoolOperator` (23), `a-brokerBealer` (5), `h-bankingThriftingInstitution` (3),
 `g-futuresCommissionMerchant` (2), `l-insuranceCompany` (2), `d-swapDealer` (1).
@@ -82,7 +82,7 @@ Type codes seen in the 149 live rows for CRD 149777, with the row count:
 `a-brokerBealer` is **spelled that way in the API**. It is a typo for
 broker-dealer. A filter on `a-brokerDealer` matches nothing. The letter prefix
 matches the checkbox letter on Form ADV, so other letters exist that this
-adviser did not use. They are unverified.
+adviser did not use.
 
 **There is no pagination.** Every related person arrives in one call. For a
 large group that is roughly 100 KB of JSON in a single text block. Expect it to
@@ -97,8 +97,7 @@ Prompt: "List the financial industry affiliates of adviser CRD 149777."
 { "name": "form-adv-schedule-d-7-a", "arguments": { "crd": "149777" } }
 ```
 
-CRD 149777 has 149 related persons. The first row, verified on the REST route on
-2026-08-13:
+CRD 149777 has 149 related persons. The first row:
 
 ```json
 [
@@ -124,18 +123,9 @@ CRD 149777 has 149 related persons. The first row, verified on the REST route on
 ```
 
 The other 148 rows and the empty `8c-locationOfRelatedPerson` block were removed
-to fit. The values shown are unchanged.
-
-The probe called CRD 344073 instead. That adviser reports no affiliates, so the
-capture is an empty array:
-
-```json
-{ "name": "form-adv-schedule-d-7-a", "arguments": { "crd": "344073" } }
-```
-
-```json
-[]
-```
+to fit. The values shown are unchanged. Row two is
+`MORGAN STANLEY PRIVATE EQUITY ASIA, INC.`, CRD 134366, with
+`7-underCommonControl` set to true.
 
 ## Limits and errors
 

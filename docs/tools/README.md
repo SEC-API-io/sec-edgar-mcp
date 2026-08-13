@@ -3,9 +3,7 @@
 The SEC EDGAR MCP server exposes **49 tools**. Every tool is listed
 below with a link to its own page.
 
-Every tool works through MCP, verified on 2026-08-13. See
-[probe findings](../../.claude-working-dir/docs/probe-findings.md) for the probe
-that checked them.
+Every tool below works through MCP.
 
 ## All tools
 

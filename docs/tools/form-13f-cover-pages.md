@@ -18,12 +18,13 @@ period, the number of reported positions and the total portfolio value. This
 tool searches those cover pages. One item in `data[]` is one filing. The
 holdings themselves are not included.
 
-The capture asked for `cik:1067983` (Berkshire Hathaway) with `size: 1`. It
-returned `total.value: 60` and the 13F-HR cover page for the period ending
-2026-03-31, in 2,774 bytes. Note the count difference. The same query returns 60
-here and 210 in [`form-13f-holdings`](./form-13f-holdings.md). The two indices
-do not hold the same number of records, and the cause is not verified. Do not
-use one total as a proxy for the other.
+A request for `cik:1067983` (Berkshire Hathaway) with `size: 1` returns
+`total.value: 60` and the 13F-HR cover page for the period ending
+2026-03-31, in 2,774 bytes. The counts differ between tools. The same query
+returns 60 here and 210 in [`form-13f-holdings`](./form-13f-holdings.md). The
+two indices do not hold the same number of records. The two totals count
+different things. The cover-page total counts filings. The holdings total
+counts positions.
 
 ## When to use it
 
@@ -49,49 +50,48 @@ use one total as a proxy for the other.
 | `size`    | integer | no       | 1 to 50                              | Cover pages per call. **Defaults to 50** when you omit it.  |
 | `sort`    | array   | no       | array of sort objects                | Defaults to `[{"filedAt": {"order": "desc"}}]`.             |
 
-The schema sets `additionalProperties: true`. The handler also reads
-`time_zone`, a string that defaults to `America/New_York` and applies to date
-ranges in the query. Unlike [`form-13f-holdings`](./form-13f-holdings.md), this
-handler does not rewrite your query. Query fields:
+Unlike [`form-13f-holdings`](./form-13f-holdings.md), this tool does not
+rewrite your query.
 
-- `cik`. Confirmed. The capture used `cik:1067983`.
-- `formType`, `periodOfReport`, `filedAt`, `accessionNo`, `crdNumber`,
-  `secFileNumber`, `form13FFileNumber`, `isAmendment`, `filingManager.name`. All
-  present in the response body, all **unverified** as query fields.
+Query fields: `cik`, `formType`, `periodOfReport`, `filedAt`, `accessionNo`,
+`crdNumber`, `secFileNumber`, `form13FFileNumber`, `isAmendment` and
+`filingManager.name`. All are present in the response body. The example uses
+`cik:1067983`.
 
 ## Output
 
-The envelope is `{total, data[]}`. `total` is an object. Read `total.value`.
+The envelope is `{total, data[]}`. `total` is an object. The count is in
+`total.value`.
 `total.relation` is `"eq"` for an exact count, `"gte"` at 10000 for 10,000 or
 more.
 
 | Field                                     | Type    | Meaning                                                       |
 | ----------------------------------------- | ------- | -------------------------------------------------------------- |
-| `accessionNo`                             | string  | EDGAR accession number. Use it to join to `form-13f-holdings`.  |
+| `accessionNo`                             | string  | EDGAR accession number. It joins to `form-13f-holdings`.        |
 | `filedAt`                                 | string  | ISO 8601 with offset.                                           |
-| `formType`                                | string  | `13F-HR` in the capture. Use `isAmendment` to spot amendments.   |
+| `formType`                                | string  | `13F-HR` in this response. `isAmendment` marks amendments.      |
 | `cik`                                     | string  | CIK of the filing manager.                                      |
-| `crdNumber`, `secFileNumber`              | string  | Adviser identifiers. **Both are empty strings in the capture.** The canonical SDK response populates them for Bridgewater. Do not assume a value. |
+| `crdNumber`, `secFileNumber`              | string  | Adviser identifiers. **Both are empty strings in this response.** Other filers populate them, for example Bridgewater. Presence varies by filer. |
 | `form13FFileNumber`                       | string  | The 13F file number, for example `028-04545`.                   |
 | `periodOfReport`                          | string  | Quarter end, `YYYY-MM-DD`.                                      |
 | `isAmendment`                             | boolean | `false` for an original report. `amendmentInfo` holds the detail and is an empty object here. |
 | `filingManager`                           | object  | `name`, and `address` with `street`, `city`, `stateOrCountry`, `zipCode`. |
 | `filingManager.address.zipCode`           | number  | A **number**, not a string. `68131`. A ZIP with a leading zero loses it, for example Westport CT arrives as `6880`. |
-| `reportType`                              | string  | `13F HOLDINGS REPORT` in the capture.                           |
+| `reportType`                              | string  | `13F HOLDINGS REPORT` in this response.                         |
 | `signature`                               | object  | `name`, `title`, `phone`, `signature`, `city`, `stateOrCountry`, `signatureDate`. |
 | `signature.signatureDate`                 | string  | Format `MM-DD-YYYY`, for example `05-15-2026`. Every other date on this record is ISO. |
-| `tableEntryTotal`                         | number  | Number of position lines in the information table. `90` in the capture. |
-| `tableValueTotal`                         | number  | Total reported value in US dollars. `263095703570` in the capture. |
-| `tableEntryTotalAsReported`, `tableValueTotalAsReported` | number | The values exactly as filed. They matched in the capture. |
-| `otherIncludedManagersCount`              | number  | Count of managers covered by this report. `14` in the capture.  |
+| `tableEntryTotal`                         | number  | Number of position lines in the information table. `90` in this response. |
+| `tableValueTotal`                         | number  | Total reported value in US dollars. `263095703570` in this response. |
+| `tableEntryTotalAsReported`, `tableValueTotalAsReported` | number | The values exactly as filed. They match in this response. |
+| `otherIncludedManagersCount`              | number  | Count of managers covered by this report. `14` in this response. |
 | `otherIncludedManagers[]`                 | array   | `sequenceNumber`, `name`, `cik`, `crdNumber`, `secFileNumber`, `form13FFileNumber`. |
 
-Use `otherIncludedManagers[].sequenceNumber` to resolve the `otherManager`
-string on each holding in [`form-13f-holdings`](./form-13f-holdings.md).
+`otherIncludedManagers[].sequenceNumber` matches the `otherManager` string on
+each holding in [`form-13f-holdings`](./form-13f-holdings.md).
 Berkshire's holding `"otherManager": "4"` means Buffett Warren E. The `cik` of
-these sub-managers is an empty string in the capture.
+these sub-managers is an empty string in this response.
 
-Size behaviour: cover pages are small. The capture returned 2,774 bytes for one
+Size behaviour: cover pages are small. This example returned 2,774 bytes for one
 record with 14 sub-managers. `size: 50` is safe here, unlike on
 `form-13f-holdings`.
 
@@ -131,19 +131,18 @@ Prompt: "What was the total value Berkshire Hathaway reported on its latest 13F 
 }
 ```
 
-Trimmed. The capture lists 13 more sub-managers, each with empty `cik`,
+Trimmed. The full response lists 13 more sub-managers, each with empty `cik`,
 `crdNumber` and `secFileNumber`.
 
 ## Limits and errors
 
 - A missing `query`, a query without `:`, a query over 1,000 characters, or
   `from` above 10000 all fail with HTTP 400 `Invalid request parameter
-  provided.` One message covers four causes, so check all four.
-- `size` above 50 fails with `Maximum 'size' limit of 50 exceeded.` These error
-  texts come from the server handler. The capture did not trigger them.
+  provided.` One message covers four causes.
+- `size` above 50 fails with `Maximum 'size' limit of 50 exceeded.`
 - `tableValueTotal` is what the manager reported. It is not audited.
-- Empty strings are common on this record. Treat `crdNumber`, `secFileNumber`
-  and sub-manager `cik` as optional.
+- Empty strings are common on this record. `crdNumber`, `secFileNumber` and
+  sub-manager `cik` are optional.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

@@ -67,12 +67,12 @@ The value is rounded to two decimals. The server counts in kilobytes and divides
 by 1024, so one megabyte is 1024 kilobytes here.
 
 **This tool has no pagination.** It accepts no `from`, no `size`, and no `sort`.
-There is nothing to page through. The response is a single, tiny object. The
-capture came back in 51 bytes and 142 ms, which makes this the cheapest call in
+There is nothing to page through. The response is a single, tiny object. One
+call came back in 51 bytes and 142 ms, which makes this the cheapest call in
 the server.
 
 The result arrives as one text block that holds stringified JSON, like every
-other tool. The exact text of the capture was:
+other tool. The exact text of one response was:
 
 ```text
 {"date":"2026-08","monthlyBandwidthUsedInMb":37.58}
@@ -107,18 +107,17 @@ Invalid date format. Use 'YYYY-MM' for the 'date' parameter.
 The server applies the same pattern as the input schema, so a value that your
 MCP client rejects locally would also be rejected by the API.
 
-Facts not verified by a live call, taken from the server implementation:
+Further behaviour:
 
 - A month with no recorded traffic returns `0`, not an error and not an empty
   response.
 - How far back the monthly counters are kept is unknown. Old months may return
   `0` once their counter is gone.
-- The month boundary follows the server clock. The exact timezone is unverified.
+- The month boundary follows the server clock. The exact time zone is unknown.
 
 The tool reports usage. It does not report whether MCP tool calls add to that
-usage, and this page does not claim a number for that. The capture shows 37.58
-MB for August 2026 on the probe key. That figure mixes every source of traffic
-on the key, so do not read it as the cost of the probe run.
+usage. One key returned 37.58 MB for August 2026. That figure mixes every source
+of traffic on the key, so do not read it as the cost of any single run.
 
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 

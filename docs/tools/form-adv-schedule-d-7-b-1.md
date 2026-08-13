@@ -70,7 +70,7 @@ Keys are numbered to match the question numbers on Form ADV. Each fund carries
 | `3a-namesOfGeneralPartnerManagerTrusteeDirector` | array | Names of the general partner or manager.               |
 | `4-1-exclusionUnder3c1`, `4-2-exclusionUnder3c7` | boolean | Investment Company Act exclusion relied on.             |
 | `6a` to `6d`                           | mixed   | Master-feeder structure. `6d-nameIdOfMasterFund` names the master. `8a-isFundOfFunds` is the fund-of-funds flag. |
-| `10-typeOfFund`                        | object  | `selectedTypes[]` plus `otherFundType` free text. Values seen live: `private equity fund`, `other private fund`. |
+| `10-typeOfFund`                        | object  | `selectedTypes[]` plus `otherFundType` free text. Values seen: `private equity fund`, `other private fund`. |
 | `11-grossAssetValue`                   | number  | Gross asset value in dollars. A plain number, not a string.       |
 | `12-minInvestmentCommitment`           | number  | Minimum investment in dollars.                                    |
 | `13-numberOfBeneficialOwners`          | number  | Count of beneficial owners.                                       |
@@ -101,7 +101,7 @@ Prompt: "List the private funds advised by CRD 344073, with their size."
 { "name": "form-adv-schedule-d-7-b-1", "arguments": { "crd": "344073" } }
 ```
 
-That adviser has one fund. Trimmed response from the capture:
+That adviser has one fund. Trimmed response:
 
 ```json
 [

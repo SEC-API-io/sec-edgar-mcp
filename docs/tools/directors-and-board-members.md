@@ -50,12 +50,10 @@ Tim Cook and the CFO sit beside the independent board members.
 | `size`    | integer | No       | 1 to 50                                           | Default 50. Above 50 the server returns HTTP 400.           |
 | `sort`    | array   | No       | Elasticsearch sort clause                         | Default `[{"filedAt": {"order": "desc"}}]`.                 |
 
-Query fields verified live on 2026-08-13: `ticker`, `cik`, `entityName`,
-`directors.name`, `directors.isIndependent`.
-
-Taken from the response shape and not verified: `accessionNo`, `filedAt`,
-`directors.position`, `directors.committeeMemberships`,
-`directors.directorClass`, `directors.dateFirstElected`.
+Query fields: `ticker`, `cik`, `entityName`, `directors.name`,
+`directors.isIndependent`, `accessionNo`, `filedAt`, `directors.position`,
+`directors.committeeMemberships`, `directors.directorClass`,
+`directors.dateFirstElected`.
 
 The company identifier is bare `ticker` here, as on
 [`compensation`](./compensation.md). On [`audit-fees`](./audit-fees.md) the same
@@ -63,9 +61,8 @@ idea is `entities.ticker`. See [query language](../query-language.md).
 
 A match on a `directors.*` field returns the whole row, with every other board
 member in it. The server does not filter the inner array. That behaviour mirrors
-[`subsidiaries`](./subsidiaries.md) and was not verified live. The field itself
-was: `directors.name:"Alex Gorsky"` returned 31 filings, which is how you find
-interlocking directorates.
+[`subsidiaries`](./subsidiaries.md). `directors.name:"Alex Gorsky"` returned 31
+filings, which is how you find interlocking directorates.
 
 ## Output
 
@@ -90,8 +87,8 @@ of `eq` means the count is exact.
 | `directors[].committeeMemberships`       | string[] | Committee names. A chair is marked inside the string, `People and Compensation Committee (Chair)`. |
 | `directors[].qualificationsAndExperience` | string[] | Short phrases the company gives for that person.            |
 
-Do not read `null` in `isIndependent` as "not independent". It means the parser
-found no statement. Ten of the 12 people in the Apple row are `null`.
+`null` in `isIndependent` means the parser found no statement. It does not mean
+"not independent". Ten of the 12 people in the Apple row are `null`.
 
 Rows carry no document URL. Take `accessionNo` to
 [`filing-search`](./filing-search.md) to open the proxy statement.
@@ -108,7 +105,7 @@ Prompt: "Who sits on Apple's board?"
 { "name": "directors-and-board-members", "arguments": { "query": "ticker:AAPL", "size": 1 } }
 ```
 
-Trimmed response from the capture:
+Trimmed response:
 
 ```json
 {

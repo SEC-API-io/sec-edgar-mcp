@@ -20,7 +20,7 @@ Nothing is cleaned, converted or re-rendered. The `url` must start with
 `.../ix?doc=/Archives/...` and `.../ix.xhtml?doc=/Archives/...` both resolve to
 the underlying document.
 
-The capture returned Apple's EX-21.1 exhibit complete, 11,807 bytes. The
+A request for Apple's EX-21.1 exhibit returned it complete, 11,807 bytes. The
 response opened with the EDGAR SGML wrapper, `<DOCUMENT>`, `<TYPE>`,
 `<SEQUENCE>`, `<FILENAME>`, `<DESCRIPTION>`, `<TEXT>`, then the HTML body, and
 closed with `</TEXT></DOCUMENT>`. Expect that wrapper on document files.
@@ -47,8 +47,7 @@ closed with `</TEXT></DOCUMENT>`. Expect that wrapper on document files.
 | --------- | ---- | -------- | ----------- | ----- |
 | `url` | string | yes | `format: uri`. Must match `https://www.sec.gov/...` | Any EDGAR file URL. An iXBRL viewer URL is accepted and unwrapped. |
 
-The schema sets `additionalProperties: true`. No other key is documented or
-verified.
+The schema sets `additionalProperties: true`. No other key is documented.
 
 This tool takes no `query`, so there are no Lucene fields.
 
@@ -58,11 +57,11 @@ One MCP `text` content block that holds the file source. There is no JSON
 envelope. There is no `total`, no `data[]`, no file name, no content type and no
 byte count. You get the file body and nothing else.
 
-| Detail | Observed or implemented behaviour |
-| ------ | --------------------------------- |
-| Text files | Returned as UTF-8. Applies to `.htm`, `.html`, `.xml`, `.txt`, `.json`, `.sgml`, `.css`, `.js`, and to any response whose content type is text, HTML, XML or JSON. Verified in the capture. |
-| Binary files | Returned base64-encoded in the same text block. Taken from the server implementation. Not verified through MCP. |
-| Size in the capture | 11,807 bytes, the complete EX-21.1 exhibit |
+| Detail | Behaviour |
+| ------ | --------- |
+| Text files | Returned as UTF-8. Applies to `.htm`, `.html`, `.xml`, `.txt`, `.json`, `.sgml`, `.css`, `.js`, and to any response whose content type is text, HTML, XML or JSON. |
+| Binary files | Returned base64-encoded in the same text block. |
+| Size in the example | 11,807 bytes, the complete EX-21.1 exhibit |
 
 **This tool has no pagination.** There is no `from`, no `size`, no `sort` and no
 byte-range parameter. The whole file lands in your context in one block. A

@@ -17,8 +17,8 @@ Every filer that EDGAR knows has one record here: operating companies, funds,
 foreign issuers and individuals. One row is one CIK. The row holds the filer's
 name, addresses, SIC code, auditor, filer category and the set of form types it
 has filed. Almost every field is paired with an `<field>UpdatedAt` timestamp
-that says when EDGAR last changed it. Use the tool to profile a filer, or to
-list filers that share an attribute.
+that says when EDGAR last changed it. A query returns the profile of one filer,
+or the list of filers that share an attribute.
 
 ## When to use it
 
@@ -45,7 +45,7 @@ list filers that share an attribute.
 | `size`    | integer | no       | 1 to 50, default 50               | Above 50 the server returns an error.                     |
 | `sort`    | array   | no       | Elasticsearch sort clause         | Default `[{"cikUpdatedAt":{"order":"desc"}}]`.            |
 
-Query fields confirmed to return rows:
+Query fields:
 
 | Field                     | Example                                      |
 | ------------------------- | -------------------------------------------- |
@@ -59,8 +59,8 @@ Query fields confirmed to return rows:
 | `shellCompany`            | `shellCompany:true`                          |
 | `formTypes.10-K`          | `formTypes.10-K:true`                        |
 
-`mailingAddress` mirrors `businessAddress`, so `mailingAddress.state` should
-work the same way. That one is unverified.
+`mailingAddress` mirrors `businessAddress`, so `mailingAddress.state` follows
+the same pattern.
 
 ## Output
 
@@ -85,8 +85,9 @@ of `gte` with value 10000 means "10,000 or more", the search-window ceiling.
 | `latestIcfrAuditSource`, `latestIcfrAuditFiledAt` | string | The filing that carried the latest ICFR audit. |
 | `<field>UpdatedAt`        | string  | When EDGAR last changed that one field. Present for most fields above.   |
 
-Size behaviour: page with `from` and `size`, 50 rows per call. Rows are small.
-The single Apple row is 2,432 bytes, so a full page of 50 is roughly 100 KB.
+Size behaviour: `from` and `size` page the result set, 50 rows per call. Rows
+are small. The single Apple row is 2,432 bytes, so a full page of 50 is roughly
+100 KB.
 
 ## Example
 
@@ -129,8 +130,8 @@ The real row also carries `phone`, `irsNo`, `formTypes`, the status flags and an
 - `from` above 10000 returns `{"total":{"value":0},"data":[]}` with no error.
   That empty set is a paging ceiling, not an end of data.
 - The tool description promises former names. No `formerNames` field exists in
-  the capture or in the canonical REST response, and `formerNames.name:*`
-  matched nothing. Do not rely on it.
+  the MCP response or in the canonical REST response, and `formerNames.name:*`
+  matched nothing.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
 
 ## Related

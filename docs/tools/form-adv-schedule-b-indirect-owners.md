@@ -19,9 +19,9 @@ owners, up to the top of the chain. One item in the array is one link in the
 chain.
 
 Each row names the owner and, in `entityOwned`, the entity it owns. Follow
-`entityOwned` from row to row to rebuild the ownership tree. A live response for
-Corient Private Wealth, CRD 326262, ran 18 rows from the immediate parent up to
-the Government of Abu Dhabi.
+`entityOwned` from row to row to rebuild the ownership tree. Corient Private
+Wealth, CRD 326262, returns 18 rows, from the immediate parent up to the
+Government of Abu Dhabi.
 
 The tool reads the **latest** Form ADV on file for that CRD number. There is no
 history and no as-of date.
@@ -62,67 +62,48 @@ object. Most advisers report nothing here and return `[]`.
 | `entityOwned`        | string  | The entity that `name` owns. This is the link to the row below it.  |
 | `status`             | string  | Status held, for example `OWNER`.                                    |
 | `dateStatusAcquired` | string  | `YYYY-MM`. Month the stake began.                                    |
-| `ownershipCode`      | string  | Form ADV ownership band as a letter. `D`, `E` and `F` appear in live data. The API returns the letter only, never a percentage. |
+| `ownershipCode`      | string  | Form ADV ownership band as a letter. `D`, `E` and `F` appear in the data. The API returns the letter only, never a percentage. |
 | `isControlPerson`    | boolean | True when the owner controls the entity it owns.                     |
 | `isPublicReporting`  | boolean | True when the owner is a public reporting company.                   |
 | `crd`                | string  | The owner's own CRD number. Usually an empty string here.            |
 
 The field names differ from Schedule A. This schedule uses `status` and
 `dateStatusAcquired`, Schedule A uses `titleStatus` and
-`dateTitleStatusAcquired`. Do not reuse the same parser without checking.
+`dateTitleStatusAcquired`. A parser for one schedule fails on the other.
 
 **There is no pagination.** The whole chain arrives in one call. It is small.
 The 18-row Corient response was about 4 KB.
 
 ## Example
 
-Prompt: "Trace the ownership chain above adviser CRD 326262."
+Prompt: "Trace the ownership chain above adviser CRD 149777."
 
 ```json
-{ "name": "form-adv-schedule-b-indirect-owners", "arguments": { "crd": "326262" } }
+{ "name": "form-adv-schedule-b-indirect-owners", "arguments": { "crd": "149777" } }
 ```
 
-Trimmed response, verified on the REST route on 2026-08-13:
+Morgan Stanley Smith Barney, CRD 149777, has a one-link chain. This is the full
+response:
 
 ```json
 [
   {
-    "name": "CORIENT PARTNERS LP",
+    "name": "MORGAN STANLEY",
     "ownerType": "DE",
-    "entityOwned": "CORIENT PRIVATE WEALTH LP",
-    "status": "OWNER",
-    "dateStatusAcquired": "2022-02",
+    "entityOwned": "MORGAN STANLEY CAPITAL MANAGEMENT LLC",
+    "status": "MEMBER",
+    "dateStatusAcquired": "2002-10",
     "ownershipCode": "E",
     "isControlPerson": true,
-    "isPublicReporting": false,
-    "crd": ""
-  },
-  {
-    "name": "CORIENT HOLDINGS INC",
-    "ownerType": "DE",
-    "entityOwned": "CORIENT MANAGEMENT LLC",
-    "status": "OWNER",
-    "dateStatusAcquired": "2023-07",
-    "ownershipCode": "F",
-    "isControlPerson": true,
-    "isPublicReporting": false,
+    "isPublicReporting": true,
     "crd": ""
   }
 ]
 ```
 
-Sixteen rows were removed to fit. The values are unchanged.
-
-The probe called CRD 344073 instead. That adviser reports no indirect owners, so
-the capture is an empty array:
-
-```json
-{ "name": "form-adv-schedule-b-indirect-owners", "arguments": { "crd": "344073" } }
-```
-
-```json
-[]
-```
+`MORGAN STANLEY CAPITAL MANAGEMENT LLC` is the entity owner on Schedule A. This
+row names its parent, the listed company. `isPublicReporting` is true, so you
+can follow the chain into the EDGAR tools from here.
 
 ## Limits and errors
 

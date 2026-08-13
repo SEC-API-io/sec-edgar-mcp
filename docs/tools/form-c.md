@@ -52,7 +52,7 @@ row has no `offeringInformation` block, because an annual report offers nothing.
 | `size`    | integer | no       | 1 to 50        | Default 50. Above 50 returns HTTP 400.    |
 | `sort`    | array   | no       | ES sort clause | Default `[{"filedAt":{"order":"desc"}}]`. |
 
-Query fields confirmed to return rows:
+Query fields:
 
 | Field                                                          | Example                                     |
 | -------------------------------------------------------------- | ------------------------------------------- |
@@ -111,7 +111,7 @@ of `gte` with `value` `10000` means "10,000 or more".
 `issueJurisdictionSecuritiesOffering[]`, a list of state codes.
 
 Dates inside the parsed blocks use `MM-DD-YYYY`. Only the top-level `filedAt`
-and `periodOfReport` use ISO order. Do not mix them.
+and `periodOfReport` use ISO order. The two formats are not interchangeable.
 
 Paging is real but shallow. `from` plus `size` must stay at or below 10,000.
 
@@ -123,7 +123,7 @@ Prompt: "Show me the newest Regulation Crowdfunding filings."
 { "name": "form-c", "arguments": { "query": "cik:*", "size": 1 } }
 ```
 
-Response from the capture, trimmed for length:
+Response, trimmed for length:
 
 ```json
 {
@@ -163,7 +163,7 @@ Response from the capture, trimmed for length:
 - `from` plus `size` above 10,000 returns `{"total":{"value":0},"data":[]}` with
   no error. An empty result there does not mean there is no more data.
 - The registry description promises a "use of proceeds" field. No such field
-  exists in the capture or in the Node SDK example. Treat that as wrong.
+  exists in any response.
 - Unlike [form-s1-424b4](./form-s1-424b4.md) and [form-8k](./form-8k.md), this
   tool does not demand a colon in `query`.
 - Shared behaviour is in [limits and errors](../limits-and-errors.md).
