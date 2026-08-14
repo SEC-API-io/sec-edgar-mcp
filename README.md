@@ -278,9 +278,9 @@ curl -s https://api.sec-api.io/mcp?apiKey=YOUR_API_KEY \
 
 ## Limits
 
-- Some tools return large payloads. See
-  [limits and errors](./docs/limits-and-errors.md) before wiring them into an
-  agent loop.
+Some tools return large payloads. See
+[limits and errors](./docs/limits-and-errors.md) before wiring them into an
+agent loop.
 
 ## Citation
 
@@ -289,7 +289,7 @@ curl -s https://api.sec-api.io/mcp?apiKey=YOUR_API_KEY \
   author  = {{SEC-API.io}},
   title   = {{SEC EDGAR MCP: Model Context Protocol server for SEC EDGAR filings}},
   year    = {2026},
-  version = {1.0.0},
+  version = {1.1.0},
   url     = {https://github.com/sec-api/sec-edgar-mcp}
 }
 ```

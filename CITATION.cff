@@ -8,8 +8,8 @@ type: software
 authors:
   - name: 'SEC-API.io'
     website: 'https://sec-api.io'
-version: 1.0.0
-date-released: '2026-08-13'
+version: 1.1.0
+date-released: '2026-08-14'
 license: MIT
 url: 'https://sec-api.io/docs/mcp-server'
 repository-code: 'https://github.com/sec-api/sec-edgar-mcp'
