@@ -289,7 +289,7 @@ agent loop.
   author  = {{SEC-API.io}},
   title   = {{SEC EDGAR MCP: Model Context Protocol server for SEC EDGAR filings}},
   year    = {2026},
-  version = {1.1.0},
+  version = {1.1.1},
   url     = {https://github.com/sec-api/sec-edgar-mcp}
 }
 ```
