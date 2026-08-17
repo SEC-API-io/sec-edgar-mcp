@@ -39,6 +39,11 @@ Get an API key at [sec-api.io](https://sec-api.io/profile).
 
 ![./assets/intro.gif](./assets/intro.gif)
 
+| Quarterly earnings | Institutional holdings | Executive pay |
+| :----------------: | :--------------------: | :-----------: |
+| [<img src="./examples/earnings/earnings-summary.png" width="300">](./examples/earnings/earnings-summary.md) | <img src="./examples/13f-holdings-leopold-aschenrenner.png" width="300"> | <img src="./examples/ceo-pay-performance-gap.png" width="300"> |
+| Form 8-K Item 2.02 and 10-Q risk factors | Form 13F holdings | Executive compensation |
+
 ---
 
 ## Quick start
